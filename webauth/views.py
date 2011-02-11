@@ -32,7 +32,13 @@ def login(request):
             could_login = False
             
         if could_login:
-            return HttpResponseRedirect('/')
+            try:
+                next = request.GET['next']
+                if next[0] == '/':
+                    next = next[1:]
+            except MultiValueDictKeyError:
+                next = ""
+            return HttpResponseRedirect(settings.BASE_URL + next)
         else:
             return HttpResponse("authentication error")
 
