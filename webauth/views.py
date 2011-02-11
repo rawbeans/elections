@@ -7,6 +7,8 @@ from django.utils.datastructures import MultiValueDictKeyError
 def login(request):
     if not 'WA_user' in request.GET:
         url = urllib2.quote(request.build_absolute_uri())
+        if '?' not in url:
+            url += '?'
         return HttpResponseRedirect(settings.WEBAUTH_URL + "?from=" + url)
     else:
         try:
