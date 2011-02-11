@@ -21,6 +21,13 @@
     </tbody>
 </table>
 
+{% if issue.needs_petition and issue.public %}
+        <dt>
+            <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
+        </dt>
+    <br/>
+    {% endif %}
+
 {% if issue.budget %}
     <p><a target="_blank" href="{{ issue.budget.url }}">View Special Fee request PDF</a></p>
     {% if not hidepdfs %}{{ issue.budget.url|pdf_viewer|safe }}{% endif %}

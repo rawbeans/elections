@@ -48,10 +48,10 @@
             {% if issue.external_url %}(off-site){% endif %}
         </dd>
     {% endif %}
-    {% if issue.needs_petition and issue.public and issue.show_petition_results %}
-        <dd>
-            <a href="{% url petitions.views.detail issue.slug %}">View petition</a>
-        </dd>
+    {% if issue.needs_petition and issue.public %}
+        <dt>
+            <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
+        </dt>
     {% endif %}
 </dl>
 

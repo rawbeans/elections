@@ -4,7 +4,7 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Quinn Slack', 'sqs@elections.stanford.edu'),
+    ('Stephen Trusheim', 'tru@elections.stanford.edu'),
 )
 
 MANAGERS = ADMINS
@@ -30,15 +30,17 @@ USE_I18N = False
 # Example: "/home/media/media.lawrence.com/"
 #MEDIA_ROOT = ''
 
+BASE_URL = 'http://localhost:8000/'
+
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://voterguide.stanford.edu/media/'
+MEDIA_URL = BASE_URL + 'media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = 'http://voterguide.stanford.edu/media/admin/'
+ADMIN_MEDIA_PREFIX = BASE_URL + 'media/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'qszo)3canz!+28v)6ha)6*8oe$2hpjibn0il$@2sk$tqp&5)lv'
@@ -55,13 +57,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
-    'openelections.webauth.context.webauth_context',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'webauth.middleware.WebauthMiddleware',
 )
 
 ROOT_URLCONF = 'openelections.urls'
@@ -81,8 +82,12 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'openelections.issues',
     'openelections.petitions',
-    'openelections.ballot',
-    'openelections.webauth',
+    'webauth'
+    #'openelections.ballot',
+    #'openelections.webauth',
 )
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+WEBAUTH_SHARED_SECRET = 'a2d24bf589b1dea3d83f317019e2ff83bf430b8d1c2a3f741dbf7d72f196d8cf6a6d113de356dc77'
+WEBAUTH_URL = 'https://www.stanford.edu/~trusheim/cgi-bin/wa-authenticate-test.php'

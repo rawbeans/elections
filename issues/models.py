@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models import Q
-import simplejson
 from openelections import constants as oe_constants
 from openelections.issues.text import POSITION_DESCRIPTIONS
 
@@ -18,10 +17,6 @@ class Electorate(models.Model):
     
     UNDERGRAD_CLASS_YEARS = ('undergrad-2', 'undergrad-3', 'undergrad-4', 'undergrad-5plus')
     ASSU_POPULATIONS = ('undergrad', 'graduate')
-    SMSA_CLASS_YEARS = ('smsa-2', 'smsa-3', 'smsa-4', 'smsa-5plus')
-    SMSA_POPULATIONS = ('smsa-preclinical', 'smsa-clinical')
-    SMSA_CCAP_POPULATIONS = SMSA_POPULATIONS + ('smsa-mdphd', 'smsa-mdplus',)
-    SMSA_ALL_POPULATIONS = SMSA_CCAP_POPULATIONS
     GSC_DISTRICTS_NO_ATLARGE = ('gsc-gsb', 'gsc-earthsci', 'gsc-edu', 'gsc-eng', 'gsc-hs-hum', 'gsc-hs-natsci', 'gsc-hs-socsci', 'gsc-law', 'gsc-med',)
     GSC_DISTRICTS = GSC_DISTRICTS_NO_ATLARGE + ('gsc-atlarge',)
     
@@ -90,7 +85,7 @@ class Issue(models.Model):
         return "%s: %s" % (self.kind, self.title)
 
     def can_declare(self):
-        return False
+        return True
     
     def get_typed(self):
         issue_class = kinds_classes.get(self.kind, Issue)
@@ -117,10 +112,10 @@ class Issue(models.Model):
         raise NotImplementedError
     
     def needs_petition(self):
-        return False
+        return True
     
     def petition_open(self):
-        return False
+        return True
         
     def show_petition_results(self):
         return False
@@ -348,131 +343,6 @@ class GSCCandidate(Candidate):
     def name_and_office(self):
         return "%s, a candidate for ASSU Grad Student Council, %s District" % (self.name1, self.district().name)
 
-class SMSACandidate(Candidate):
-    class Meta:
-        proxy = True
-
-    def can_declare(self):
-        return True
-     
-    def candidate_electorate_label(self):
-        return None
-    
-    def candidate_electorate_names(self):
-        return None
-    
-    def needs_petition(self):
-        return False
-        
-    def kind_name(self):
-        return "%s candidate" % self.elected_name()
-    
-    def name_and_office(self):
-        return "%s, a candidate for %s" % (self.name1, self.elected_name())
-    
-    def elected_name(self):
-        name_map = {
-            'SMSA-ExecP': 'Executive President',
-            'SMSA-P': 'President',
-            'SMSA-VP': 'Vice President',
-            'SMSA-S': 'Secretary',
-            'SMSA-T': 'Treasurer',
-            'SMSA-MC': 'Mentorship Chair',
-            'SMSA-PSRC': 'Prospective Student Recruitment Chair',
-            'SMSA-OSS-OSR': 'OSS/OSR Rep',
-            'SMSA-CSAC': 'Clinical Student Advisory Council Member',
-        }
-        return 'SMSA ' + name_map.get(self.kind, 'Unknown')
-
-class SMSAClassRepCandidate(SMSACandidate):
-    class Meta:
-        proxy = True
-      
-    def candidate_electorate_label(self):
-        return 'SMSA class year'
-    
-    def candidate_electorate_names(self):
-        return Electorate.SMSA_CLASS_YEARS
-    
-    def class_year(self):
-        year = self.electorates.filter(slug__in=Electorate.SMSA_CLASS_YEARS)
-        if not year:
-            raise Exception('no year found for smsa class rep %d' % self.pk)
-        return year[0]
-        
-    def elected_name(self):
-        if self.pk:
-            return "%s Class Rep" % self.class_year().name
-        else:
-            return "Class Rep"
-        
-class SMSASocialChairCandidate(SMSACandidate):
-    class Meta:
-        proxy = True
-
-    def candidate_electorate_label(self):
-        return 'SMSA population'
-    
-    def candidate_electorate_names(self):
-        return ('smsa-preclinical', 'smsa-clinical')
-    
-    def population(self):
-        pop = self.electorates.filter(slug__in=Electorate.SMSA_POPULATIONS)
-        if not pop:
-            raise Exception('no pop found for smsa social chair %d' % self.pk)
-        return pop[0]
-    
-    def elected_name(self):
-        if self.pk:
-            return "SMSA Social Chair (%s)" % no_smsa(self.population().name)
-        else:
-            return "SMSA Social Chair"
-        
-class SMSACCAPRepCandidate(SMSACandidate):
-    class Meta:
-        proxy = True
-
-    def candidate_electorate_label(self):
-        return 'SMSA population'
-    
-    def candidate_electorate_names(self):
-        return Electorate.SMSA_CCAP_POPULATIONS
-    
-    def population(self):
-        pop = self.electorates.filter(slug__in=Electorate.SMSA_CCAP_POPULATIONS)
-        if not pop:
-            raise Exception('no pop found for smsa ccap rep %d' % self.pk)
-        return pop[0]
-    
-    def elected_name(self):
-        if self.pk:
-            return "SMSA CCAP Rep (%s)" % no_smsa(self.population().name)
-        else:
-            return "SMSA CCAP Rep"
-
-class SMSAPolicyAndAdvocacyChairCandidate(SMSACandidate):
-    class Meta:
-        proxy = True
-        
-    def candidate_electorate_label(self):
-        return 'SMSA population'
-    
-    def candidate_electorate_names(self):
-        return ('smsa-preclinical', 'smsa-clinical')
-        
-    def population(self):
-        pop = self.electorates.filter(slug__in=Electorate.SMSA_POPULATIONS)
-        if not pop:
-            raise Exception('no pop found for smsa p and a rep %d' % self.pk)
-        return pop[0]
-    
-    def elected_name(self):
-        if self.pk:
-            return "SMSA Policy and Advocacy Chair (%s)" % no_smsa(self.population().name)
-        else:
-            return "SMSA Policy and Advocacy Chair"
-        
-
 ###############
 # Class map
 ###############
@@ -482,19 +352,4 @@ kinds_classes = {
     oe_constants.ISSUE_EXEC: ExecutiveSlate,
     oe_constants.ISSUE_CLASSPRES: ClassPresidentSlate,
     oe_constants.ISSUE_SPECFEE: SpecialFeeRequest,
-    
-    # SMSA
-    'SMSA-ExecP': SMSACandidate,
-    'SMSA-P': SMSACandidate,
-    'SMSA-VP': SMSACandidate,
-    'SMSA-S': SMSACandidate,
-    'SMSA-T': SMSACandidate,
-    'SMSA-ClassRep': SMSAClassRepCandidate,
-    'SMSA-SocChair': SMSASocialChairCandidate,
-    'SMSA-CCAP': SMSACCAPRepCandidate,
-    'SMSA-PAC': SMSAPolicyAndAdvocacyChairCandidate,
-    'SMSA-MC': SMSACandidate,
-    'SMSA-PSRC': SMSACandidate,
-    'SMSA-OSS-OSR': SMSACandidate,
-    'SMSA-CSAC': SMSACandidate,
 }

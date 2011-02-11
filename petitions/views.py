@@ -7,16 +7,16 @@ from django.core.urlresolvers import reverse
 from openelections.petitions.models import Signature
 from openelections.petitions.forms import SignatureForm
 from openelections.issues.models import Issue
-from openelections.webauth.stanford_webauth import webauth_required
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return HttpResponseRedirect('/issues/petitioning')
 
-@webauth_required
+@login_required
 def detail(request, issue_slug):
     issue = get_object_or_404(Issue, slug=issue_slug).get_typed()
     
-    sunetid = request.session['webauth_sunetid']
+    sunetid = request.user.webauth_username
     can_manage = issue.sunetid_can_manage(sunetid)
     
     signatures = None
@@ -35,14 +35,14 @@ def detail(request, issue_slug):
         'signatures': signatures,
     }, context_instance=RequestContext(request))
 
-@webauth_required
+@login_required
 def sign(request, issue_slug):
     issue = get_object_or_404(Issue, slug=issue_slug).get_typed()
     
     if request.method != 'POST':
         return HttpResponseRedirect(reverse('openelections.petitions.views.detail', None, [issue_slug]))
     
-    sunetid = request.session['webauth_sunetid']
+    sunetid = request.user.webauth_username
     attrs = request.POST.copy()
     attrs['sunetid'] = sunetid
     attrs['issue'] = issue.id

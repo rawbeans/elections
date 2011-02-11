@@ -3,7 +3,7 @@
 <head>
     <title>ASSU Elections</title>
     {% block style_link %}
-        <link rel="stylesheet" href="http://elections.stanford.edu/res/screen-oe.css">
+        <link rel="stylesheet" href="{{ MEDIA_URL }}screen-oe.css">
     {% endblock %}
     <style>
         th { min-width: 75px; }
@@ -35,10 +35,12 @@
         .statement_short h1, .statement_short h2, .statement_short h3, .statement_short h4 {
             font-size:1.1em !important;
         }
+
+        {% block style %}{% endblock %}
+        
     </style>
        
-    {% block style %}{% endblock %}
-    
+
     <link rel="shortcut icon" href="/media/favicon.ico"/>
 </head>
 <body class="oe">
@@ -46,13 +48,13 @@
 
 <div id="header">
     {% block header %}
-        <h1 id="site_title"><a href="http://voterguide.stanford.edu/"><img alt="ASSU Elections Commission" src="http://elections.stanford.edu/res/web-logo2-with-smsa.png"></a></h1>
+        <h1 id="site_title"><a href="http://voterguide.stanford.edu/"><img alt="ASSU Elections Commission" src="{{ MEDIA_URL }}web-logo2-with-smsa.png"></a></h1>
 
         <div class="nav">
         <div class="navsection byaudience">
             <ul>
                 <li><a href="/"><strong>View all</strong></a></li>
-                <!-- <li><a href="/issues/manage">Declare</a></li> -->
+                <li><a href="/issues/manage">Declare</a></li>
             </ul>
         </div>
 
@@ -67,7 +69,7 @@
             </ul>
         </div>
 
-        <div class="navsection byaudience">
+        <!--<div class="navsection byaudience">
             <h2>SMSA</h2>
             <ul>
                 <li><a href="{% url issues.views.index show="smsa-president" %}">President</a></li>
@@ -78,7 +80,7 @@
                 <li><a href="{% url issues.views.index show="smsa-chairs" %}">Chairs</a></li>
                 <li><a href="{% url issues.views.index show="smsa-ccap" %}">CCAP</a></li>
             </ul>
-        </div>
+        </div>-->
         </div>
     {% endblock %}
 </div>
@@ -93,7 +95,7 @@
         <li><a href="http://elections.stanford.edu">2010 Elections Commission Home</a></li>
         {% block footerlogin %}
             {% if not sunetid %}
-                <li><a href="/issues/manage">Candidate/sponsor login</a></li>
+                <li><a href="{% url openelections.issues.views.manage_index %}">Candidate/sponsor login</a></li>
             {% else %}
                 <li><a href="/auth/logout" onclick="alert('You must also close your browser window to log out of Stanford WebAuth.');return true">Log out ({{ sunetid }})</a></li>
             {% endif %}
@@ -110,16 +112,6 @@
 </div>
 
 </div>
-
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-11591088-1");
-pageTracker._trackPageview();
-} catch(err) {}</script>
 
 </body>
 </html>
