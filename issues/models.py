@@ -33,7 +33,7 @@ class Issue(models.Model):
     statement = models.TextField(default='', blank=True)
     statement_short = models.TextField('Short statement (100 words)', default='', blank=True)
     statement_petition = models.TextField(default='', blank=True)
-    image = models.ImageField(upload_to='media/issue_images', blank=True)
+    image = models.ImageField(upload_to='issue_images', blank=True)
     slug = models.SlugField(blank=False)
     external_url = models.CharField(max_length=200, blank=True)
     
@@ -66,9 +66,9 @@ class Issue(models.Model):
     sunetid5 = models.CharField(max_length=8, blank=True)
     
     # special fee groups
-    budget = models.FileField(upload_to='media/specialfees', blank=True)
-    past_budget = models.FileField(upload_to='media/specialfees', blank=True)
-    account_statement = models.FileField(upload_to='media/specialfees', blank=True)
+    budget = models.FileField(upload_to='specialfees', blank=True)
+    past_budget = models.FileField(upload_to='specialfees', blank=True)
+    account_statement = models.FileField(upload_to='specialfees', blank=True)
     total_request_amount = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     amount_per_undergrad_annual = models.DecimalField(default=0, max_digits=6, decimal_places=2)
     amount_per_grad_annual = models.DecimalField(default=0, max_digits=6, decimal_places=2)
