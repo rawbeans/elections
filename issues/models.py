@@ -25,7 +25,7 @@ class Electorate(models.Model):
         return klass.objects.filter(slug__in=slugs)
     
     def __unicode__(self):
-        return self.slug
+        return self.voter_name
 
 class Issue(models.Model):        
     title = models.CharField(max_length=200)
