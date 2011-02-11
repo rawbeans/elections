@@ -48,10 +48,10 @@ class NewExecutiveSlateForm(NewSlateForm):
 class NewClassPresidentSlateForm(NewSlateForm):
     class Meta:
         model = ClassPresidentSlate
-        fields = ('title', 'kind', 'electorate', 'name1', 'sunetid1', 'name2', 'sunetid2', 'name3', 'sunetid3', 
+        fields = ('title', 'kind', 'electorates', 'name1', 'sunetid1', 'name2', 'sunetid2', 'name3', 'sunetid3', 
                                'name4', 'sunetid4', 'name5', 'sunetid5', 'slug')
     
-    electorate = forms.ModelChoiceField(label='Class year',
+    electorates = forms.ModelChoiceField(label='Class year',
                                         queryset=Electorate.objects.filter(slug__in=Electorate.UNDERGRAD_CLASS_YEARS),
                                         widget=forms.RadioSelect,
                                         empty_label=None,
@@ -71,10 +71,12 @@ class NewClassPresidentSlateForm(NewSlateForm):
                             required=False)
     sunetid5 = forms.CharField(label='5th member\'s SUNet ID @stanford.edu', widget=forms.TextInput(attrs={'size':'12'}),
                                required=False)
-    
-    def clean_electorate(self):
-        electorate = self.cleaned_data.get('electorate')
-        if electorate:
+
+    def clean_electorates(self):
+        electorate = self.cleaned_data.get('electorates')
+        print electorate
+
+        if electorate is not None:
             return [electorate]
   
 class NewCandidateForm(NewIssueForm):
