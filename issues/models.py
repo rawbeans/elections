@@ -33,7 +33,7 @@ class Issue(models.Model):
     statement = models.TextField(default='', blank=True)
     statement_short = models.TextField('Short statement (100 words)', default='', blank=True)
     statement_petition = models.TextField(default='', blank=True)
-    image = models.ImageField(upload_to='issue_images', blank=True)
+    image = models.ImageField(upload_to='media/issue_images', blank=True)
     slug = models.SlugField(blank=False)
     external_url = models.CharField(max_length=200, blank=True)
     
