@@ -8,6 +8,8 @@ from openelections import constants as oe_constants
 from openelections.issues.models import Issue
 from openelections.issues.forms import IssueForm, form_class_for_issue
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import AnonymousUser
+from webauth.models import WebauthUser
 
 index_filters = {
     'exec': (oe_constants.ISSUE_EXEC,),
@@ -33,10 +35,12 @@ def index(request, show=None):
     random.shuffle(issues)
     return render_to_response('issues/index.html', {'issues': issues, 'detail': False}, context_instance=RequestContext(request))
 
-@login_required
 def detail(request, issue_slug):
     issue = get_object_or_404(Issue, slug=issue_slug).get_typed()
-    sunetid = request.user.webauth_username
+    sunetid = ""
+    print request.user.__class__
+    if isinstance(request.user,WebauthUser):
+        sunetid = request.user.webauth_username 
     can_manage = issue.sunetid_can_manage(sunetid)
     return render_to_response('issues/detail.html', {'issue': issue, 'can_manage': can_manage, 'detail': True}, context_instance=RequestContext(request))
 
