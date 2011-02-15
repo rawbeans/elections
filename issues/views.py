@@ -38,10 +38,10 @@ def index(request, show=None):
 def detail(request, issue_slug):
     issue = get_object_or_404(Issue, slug=issue_slug).get_typed()
     sunetid = ""
-    print request.user.__class__
     if isinstance(request.user,WebauthUser):
         sunetid = request.user.webauth_username 
     can_manage = issue.sunetid_can_manage(sunetid)
+    print issue.is_grad_issue()
     return render_to_response('issues/detail.html', {'issue': issue, 'can_manage': can_manage, 'detail': True}, context_instance=RequestContext(request))
 
 @login_required

@@ -1,60 +1,88 @@
 {% load markup %}
 {% load issue_extras %}
 
-<dt>Special Fee request sponsor</dt>
-<dd>{{ issue.name1 }}, <a href="mailto:{{ issue.sunetid1 }}@stanford.edu">{{ issue.sunetid1 }}@stanford.edu</a></dd>
-
+<br/>
 <table>
     <tbody>
+        <tr>
+            <th>Special Fee type</th>
+            <td>{% if issue.is_undergrad_issue and not issue.is_grad_issue %}Undergraduate Special Fee{% endif %}
+            {% if not issue.is_undergrad_issue and issue.is_grad_issue %}Graduate Special Fee{% endif %}
+            {% if issue.is_undergrad_issue and issue.is_grad_issue %}Joint Special Fee{% endif %}</td>
+        </tr>
         <tr>
             <th>Total request amount</th>
             <td>{{ issue.total_request_amount|currency }}</td>
         </tr>
         <tr>
             <th>Previous year request amount</th>
-            <td>{{ issue.total_past_request_amount|currency }}</td>
+            <td>{% if issue.total_past_request_amount > 0 %}{{ issue.total_past_request_amount|currency }}{% else %}New request{% endif %}</td>
         </tr>
+        {% if issue.total_past_request_amount > 0 %}
         <tr>
             <th>Change from previous request</th>
             <td>{{ issue.total_request_percent_change|floatformat:"0" }}%</td>
         </tr>
+        {% endif %}
+        {% if issue.is_undergrad_issue %}
+        <tr>
+            <th>Amount per Undergrad</th>
+            <td>{{ issue.amount_per_undergrad_annual|currency }} per year</td>
+        </tr>
+        {% endif %}
+        {% if issue.is_grad_issue %}
+        <tr>
+            <th>Amount per Grad</th>
+            <td>{{ issue.amount_per_grad_annual|currency }} per year</td>
+        </tr>
+        {% endif %}
     </tbody>
 </table>
-
 {% if issue.needs_petition and issue.public %}
         <dt>
             <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
         </dt>
     <br/>
-    {% endif %}
-
-{% if issue.budget %}
-    <p><a target="_blank" href="{{ issue.budget.url }}">View Special Fee request PDF</a></p>
-    {% if not hidepdfs %}{{ issue.budget.url|pdf_viewer|safe }}{% endif %}
 {% endif %}
 
-{% if issue.past_budget %}
-    <p><a target="_blank" href="{{ issue.past_budget.url }}">View previous year request PDF</a></p>
-    {% if not hidepdfs %}{{ issue.past_budget.url|pdf_viewer|safe }}{% endif %}
-{% endif %}
 
-{% if issue.account_statement %}
-    <p><a target="_blank" href="{{ issue.account_statement.url }}">View current bank statement PDF</a></p>
-    {% if not hidepdfs %}{{ issue.account_statement.url|pdf_viewer|safe }}{% endif %}
-{% endif %}
+<br/>
 
-{% if issue.statement_short %}
-    <h2>Group summary statement</h2>
-    <p>{{ issue.statement_short }}</p>
-{% endif %}
+<dt>Special Fee request sponsor</dt>
+<dd>{{ issue.name1 }}, <a href="mailto:{{ issue.sunetid1 }}@stanford.edu">{{ issue.sunetid1 }}@stanford.edu</a></dd>
 
 {% if issue.statement %}
     <h2>Group statement</h2>
     {% if issue.image and detail and not hidepdfs %}
         <div style="float:right"><img style="max-width:300px;max-height:400px;margin:0 15px 15px 0" src="{{ issue.image.url }}"></div>
     {% endif %}
-    
+
     {{ issue.statement|markdown:"safe" }}
+{% endif %}
+
+<h2>Budget Information</h2>
+
+{% if issue.budget %}
+    <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.budget.url }}">Requested budget</a></p>
+    {% if not hidepdfs %}{{ issue.budget.url|pdf_viewer|safe }}{% endif %}
+    <br/>
+{% endif %}
+
+{% if issue.past_budget %}
+    <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.past_budget.url }}">Previous year's request</a></p>
+    {% if not hidepdfs %}{{ issue.past_budget.url|pdf_viewer|safe }}{% endif %}
+    <br/>
+{% endif %}
+
+{% if issue.account_statement %}
+    <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.account_statement.url }}">Current bank statement</a></p>
+    {% if not hidepdfs %}{{ issue.account_statement.url|pdf_viewer|safe }}{% endif %}
+    <br/>
+{% endif %}
+
+{% if issue.statement_short %}
+    <h2>Group summary statement</h2>
+    <p>{{ issue.statement_short }}</p>
 {% endif %}
 
 {% if issue.budget_summary %}

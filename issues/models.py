@@ -157,7 +157,7 @@ class Issue(models.Model):
         return [s for s in ids if s]
         
     def sunetid_can_manage(self, sunetid):
-        admins = ('sqs', 'cotism2', 'aneeshka', 'mtvand2')
+        admins = ('trusheim')
         return sunetid in self.sunetids() or sunetid in admins
     
     def partial_template(self):
@@ -183,6 +183,12 @@ class Issue(models.Model):
         return klass.objects.filter(Q(sunetid1=sunetid) | Q(sunetid2=sunetid) |
                                     Q(sunetid3=sunetid) | Q(sunetid4=sunetid) |
                                     Q(sunetid5=sunetid))
+
+    def is_undergrad_issue(self):
+        return self.electorates.filter(slug='undergrad').count() > 0
+
+    def is_grad_issue(self):
+        return self.electorates.filter(slug='grad').count() > 0
 
 class Candidate(Issue): 
     class Meta:
