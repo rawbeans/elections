@@ -20,8 +20,7 @@ def detail(request, issue_slug):
     can_manage = issue.sunetid_can_manage(sunetid)
     
     signatures = None
-    if can_manage:
-        signatures = Signature.objects.filter(issue=issue).order_by('-id')
+    signatures = Signature.objects.filter(issue=issue).order_by('-id') #signatures are public
     newsig = Signature()
     newsig.issue = issue
     newsig.sunetid = sunetid
