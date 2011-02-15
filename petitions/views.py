@@ -19,7 +19,6 @@ def detail(request, issue_slug):
     sunetid = request.user.webauth_username
     can_manage = issue.sunetid_can_manage(sunetid)
     
-    signatures = None
     signatures = Signature.objects.filter(issue=issue).order_by('-id') #signatures are public
     newsig = Signature()
     newsig.issue = issue
@@ -32,6 +31,7 @@ def detail(request, issue_slug):
         'form': form,
         'can_manage': can_manage,
         'signatures': signatures,
+        'sunetid': sunetid
     }, context_instance=RequestContext(request))
 
 @login_required

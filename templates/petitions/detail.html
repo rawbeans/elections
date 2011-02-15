@@ -59,7 +59,7 @@ window.location.hash+='#sign-form';
         {% if form.name.errors %}<dd class="errors">{{ form.name.errors }}</dd>{% endif %}
         
         <dt>SUNet ID</dt>
-        <dd>{{ form.sunetid }}</dd>
+        <dd>{{ sunetid }}</dd>
         {% if form.sunetid.errors %}<dd class="errors">{{ form.sunetid.errors }}</dd>{% endif %}
         
         {% if form.electorate %}
