@@ -62,4 +62,6 @@ def sign(request, issue_slug):
 def api_count(request, issue_slug):
     issue = get_object_or_404(Issue, slug=issue_slug).get_typed()
     sig_count = Signature.objects.filter(issue=issue).count()
-    return HttpResponse(sig_count)
+    response = HttpResponse(sig_count)
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
