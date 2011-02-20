@@ -1,6 +1,6 @@
 import random
 from datetime import datetime
-from django.http import HttpResponseRedirect, QueryDict
+from django.http import HttpResponseRedirect, QueryDict, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -58,3 +58,8 @@ def sign(request, issue_slug):
                                     'form': form, 
                                     'jumptosign':True
                                   }, context_instance=RequestContext(request))
+
+def api_count(request, issue_slug):
+    issue = get_object_or_404(Issue, slug=issue_slug).get_typed()
+    sig_count = Signature.objects.filter(issue=issue).count()
+    return HttpResponse(sig_count)
