@@ -8,7 +8,7 @@ class SignatureForm(forms.ModelForm):
                            help_text='Use your real name or else your signature won\'t count.')
     sunetid = forms.CharField(widget=forms.TextInput(attrs=dict(size=12)), required=True)
     ip_address = forms.CharField()
-    signed_at = forms.DateField()
+    signed_at = forms.DateTimeField()
     issue = forms.ModelChoiceField(queryset=Issue.objects)
     
     class ElectorateChoiceField(forms.ModelChoiceField):

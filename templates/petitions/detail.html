@@ -49,7 +49,8 @@ window.location.hash+='#sign-form';
     
     <p>Your name, SUNet ID, and enrollment status will be visible to this {{ issue.kind_name }} if you sign this petition{% ifequal issue.kind "SF" %}, along with those of the other {{ issue.signatures.count }} signers{% endifequal %}. If you aren't <strong>{{ sunetid }}</strong>, close your browser to log out. See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> or <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a> if you have any questions. </p>
     <br/>
-    <p style="font-weight:bold">View <a href="{% url issues.views.detail issue.slug %}">more information about this petition</a>.</p>
+    <p style="font-weight:bold">View <a href="{% url issues.views.detail issue.slug %}">more information about this petition</a>.
+        {% ifequal issue.kind "SF" %}<br/><br />The budget and account statement of this group are <a href="{% url issues.views.detail issue.slug %}">available here</a>. The Elections Commission recommends that you review the budgets of this group before you sign this petition.</p>{% endifequal %}
     <br />
     {{ form.non_field_errors }}
     <dl>
