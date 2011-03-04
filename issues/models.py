@@ -115,7 +115,7 @@ class Issue(models.Model):
         return True
     
     def petition_open(self):
-        return True
+        return False
         
     def show_petition_results(self):
         return False

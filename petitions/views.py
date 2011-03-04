@@ -24,7 +24,7 @@ def detail(request, issue_slug):
     newsig.issue = issue
     newsig.sunetid = sunetid
     form = None
-    if not issue.signed_by_sunetid(sunetid):
+    if not issue.signed_by_sunetid(sunetid) and issue.petition_open():
         form = SignatureForm(issue, instance=newsig)
     return render_to_response('petitions/detail.html', {
         'issue': issue,
@@ -48,7 +48,7 @@ def sign(request, issue_slug):
     attrs['ip_address'] = request.META['REMOTE_ADDR']
     attrs['signed_at'] = datetime.now()
     form = SignatureForm(issue, attrs)
-    if form.is_valid():
+    if form.is_valid() and issue.petition_open():
         form.save()
         return HttpResponseRedirect(reverse('openelections.petitions.views.detail', None, [issue_slug])+'#sign-form')
     else:
