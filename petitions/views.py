@@ -104,7 +104,7 @@ def view_signatures(request,issue_slug):
             problem_set[1].append(signature)
             continue
 
-        if Signature.objects.filter(sunetid=signature.sunetid).count() > 0:
+        if Signature.objects.filter(sunetid=signature.sunetid,issue=issue).count() > 0:
             problem_set[0].append(signature)
         else:
             problem_set[2].append(signature)
