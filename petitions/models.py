@@ -1,6 +1,8 @@
 from datetime import datetime
 from django.db import models
 from openelections.issues.models import Electorate, Issue, SenateCandidate
+from webauth.models import WebauthUser
+from django.contrib.auth.models import User
 
 class Signature(models.Model):
     name = models.CharField(max_length=100)
@@ -16,3 +18,11 @@ class Signature(models.Model):
 def signed_by_sunetid(issue, sunetid):
     return Signature.objects.filter(sunetid=sunetid, issue=issue)
 Issue.signed_by_sunetid = signed_by_sunetid
+
+class PaperSignature(models.Model):
+    sunetid = models.CharField(max_length=8)
+    issue = models.ForeignKey(Issue)
+    entered_by = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return self.sunetid

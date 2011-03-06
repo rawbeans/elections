@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Admin: View Signatures</h1>
+<p>You are viewing signatures for <strong>{{ issue }}</strong>.</p>
+
+<p>Considered {{ total }} signatures. <a href="{% url openelections.petitions.views.add_signatures issue_slug=issue.slug %}">Add more</a>. </p>
+
+    <p><strong>{{ problem_set.0|length }} duplicated online. {{ problem_set.1|length }} duplicated on paper.</strong> {{ problem_set.2|length }} found clean.</p>
+
+    <p><strong>Duplicated Online:</strong><br />
+    {% for problem in problem_set.0 %}
+    {{ problem.sunetid }}<br/>
+    {% endfor %}
+    </p>
+
+    <p><strong>Duplicated On Paper:</strong><br />
+    {% for problem in problem_set.1 %}
+    {{ problem.sunetid }}<br/>
+    {% endfor %}
+    </p>
+
+    <p><strong>Signatures Considered:</strong><br />
+    {% for signature in considered %}
+    {{ signature }}<br/>
+    {% endfor %}
+    </p>
+
+
+{% endblock %}

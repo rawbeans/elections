@@ -2,6 +2,7 @@ from django import forms
 from openelections import constants as oe_constants
 from openelections.issues.models import Issue, Electorate
 from openelections.petitions.models import Signature
+from petitions.models import PaperSignature
 
 class SignatureForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(size=45)), required=True,
