@@ -45,3 +45,8 @@ class ValidationResult(models.Model):
 
     def __unicode__(self):
         return "%s (%s)" % (self.key,self.sunetid)
+
+    # note: will need to hand-count any Joint Special Fee groups, which can be signed by both
+    # grads and undergrads.
+    def is_valid(self):
+        return (self.did_sign and self.undergraduate and not self.class_petition)

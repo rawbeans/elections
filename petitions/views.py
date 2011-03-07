@@ -265,3 +265,24 @@ def validate(request,key):
                                     {'signature': signature,
                                      'form': form,
                                   }, context_instance=RequestContext(request))
+
+@permission_required('signature.can_add')
+def validate_results(request):
+    vresults = []
+    for issue in Issue.objects.all():
+        if not issue.public:
+            continue
+        verifications = ValidationResult.objects.filter(issue=issue)
+        num = 0
+        num_submitted = 0
+        num_valid = 0
+        for verification in verifications:
+            num += 1
+            if verification.is_valid():
+                num_valid += 1
+            if verification.completed:
+                num_submitted += 1
+        vresults.append((issue,num,num_submitted,num_valid))
+    return render_to_response('petitions/validate_results.html',
+                                    {'results': vresults
+                                  }, context_instance=RequestContext(request))
