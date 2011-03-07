@@ -9,12 +9,13 @@ dd li { list-style-type: none; }
 <form action="{% url petitions.views.validate signature.key %}" method="post">
 <p><strong>SUID:</strong> {{ signature.sunetid }}<br /><strong>Petition:</strong> {{ signature.issue }}</p>
     <p>The ASSU Elections Commission is verifying petition signatures to ensure that petitioning candidates, slates, and
-        Special Fee groups submitted accurate petitions. Your signature has been randomly selected for validation.</p>
+        Special Fee groups submitted accurate petitions. Your signature has been randomly selected for verification.</p>
         <p>Your SUNetID, <strong>{{ signature.sunetid }}</strong>,
         was used to sign a <strong>{% if signature.location == 'paper' %}paper petition{% else %}online petition{% endif %}</strong>
-    for <strong>{{ signature.issue }}</strong>. Please answer the short survey below to validate your signature,
+    for <strong>{{ signature.issue.title }}</strong>. Please answer the short survey below to validate your signature,
         and <a href="mailto:elections@elections.stanford.edu">contact the Elections Commission</a> if you have any questions.</p>
 <p></p>
+<br/>
 
     {{ form.non_field_errors }}
     <dl>

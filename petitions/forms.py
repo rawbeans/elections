@@ -60,5 +60,5 @@ class ValidationForm(forms.Form):
                            help_text='Use your real name or else your signature won\'t count.')
     did_sign = forms.BooleanField(label="Signed", help_text="Check this box if you signed this petition.",required=False)
     class_petition = forms.BooleanField(label="Solicited in class", help_text="Check this box if you were solicited during a class to sign this petition.",required=False)
-    undergrad = forms.BooleanField(label="Undergraduate", help_text="Check this box if you are currently registered as an undergraduate student.",required=False)
+    undergrad = forms.BooleanField(label="Undergraduate", help_text="Check this box if you are currently registered as an undergraduate or coterm student.",required=False)
     extra = forms.CharField(label="Additional Comments",widget=Textarea(),required=False)

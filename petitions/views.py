@@ -181,6 +181,8 @@ def validate_send(request,start):
         success = sendValidationMessage(signature)
         if success:
             response += " / Successfully sent to " + signature.sunetid
+            signature.sent = True
+            signature.save()
         else:
             response += "<br />FAILED TO SEND to " + signature.sunetid + "<br />"
     last = signatures[len(signatures)-1].pk
@@ -229,7 +231,7 @@ def sendValidationMessage(signature):
         smtpConnection.starttls()
         smtpConnection.login(login,password)
     try:
-        #smtpConnection.sendmail(fromAddr,"trusheim@stanford.edu",message.as_string())
+        smtpConnection.sendmail(fromAddr,toAddress,message.as_string())
         return True
     except Exception,e:
         smtpConnection = None
