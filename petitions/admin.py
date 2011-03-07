@@ -1,5 +1,6 @@
 from openelections.petitions.models import Signature
 from django.contrib import admin
+from petitions.models import PaperSignature, ValidationResult
 
 class SignatureAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -11,3 +12,5 @@ class SignatureAdmin(admin.ModelAdmin):
     search_fields = ('sunetid', 'name')
 
 admin.site.register(Signature, SignatureAdmin)
+admin.site.register(PaperSignature)
+admin.site.register(ValidationResult)

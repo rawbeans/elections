@@ -26,3 +26,22 @@ class PaperSignature(models.Model):
 
     def __unicode__(self):
         return self.sunetid
+
+SIGNATURE_TYPES = ('online','paper')
+
+class ValidationResult(models.Model):
+    key = models.CharField(max_length=64)
+    sunetid = models.CharField(max_length=8)
+    issue = models.ForeignKey(Issue)
+    location = models.CharField(max_length=6)
+    sent = models.BooleanField()
+    started = models.BooleanField()
+    completed = models.BooleanField()
+    class_petition = models.BooleanField()
+    did_sign = models.BooleanField()
+    undergraduate = models.BooleanField()
+    provided_name = models.CharField(max_length=100,blank=True)
+    extra = models.TextField(blank=True)
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.key,self.sunetid)

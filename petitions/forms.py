@@ -3,6 +3,7 @@ from openelections import constants as oe_constants
 from openelections.issues.models import Issue, Electorate
 from openelections.petitions.models import Signature
 from petitions.models import PaperSignature
+from django.forms.widgets import Textarea
 
 class SignatureForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(size=45)), required=True,
@@ -53,3 +54,11 @@ class SignatureForm(forms.ModelForm):
     
     class Meta:
         model = Signature
+
+class ValidationForm(forms.Form):
+    name = forms.CharField(label="Name",widget=forms.TextInput(attrs=dict(size=45)), required=True, \
+                           help_text='Use your real name or else your signature won\'t count.')
+    did_sign = forms.BooleanField(label="Signed", help_text="Check this box if you signed this petition.",required=False)
+    class_petition = forms.BooleanField(label="Solicited in class", help_text="Check this box if you were solicited during a class to sign this petition.",required=False)
+    undergrad = forms.BooleanField(label="Undergraduate", help_text="Check this box if you are currently registered as an undergraduate student.",required=False)
+    extra = forms.CharField(label="Additional Comments",widget=Textarea(),required=False)

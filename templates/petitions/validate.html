@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block style %}
+dd li { list-style-type: none; }
+{% endblock %}
+
+{% block content %}
+<h2>Verify Petition Signature</h2>
+<form action="{% url petitions.views.validate signature.key %}" method="post">
+<p><strong>SUID:</strong> {{ signature.sunetid }}<br /><strong>Petition:</strong> {{ signature.issue }}</p>
+    <p>The ASSU Elections Commission is verifying petition signatures to ensure that petitioning candidates, slates, and
+        Special Fee groups submitted accurate petitions. Your signature has been randomly selected for validation.</p>
+        <p>Your SUNetID, <strong>{{ signature.sunetid }}</strong>,
+        was used to sign a <strong>{% if signature.location == 'paper' %}paper petition{% else %}online petition{% endif %}</strong>
+    for <strong>{{ signature.issue }}</strong>. Please answer the short survey below to validate your signature,
+        and <a href="mailto:elections@elections.stanford.edu">contact the Elections Commission</a> if you have any questions.</p>
+<p></p>
+
+    {{ form.non_field_errors }}
+    <dl>
+        <dt>Your name</dt>
+        <dd {% if form.name.errors %}class="error_field" {% endif %}>{{ form.name }}</dd>
+        {% if form.name.errors %}<dd class="errors">{{ form.name.errors }}</dd>{% endif %}
+    <dt>Current Undergraduate</dt>
+        <dd {% if form.undergrad.errors %}class="error_field" {% endif %}>{{ form.undergrad }}&nbsp;<span class="help_text">{{ form.undergrad.help_text }}</span> </dd>
+        {% if form.undergrad.help_text %}<dd class="help_text"></dd>{% endif %}
+        {% if form.undergrad.errors %}<dd class="errors">{{ form.undergrad.errors }}</dd>{% endif %}
+    <dt>Signature</dt>
+        <dd {% if form.did_sign.errors %}class="error_field" {% endif %}>{{ form.did_sign }} &nbsp;<span class="help_text">
+            Check this box if you signed this {% if signature.location == 'paper' %}paper petition{% else %}online petition{% endif %}.
+        </span></dd>
+        {% if form.did_sign.errors %}<dd class="errors">{{ form.did_sign.errors }}</dd>{% endif %}
+    <dt>Solicitation</dt>
+        <dd {% if form.class_petition.errors %}class="error_field" {% endif %}>{{ form.class_petition }} &nbsp;<span class="help_text">{{ form.class_petition.help_text }}</span></dd>
+        {% if form.class_petition.errors %}<dd class="errors">{{ form.class_petition.errors }}</dd>{% endif %}
+    <dt>Additional Comments (optional)</dt>
+        <dd {% if form.extra.errors %}class="error_field" {% endif %}>{{ form.extra }}</dd>
+        {% if form.extra.help_text %}<dd class="help_text">{{ form.extra.help_text }}</dd>{% endif %}
+        {% if form.extra.errors %}<dd class="errors">{{ form.extra.errors }}</dd>{% endif %}
+    </dl>
+    <input type="submit" value="Verify!">
+</form>
+{% endblock %}

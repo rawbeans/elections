@@ -74,3 +74,12 @@ VOTES_YNA = (
     (VOTE_NO, 'No'),
     (VOTE_YES, 'Yes'),
 )
+
+
+ISSUE_TYPES_DICT = {
+    ISSUE_US: 'Undergrad Senate',
+    ISSUE_GSC: 'Grad Student Council',
+    ISSUE_CLASSPRES: 'Undergrad Class President',
+    ISSUE_EXEC: 'Exec',
+    ISSUE_SPECFEE: 'Special Fee request',
+}
