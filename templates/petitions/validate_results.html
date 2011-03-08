@@ -7,6 +7,9 @@
 </tr>
     {% for result in results %}
     <tr><td>{{ result.0 }}</td><td>{{ result.1 }}</td><td>{{ result.2 }}</td><td>{{ result.3 }}</td></tr>
+        {% for invalid in results.4 %}
+            <tr><td></td><td colspan="3">Signed: {{ invalid.did_sign }} / Class: {{ invalid.class_petition }}</td></tr>
+        {% endfor %}
 {% endfor %}
 </table>
 {% endblock %}

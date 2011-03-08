@@ -276,13 +276,16 @@ def validate_results(request):
         num = 0
         num_submitted = 0
         num_valid = 0
+        invalid = []
         for verification in verifications:
             num += 1
             if verification.is_valid():
                 num_valid += 1
             if verification.completed:
                 num_submitted += 1
-        vresults.append((issue,num,num_submitted,num_valid))
+                if not verification.is_valid():
+                    invalid.append(verification)
+        vresults.append((issue,num,num_submitted,num_valid,invalid))
     return render_to_response('petitions/validate_results.html',
                                     {'results': vresults
                                   }, context_instance=RequestContext(request))
