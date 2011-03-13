@@ -33,7 +33,7 @@ class NewIssueForm(IssueForm):
     
 class NewSlateForm(NewIssueForm):
     title = forms.CharField(label='Slate name', widget=forms.TextInput(attrs={'size':'40'}),
-                            help_text='You can change this anytime until the start of Spring Quarter.')
+                            help_text='You can change this any time until the start of Spring Quarter.')
 
 class NewExecutiveSlateForm(NewSlateForm):
     class Meta:
@@ -49,7 +49,7 @@ class NewClassPresidentSlateForm(NewSlateForm):
     class Meta:
         model = ClassPresidentSlate
         fields = ('title', 'kind', 'electorates', 'name1', 'sunetid1', 'name2', 'sunetid2', 'name3', 'sunetid3', 
-                               'name4', 'sunetid4', 'name5', 'sunetid5', 'slug')
+                               'name4', 'sunetid4', 'name5', 'sunetid5', 'name6', 'sunetid6','slug')
     
     electorates = forms.ModelChoiceField(label='Class year',
                                         queryset=Electorate.objects.filter(slug__in=Electorate.UNDERGRAD_CLASS_YEARS),
@@ -67,9 +67,14 @@ class NewClassPresidentSlateForm(NewSlateForm):
     name4 = forms.CharField(label='4th member\'s name', widget=forms.TextInput(attrs={'size':'40'}))
     sunetid4 = forms.CharField(label='4th member\'s SUNet ID @stanford.edu', widget=forms.TextInput(attrs={'size':'12'}))
     name5 = forms.CharField(label='5th member\'s name', widget=forms.TextInput(attrs={'size':'40'}),
-                            help_text='Only Junior Class President slates can have 5 members (if one member is abroad each quarter).',
+                            help_text='Only Junior Class President slates can have 5/6 members (as long as 4 are on campus at one time).',
                             required=False)
     sunetid5 = forms.CharField(label='5th member\'s SUNet ID @stanford.edu', widget=forms.TextInput(attrs={'size':'12'}),
+                               required=False)
+    name6 = forms.CharField(label='6th member\'s name', widget=forms.TextInput(attrs={'size':'40'}),
+                            help_text='Only Junior Class President slates can have 5/6 members (as long as 4 are on campus at one time).',
+                            required=False)
+    sunetid6 = forms.CharField(label='6th member\'s SUNet ID @stanford.edu', widget=forms.TextInput(attrs={'size':'12'}),
                                required=False)
 
     def clean_electorates(self):

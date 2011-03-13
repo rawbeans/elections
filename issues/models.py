@@ -64,6 +64,9 @@ class Issue(models.Model):
     
     name5 = models.CharField(max_length=100, blank=True)
     sunetid5 = models.CharField(max_length=8, blank=True)
+
+    name6 = models.CharField(max_length=100, blank=True)
+    sunetid6 = models.CharField(max_length=8, blank=True)
     
     # special fee groups
     budget = models.FileField(upload_to='specialfees', blank=True)
@@ -115,7 +118,7 @@ class Issue(models.Model):
         return True
     
     def petition_open(self):
-        return False
+        return not self.petition_validated
         
     def show_petition_results(self):
         return False

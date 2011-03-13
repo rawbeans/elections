@@ -20,6 +20,9 @@ dd li { list-style-type: none; }
         {% if issue.sunetid5 %}
             <tr><th>{{ issue.name5 }}</th><td><a href="mailto:{{ issue.sunetid5 }}@stanford.edu">{{ issue.sunetid5 }}@stanford.edu</a></td></tr>
         {% endif %}
+    {% if issue.sunetid6 %}
+            <tr><th>{{ issue.name6 }}</th><td><a href="mailto:{{ issue.sunetid6 }}@stanford.edu">{{ issue.sunetid6 }}@stanford.edu</a></td></tr>
+        {% endif %}
     </table>
 {% endifequal %}
 
@@ -73,14 +76,14 @@ window.location.hash+='#sign-form';
 </form>
 {% endif %}
 
-    {% if not issue.petition_open %}
+    {% if issue.petition_validated %}
     <p>
     <strong>Petitioning has ended (Friday, 4:00 PM.) Petitions are undergoing validation, and will be posted on this
     website by Tuesday, March 8 at 4:00 PM. If you signed this petition, you may be contacted to verify your petition signature.</strong>
     </p>
     {% endif %}
 
-{% if not form and issue.petition_open %}
+{% if not form and not issue.petition_validated %}
     <p>
        <a id="sign-form"></a>You've signed the petition for {{ issue.name_and_office }}{% ifequal issue.kind "SF" %}, along with {{ issue.signatures.count }} other signers{% endifequal %}.
        Please <a href="http://elections.stanford.edu/contact">contact the
