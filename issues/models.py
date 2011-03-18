@@ -294,7 +294,7 @@ class ClassPresidentSlate(Slate):
     
     def names_str(self):
         # join names with ", and" before last one
-        names = [self.name1, self.name2, self.name3, self.name4, self.name5]
+        names = [self.name1, self.name2, self.name3, self.name4, self.name5, self.name6]
         names = [n for n in names if n]
         names_str = ', '.join(names[:-1]) + ', and ' + names[-1]
         return names_str
