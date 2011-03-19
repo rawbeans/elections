@@ -88,7 +88,7 @@ class Issue(models.Model):
         return "%s: %s" % (self.kind, self.title)
 
     def can_declare(self):
-        return True
+        return False
     
     def get_typed(self):
         issue_class = kinds_classes.get(self.kind, Issue)
