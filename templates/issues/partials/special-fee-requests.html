@@ -2,7 +2,7 @@
 {% load issue_extras %}
 
 <h1>{{ issue_kind.grouper }}s</h1>
-<table class="specialfees">
+<table class="specialfees" cellspacing="0" >
     <thead>
         <tr>
             <th>Group</th>
@@ -10,6 +10,7 @@
             <th>Prev year request</th>
             <th>% chg</th>
             <th>Acct statement</th>
+            <th width="100"></th>
         </tr>
     </thead>
     <tbody>
@@ -33,7 +34,7 @@
                 {% if issue.past_budget %}</a>{% endif %}
             </td>
             <td class="figure">{{ issue.total_request_percent_change|floatformat:"0" }}%</td>
-            <td>
+            <td class="figure">
                 {% if issue.account_statement %}
                     <a target="_blank" href="{{ issue.account_statement.url }}">PDF</a>
                 {% endif %}

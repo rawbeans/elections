@@ -2,7 +2,7 @@
 {% load issue_extras %}
 
 <br/>
-<table>
+<table class="specialfees" cellspacing="0">
     <tbody>
         <tr>
             <th>Special Fee type</th>
@@ -38,7 +38,7 @@
         {% endif %}
     </tbody>
 </table>
-{% if issue.needs_petition and issue.public %}
+{% if issue.needs_petition and issue.public and issue.petition_open %}
         <dt>
             <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
         </dt>

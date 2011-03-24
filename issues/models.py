@@ -118,7 +118,7 @@ class Issue(models.Model):
         return True
     
     def petition_open(self):
-        return not self.petition_validated
+        return False #not self.petition_validated
         
     def show_petition_results(self):
         return False

@@ -34,16 +34,9 @@
         
         {% if detail %}
             <dt>{{ issue.noun|capfirst }} statement</dt>
-            {% ifequal issue.kind|slice:":4" "SMSA" %}
-                {% if issue.image and detail %}
-                    <div style="float:right"><img style="max-width:200px;max-height:400px;margin:0 15px 15px 0" src="{{ issue.image.url }}"></div>
-                {% endif %}
-            {% endifequal %}
-            <dd>{{ issue.statement|markdown:"safe" }}</dd>
+            <dd>{{ issue.statement|markdown:"safe"|default:"No statement submitted."}}</dd>
         {% else %}
-            {% if issue.statement %}
-                <dd class="statement_short">{{ issue.statement|markdown:"safe"|truncatewords_html:"300" }}</dd>
-            {% endif %}
+            <dd class="statement_short">{{ issue.statement|default:"No statement submitted."|markdown:"safe"|truncatewords_html:"150"}}</dd>
         {% endif %}
     {% endif %}
     {% if issue.statement_is_public and issue.statement and not detail %}
@@ -52,7 +45,7 @@
             {% if issue.external_url %}(off-site){% endif %}
         </dd>
     {% endif %}
-    {% if issue.needs_petition and issue.public %}
+    {% if issue.needs_petition and issue.public and issue.petition_open %}
         <dt>
             <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
         </dt>
