@@ -161,3 +161,6 @@ def form_class_for_issue(issue):
         return issue_edit_forms.get(issue_class_name, EditIssueForm)
     else:
         return issue_new_forms.get(issue_class_name, NewIssueForm)
+
+class MultiCreateForm(forms.Form):
+    text = forms.CharField(widget=forms.Textarea)

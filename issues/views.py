@@ -2,14 +2,16 @@ import random
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden, HttpResponse
 from django.core.urlresolvers import reverse
 from openelections import constants as oe_constants
 from openelections.issues.models import Issue
 from openelections.issues.forms import IssueForm, form_class_for_issue
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import AnonymousUser
 from webauth.models import WebauthUser
+from issues.forms import MultiCreateForm
+from issues.models import Electorate
 
 index_filters = {
     'exec': (oe_constants.ISSUE_EXEC,),
@@ -90,3 +92,53 @@ def manage_edit(request, issue_slug):
         form = form_class_for_issue(issue)(instance=issue)
     
     return render_to_response('issues/manage/edit.html', {'issue': issue, 'form': form}, context_instance=RequestContext(request))
+
+@permission_required('issue.create')
+def admin_multicreate(request):
+    form = MultiCreateForm()
+    message = ""
+
+    if request.method == 'POST':
+        form = MultiCreateForm(request.POST)
+
+    if form.is_valid():
+        undergrad = Electorate.objects.filter(slug='undergrad').get()
+        coterm = Electorate.objects.filter(slug='coterm').get()
+        text = form.cleaned_data['text']
+        lines = text.split("\n")
+        for line in lines:
+            (groupname,requestamt,prevrequest,sponsor,sponsoremail,perug,pergrad,contentprefix,slug) = line.split("\t",9)
+            groupname = groupname.strip()
+            sponsorsunet = sponsoremail.strip()
+            slug = slug.strip()
+            if Issue.objects.filter(slug=slug).exists():
+                message += "<span style = 'color:red;'>%s already exists</span><br />" % (groupname)
+                continue
+
+            group = Issue()
+            group.kind = 'SF'
+            group.title = groupname
+            group.slug = slug
+            group.public = True
+
+            group.petition_validated = True
+
+            group.name1 = sponsor
+            group.sunetid1 = sponsorsunet
+
+            group.budget = 'specialfees/%s-FundingRequest.pdf' % contentprefix
+            group.account_statement = 'specialfees/%s-AcctStatement.pdf' % contentprefix
+            group.total_request_amount = requestamt
+            group.amount_per_undergrad_annual = perug
+            group.amount_per_grad_annual = pergrad
+            group.total_past_request_amount = prevrequest
+            group.admin_notes = "MultiCreated"
+            group.save()
+            group.electorates = [undergrad,coterm]
+            group.save()
+
+
+            message += "Added %s<br />" % (groupname)
+
+    message += "Remember to change the details of Joint vs. UG Special Fee groups."
+    return render_to_response('issues/manage/admin_multicreate.html', {'message': message, 'form': form}, context_instance=RequestContext(request))

@@ -4,6 +4,8 @@ urlpatterns = patterns('openelections.issues.views',
     (r'^manage/?$', 'manage_index'),
     (r'^manage/new/(?P<issue_kind>[\w\d-]+)/?$', 'manage_new'),
     (r'^manage/create/?$', 'create'),
+    (r'^manage/admin_multicreate/?$', 'admin_multicreate'),
+
 
     (r'^$', 'index'),
     (r'^(?P<show>[\w\d-]+)$', 'index'),

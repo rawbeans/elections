@@ -1,0 +1,12 @@
+{% extends "issues/base-public.html" %}
+
+{% block content %}
+
+{{ message|safe }}<br/>
+
+<form method = "POST">
+{{ form }}
+<input type="submit" />
+</form>
+
+{% endblock %}
