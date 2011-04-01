@@ -377,7 +377,8 @@ class GSCCandidate(Candidate):
         return "%s, a candidate for ASSU Grad Student Council, %s District" % (self.name1, self.district().name)
 
     def kind_sort(self):
-        return 30
+        gsc_district_list = [Electorate.GSC_DISTRICTS]
+        return 30 + gsc_district_list.index(self.district().slug)
 
 class Referendum(Candidate):
     class Meta:
@@ -403,7 +404,7 @@ class Referendum(Candidate):
         return "Referendum"
 
     def kind_sort(self):
-        return 40
+        return 90
     
 ###############
 # Class map
