@@ -3,6 +3,7 @@ ISSUE_GSC = 'GSC'
 ISSUE_EXEC = 'Exec'
 ISSUE_CLASSPRES = 'ClassPres'
 ISSUE_SPECFEE = 'SF'
+ISSUE_REFERENDUM = 'Ref'
 
 ISSUE_TYPES = [
     (ISSUE_US, 'Undergrad Senate'),
@@ -10,6 +11,7 @@ ISSUE_TYPES = [
     (ISSUE_CLASSPRES, 'Undergrad Class President'),
     (ISSUE_EXEC, 'Exec'),
     (ISSUE_SPECFEE, 'Special Fee request'),
+    (ISSUE_REFERENDUM, 'Referendum')
 ]
 
 SMSA_OFFICES = (
@@ -82,4 +84,5 @@ ISSUE_TYPES_DICT = {
     ISSUE_CLASSPRES: 'Undergrad Class President',
     ISSUE_EXEC: 'Exec',
     ISSUE_SPECFEE: 'Special Fee request',
+    ISSUE_REFERENDUM: 'Referendum',
 }

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% regroup issues|dictsort:"kind_name" by kind_name as issues_list %}
+{% regroup issues|dictsort:"kind_sort" by kind_name as issues_list %}
 
 {% for issue_kind in issues_list %}
     {% with issue_kind.list|first as first_issue %}

@@ -20,8 +20,13 @@ index_filters = {
     'class-presidents': (oe_constants.ISSUE_CLASSPRES,),
     
     'special-fee-requests': (oe_constants.ISSUE_SPECFEE,),
+    'referendums': (oe_constants.ISSUE_REFERENDUM,),
+
     
     'petitioning': [oe_constants.ISSUE_EXEC,oe_constants.ISSUE_US,oe_constants.ISSUE_CLASSPRES,oe_constants.ISSUE_SPECFEE,],
+    'all': [oe_constants.ISSUE_EXEC,oe_constants.ISSUE_US,oe_constants.ISSUE_CLASSPRES,oe_constants.ISSUE_SPECFEE,oe_constants.ISSUE_GSC,oe_constants.ISSUE_REFERENDUM],
+    'undergrad': [oe_constants.ISSUE_EXEC,oe_constants.ISSUE_US,oe_constants.ISSUE_CLASSPRES,oe_constants.ISSUE_SPECFEE,oe_constants.ISSUE_REFERENDUM],
+    'grad': [oe_constants.ISSUE_GSC,oe_constants.ISSUE_EXEC,oe_constants.ISSUE_SPECFEE,oe_constants.ISSUE_REFERENDUM]
 }
 
 def index(request, show=None):
@@ -32,9 +37,20 @@ def index(request, show=None):
             return HttpResponseNotFound()
         issues = Issue.filter_by_kinds(kind_filter).filter(public=True).all()
     else:
-        issues = Issue.objects.filter(public=True).all()
+        return render_to_response('issues/welcome.html', context_instance=RequestContext(request))
+
     issues = map(Issue.get_typed, issues)
     random.shuffle(issues)
+
+    if show == 'grad':
+        newissues = list()
+        for i in issues:
+            if i.kind == oe_constants.ISSUE_SPECFEE and i.is_grad_issue() == False:
+                continue
+            newissues.append(i)
+        issues = newissues
+    print issues
+
     return render_to_response('issues/index.html', {'issues': issues, 'detail': False}, context_instance=RequestContext(request))
 
 def detail(request, issue_slug):

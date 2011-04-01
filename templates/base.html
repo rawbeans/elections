@@ -59,17 +59,21 @@
 
         <div class="navsection byaudience">
             <ul>
-                <li><a href="/"><strong>View all</strong></a></li>
-                <li><a href="{% url issues.views.index show="exec" %}">Exec</a></li>
-                <li><a href="{% url issues.views.index show="gsc" %}">Grad Student Council</a></li>
-                <li><a href="{% url issues.views.index show="senate" %}">Undergrad Senate</a></li>
-                <li><a href="{% url issues.views.index show="class-presidents" %}">Class Presidents</a></li>
-                <li><a href="{% url issues.views.index show="special-fee-requests" %}">Special Fees</a></li>
+                <li><a href="{% url issues.views.index show="all" %}"><strong>View all</strong></a></li>
+                <li><a href="{% url issues.views.index show="undergrad" %}">Undergrad issues</a></li>
+                <li><a href="{% url issues.views.index show="grad" %}">Grad issues</a></li>
+                <li><a href="http://elections.stanford.edu/ballotinfo"><strong>Read about each position</strong></a></li>
             </ul>
         </div>
             <div class="navsection byaudience">
                 <ul>
-                <li><a href="http://elections.stanford.edu/ballotinfo"><strong>Read about each position</strong></a></li>
+            <li><a href="{% url issues.views.index show="exec" %}">Exec</a></li>
+                <li><a href="{% url issues.views.index show="gsc" %}">Grad Student Council</a></li>
+                <li><a href="{% url issues.views.index show="senate" %}">Undergrad Senate</a></li>
+                <li><a href="{% url issues.views.index show="class-presidents" %}">Class Presidents</a></li>
+                <li><a href="{% url issues.views.index show="special-fee-requests" %}">Special Fees</a></li>
+                <li><a href="{% url issues.views.index show="referendums" %}">Referendums</a></li>
+
             </ul>
             </div>
 

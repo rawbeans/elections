@@ -191,7 +191,10 @@ class Issue(models.Model):
         return self.electorates.filter(slug='undergrad').count() > 0
 
     def is_grad_issue(self):
-        return self.electorates.filter(slug='grad').count() > 0
+        return self.electorates.filter(slug='graduate').count() > 0
+
+    def kind_sort(self):
+        return 999
 
 class Candidate(Issue): 
     class Meta:
@@ -238,6 +241,9 @@ class SpecialFeeRequest(FeeRequest):
         else:
             return 0
 
+    def kind_sort(self):
+        return 3
+
 class Slate(Issue):
     class Meta:
         proxy = True
@@ -268,6 +274,9 @@ class ExecutiveSlate(Slate):
     def ballot_name(self):
         return self.title
         #return "%s: %s (Pres) & %s (VP)" % (self.title, self.name1, self.name2)
+
+    def kind_sort(self):
+        return 1
 
 class ClassPresidentSlate(Slate):
     class Meta:
@@ -307,6 +316,18 @@ class ClassPresidentSlate(Slate):
         return self.title
         #return "%s: %s" % (self.title, self.names_str())
 
+    def kind_sort(self):
+        classyear = self.class_year().slug
+        if classyear == 'undergrad-2':
+            return 12
+        if classyear == 'undergrad-3':
+            return 11
+        if classyear == 'undergrad-4':
+            return 10
+        if classyear == 'undergrad-5plus':
+            return 10
+        return 13
+
 class SenateCandidate(Candidate):
     class Meta:
         proxy = True
@@ -322,6 +343,9 @@ class SenateCandidate(Candidate):
     
     def name_and_office(self):
         return "%s, a candidate for ASSU Undergraduate Senate" % self.name1
+
+    def kind_sort(self):
+        return 20
 
 class GSCCandidate(Candidate):
     class Meta:
@@ -352,6 +376,35 @@ class GSCCandidate(Candidate):
     def name_and_office(self):
         return "%s, a candidate for ASSU Grad Student Council, %s District" % (self.name1, self.district().name)
 
+    def kind_sort(self):
+        return 30
+
+class Referendum(Candidate):
+    class Meta:
+        proxy = True
+
+    def can_declare(self):
+        return False
+
+    def name_and_office(self):
+        return "%s, a referendum" \
+               % (self.title)
+
+    def ballot_name(self):
+        return self.title
+
+    def kind_name(self):
+        return "Referendum"
+
+    def noun(self):
+        return "referendum"
+
+    def elected_name(self):
+        return "Referendum"
+
+    def kind_sort(self):
+        return 40
+    
 ###############
 # Class map
 ###############
@@ -361,4 +414,5 @@ kinds_classes = {
     oe_constants.ISSUE_EXEC: ExecutiveSlate,
     oe_constants.ISSUE_CLASSPRES: ClassPresidentSlate,
     oe_constants.ISSUE_SPECFEE: SpecialFeeRequest,
+    oe_constants.ISSUE_REFERENDUM: Referendum,
 }
