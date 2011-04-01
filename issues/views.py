@@ -49,7 +49,6 @@ def index(request, show=None):
                 continue
             newissues.append(i)
         issues = newissues
-    print issues
 
     return render_to_response('issues/index.html', {'issues': issues, 'detail': False}, context_instance=RequestContext(request))
 
