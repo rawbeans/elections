@@ -19,6 +19,10 @@ class Electorate(models.Model):
     ASSU_POPULATIONS = ('undergrad', 'graduate')
     GSC_DISTRICTS_NO_ATLARGE = ('gsc-gsb', 'gsc-earthsci', 'gsc-edu', 'gsc-eng', 'gsc-hs-hum', 'gsc-hs-natsci', 'gsc-hs-socsci', 'gsc-law', 'gsc-med',)
     GSC_DISTRICTS = GSC_DISTRICTS_NO_ATLARGE + ('gsc-atlarge',)
+
+    ## SMSA
+    SMSA_CLASS_YEARS = ('smsa-1','smsa-2', 'smsa-3', 'smsa-4', 'smsa-5plus')
+    SMSA_POPULATIONS = SMSA_CLASS_YEARS
     
     @classmethod
     def queryset_with_slugs(klass, slugs):
@@ -405,6 +409,106 @@ class Referendum(Candidate):
 
     def kind_sort(self):
         return 90
+
+
+##### SMSA
+class SMSACandidate(Candidate):
+    class Meta:
+        proxy = True
+
+    def can_declare(self):
+        return True
+
+    def candidate_electorate_label(self):
+        return None
+
+    def candidate_electorate_names(self):
+        return None
+
+    def needs_petition(self):
+        return False
+
+    def kind_name(self):
+        return "%s candidate" % self.elected_name()
+
+    def name_and_office(self):
+        return "%s, a candidate for %s" % (self.name1, self.elected_name())
+
+    def elected_name(self):
+        name_map = {
+            # SMSA
+            'SMSA-P': "President",
+            'SMSA-VPO': "Vice President of Operations",
+            'SMSA-VPA': "Vice President of Advocacy",
+            'SMSA-T': "Treasurer",
+
+            'SMSA-CCAP-PC': "CCAP Preclinical",
+            'SMSA-CCAP-C': "CCAP Clinical",
+            'SMSA-CCAP-MD': "CCAP MD / PhD",
+            'SMSA-CCAP-YO': "CCAP Year-Off",
+
+            'SMSA-SC-PC': "Social Chair Preclinical",
+            'SMSA-SC-C': "Social Chair Clinical",
+            'SMSA-SC-YO': "Social Chair Year-Off",
+
+            'SMSA-Mentorship-PC': "Mentorship & Wellness Chair Preclinical",
+            'SMSA-Mentorship-C': "Mentorship & Wellness Chair Clinical",
+            'SMSA-Alumni': "Alumni Chair",
+            'SMSA-Prospective': "Prospective Student Recruitment Chair"
+        }
+        return 'SMSA ' + name_map.get(self.kind, 'Unknown')
+
+    def kind_sort(self):
+        priority_map = {
+            'SMSA-P': 300,
+            'SMSA-VPO': 301,
+            'SMSA-VPA': 302,
+            'SMSA-T': 303,
+
+            'SMSA-CCAP-PC': 310,
+            'SMSA-CCAP-C': 311,
+            'SMSA-CCAP-MD': 312,
+            'SMSA-CCAP-YO': 313,
+
+            'SMSA-SC-PC': 320,
+            'SMSA-SC-C': 321,
+            'SMSA-SC-YO': 322,
+
+            'SMSA-Mentorship-PC': 323,
+            'SMSA-Mentorship-C': 324,
+            'SMSA-Alumni': 325,
+            'SMSA-Prospective': 326,
+        }
+        return priority_map.get(self.kind, 400)
+
+class SMSAClassRepCandidate(SMSACandidate):
+    class Meta:
+        proxy = True
+
+    def candidate_electorate_label(self):
+        return 'SMSA class year'
+
+    def candidate_electorate_names(self):
+        return Electorate.SMSA_CLASS_YEARS
+
+    def class_year(self):
+        year = self.electorates.filter(slug__in=Electorate.SMSA_CLASS_YEARS)
+        if not year:
+            raise Exception('no year found for smsa class rep %d' % self.pk)
+        return year[0]
+
+    def elected_name(self):
+        if self.pk:
+            return "%s Class Rep" % self.class_year().name
+        else:
+            return "Class Rep"
+
+    def kind_sort(self):
+        priority_map = {
+            'smsa-1': 304,'smsa-2':305, 'smsa-3':306, 'smsa-4':307, 'smsa-5plus':308
+        }
+        return priority_map.get(self.class_year(), 308)
+
     
 ###############
 # Class map
@@ -416,4 +520,26 @@ kinds_classes = {
     oe_constants.ISSUE_CLASSPRES: ClassPresidentSlate,
     oe_constants.ISSUE_SPECFEE: SpecialFeeRequest,
     oe_constants.ISSUE_REFERENDUM: Referendum,
+
+    # SMSA
+    'SMSA-P': SMSACandidate,
+    'SMSA-VPO': SMSACandidate,
+    'SMSA-VPA': SMSACandidate,
+    'SMSA-T': SMSACandidate,
+
+    'SMSA-ClassRep': SMSAClassRepCandidate,
+
+    'SMSA-CCAP-PC': SMSACandidate,
+    'SMSA-CCAP-C': SMSACandidate,
+    'SMSA-CCAP-MD': SMSACandidate,
+    'SMSA-CCAP-YO': SMSACandidate,
+
+    'SMSA-SC-PC': SMSACandidate,
+    'SMSA-SC-C': SMSACandidate,
+    'SMSA-SC-YO': SMSACandidate,
+
+    'SMSA-Mentorship-PC': SMSACandidate,
+    'SMSA-Mentorship-C': SMSACandidate,
+    'SMSA-Alumni': SMSACandidate,
+    'SMSA-Prospective': SMSACandidate,
 }

@@ -1,6 +1,7 @@
 from django import forms
 from openelections.constants import ISSUE_TYPES
 from openelections.issues.models import Electorate, Issue, SpecialFeeRequest, Slate, ExecutiveSlate, ClassPresidentSlate, Candidate, SenateCandidate, GSCCandidate
+from issues.models import SMSACandidate
 
 class IssueForm(forms.ModelForm):
     class Meta:
@@ -141,6 +142,41 @@ class EditSpecialFeeRequestForm(EditIssueForm):
         model = SpecialFeeRequest
         fields = ('statement', 'image', 'account_statement')
 
+
+## SMSA
+class NewSMSACandidateForm(NewCandidateForm):
+    class Meta:
+        model = SMSACandidate
+        fields = ('title', 'kind', 'name1', 'electorate', 'sunetid1', 'slug')
+
+    electorate = forms.ModelChoiceField(label='SMSA',
+                                        queryset=None,
+                                        widget=forms.RadioSelect,
+                                        empty_label=None,)
+
+    def __init__(self, *args, **kwargs):
+        super(NewSMSACandidateForm, self).__init__(*args, **kwargs)
+        self.fields['slug'].help_text = 'Your candidate statement will be at voterguide.stanford.edu/your-url-name. Use only lowercase letters, numbers, and hyphens.'
+        instance = getattr(self, 'instance', None)
+        if instance:
+            electorate_label = instance.candidate_electorate_label()
+            if electorate_label == 'SMSA class year':
+                self.fields['electorate'].label = 'SMSA class year'
+                self.fields['electorate'].queryset = instance.candidate_electorates()
+                self.fields['electorate'].help_text = 'Reminder: These are positions for next year. For example, if you are a 1st year, run for 2nd-Year Class Rep.'
+            elif electorate_label == 'SMSA population':
+                self.fields['electorate'].label = 'SMSA population'
+                self.fields['electorate'].queryset = instance.candidate_electorates()
+            else:
+                del self.fields['electorate']
+
+
+    def clean_electorate(self):
+        electorate = self.cleaned_data.get('electorate')
+        if electorate:
+            return [electorate]
+
+
 issue_edit_forms = {
     #'CandidateUS': EditCandidateUSForm,
     'Issue': EditIssueForm,
@@ -153,6 +189,10 @@ issue_new_forms = {
     'ClassPresidentSlate': NewClassPresidentSlateForm,
     'ExecutiveSlate': NewExecutiveSlateForm,
     'GSCCandidate': NewGSCCandidateForm,
+
+    ## SMSA
+    'SMSACandidate': NewSMSACandidateForm,
+    'SMSAClassRepCandidate': NewSMSACandidateForm,
 }
 
 def form_class_for_issue(issue):

@@ -111,7 +111,9 @@ label {
     </div></div>
 </div>
 
-<script language="javascript" type="text/javascript" src="http://elections.stanford.edu/res/2010-statements.js"></script>
+<script language="javascript" type="text/javascript">
+var issues = {{ issues_json|safe}}
+</script>
 <script language="javascript">
 function getIssueElemPk(e) {
     e = $(e);
@@ -159,6 +161,18 @@ $(window).load(function() {
     
     $('#stmt_body').css('height', $(window).height() - $('#stmt_header').outerHeight());
 });
+
+function abstain_specialfees(e) {
+    $('input[type=radio]').each(function(){
+        var specfee_id = $(this).attr('id').match(/^id_vote_specfee_(\d{1,5})_0$/)
+     if(specfee_id != null && specfee_id[1] >= 0
+             && !$('#id_vote_specfee_' + specfee_id[1] + "_1").attr('checked')
+             && !$('#id_vote_specfee_' + specfee_id[1] + "_2").attr('checked')
+             ) {
+          $(this).attr('checked',true)
+     }
+  })
+}
 </script>
 
 {% for f in ballotform %}
@@ -187,7 +201,7 @@ $(window).load(function() {
 </p>
 
 <p>
-    All fields are optional.
+    You may choose to abstain from any voting item.
     After voting, you may return to <a href="http://ballot.stanford.edu">ballot.stanford.edu</a> to change your votes until 11:59pm on Friday.
     This online ballot supercedes any paper ballots you cast. 
     Email <a href="mailto:elections@elections.stanford.edu?subject=Ballot%20question:%20{{ sunetid }}">elections@elections.stanford.edu</a> 
@@ -323,9 +337,6 @@ $(window).load(function() {
             <tr><th>1st choice</th><td>{{ ballotform.vote_exec1 }}</td><td class="writein">{{ ballotform.vote_exec1_writein }} {{ ballotform.vote_exec1.errors }}</td></tr>
             <tr><th>2nd choice</th><td>{{ ballotform.vote_exec2 }}</td><td class="writein">{{ ballotform.vote_exec2_writein }} {{ ballotform.vote_exec2.errors }}</td></tr>
             <tr><th>3rd choice</th><td>{{ ballotform.vote_exec3 }}</td><td class="writein">{{ ballotform.vote_exec3_writein }} {{ ballotform.vote_exec3.errors }}</td></tr>
-            <tr><th>4th choice</th><td>{{ ballotform.vote_exec4 }}</td><td class="writein">{{ ballotform.vote_exec4_writein }} {{ ballotform.vote_exec4.errors }}</td></tr>
-            <tr><th>5th choice</th><td>{{ ballotform.vote_exec5 }}</td><td class="writein">{{ ballotform.vote_exec5_writein }} {{ ballotform.vote_exec5.errors }}</td></tr>
-            <tr><th>6th choice</th><td>{{ ballotform.vote_exec6 }}</td><td class="writein">{{ ballotform.vote_exec6_writein }} {{ ballotform.vote_exec6.errors }}</td></tr>
         </tbody>
     </table>
     <hr>
@@ -431,6 +442,14 @@ $(window).load(function() {
                     <td>{{ ballotform.vote_classpres4.errors }}</td>
                 </tr>
             {% endif %}
+            {% if ballotform.vote_classpres5 %}
+                <tr>
+                    <th>5th choice</th>
+                    <td>{{ ballotform.vote_classpres5 }}</td>
+                    <td class="writein">{{ ballotform.vote_classpres5_writein }}</td>
+                    <td>{{ ballotform.vote_classpres5.errors }}</td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
     <hr>
@@ -445,7 +464,9 @@ $(window).load(function() {
         Your vote on a Special Fee request indicates whether you believe all students should pay a Special Fee each quarter to fund the
         group's events and activities described in their proposed budget.
         <a href="http://elections.stanford.edu/special-fees/" target="_blank">Learn more about Special Fees.</a>
-    <p/>
+    </p>
+
+<p><strong><a href="javascript:;" onclick="abstain_specialfees(event)">Abstain on all issues</a></strong></p>
         
     <table class="specialfees" cellspacing="0">
         <thead>
@@ -490,7 +511,29 @@ $(window).load(function() {
         </tbody>
     </table>
 </section>
-    
+
+<br/>
+
+<section class="referenda">
+    <h2>Referenda</h2>
+
+    <p class="has_stmt" data-pk="143"><strong>Measure A: Advisory Question on ROTC</strong><br/>
+        The University has convened an ad hoc committee to explore the possibility of the reinstatement of the
+        Reserve Officer Training Corps (ROTC) program at Stanford. The committee will be delivering a recommendation
+        to the Faculty Senate this Spring. This advisory question is just one of many forums for student input;
+        if you have further comments, questions, or concerns please email rotc_2010@stanford.edu.<br /><br />
+
+        <strong>Question:</strong> What is your stance on the possible reinstatement of ROTC at Stanford University?
+        Please choose from the following statements:
+    </p>
+    <div class="vote fillin">
+        {{ ballotform.vote_referendum }}
+        {{ ballotform.vote_referendum.errors }}
+
+    </div>
+
+
+</section>
 <br>
 
 <section class="submit">

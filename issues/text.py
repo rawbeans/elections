@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 POSITION_DESCRIPTIONS = dict()
+"""
 
 POSITION_DESCRIPTIONS['SMSA-ExecP'] = '''
 <ul>
@@ -235,3 +236,6 @@ POSITION_DESCRIPTIONS['SMSA-CSAC'] = '''
 <li>Help with SMSA committee projects when relevant to clinical students</li>
 </ul>
 '''
+
+
+"""

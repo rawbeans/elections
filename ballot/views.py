@@ -10,11 +10,11 @@ from openelections import constants as oe_constants
 from openelections.issues.models import Electorate, Issue, ExecutiveSlate, ClassPresidentSlate
 from openelections.ballot.forms import ballot_form_factory, BallotElectorateForm
 from openelections.ballot.models import Ballot, make_voter_id
-from openelections.webauth.stanford_webauth import webauth_required
-from openelections.webauth.views import do_logout
+from django.contrib.auth.decorators import login_required
+from webauth.services import WebauthLogout
 
 def get_voter_id(request):
-    return make_voter_id(request.session.get('webauth_sunetid'))
+    return make_voter_id(request.user.webauth_username)
 
 def make_issues_json():
     issues = {}
@@ -33,9 +33,10 @@ def get_cp_slates(ballot):
     
 
 @transaction.commit_on_success
-@webauth_required
+@login_required
+
 def index(request):
-    sunetid = request.session.get('webauth_sunetid')
+    sunetid = request.user.webauth_username
     ballot, c = Ballot.get_or_create_by_sunetid(sunetid)
     if ballot.needs_ballot_choice():
         return HttpResponseRedirect('/ballot/choose')
@@ -45,7 +46,7 @@ def index(request):
                               context_instance=RequestContext(request))
 
 @transaction.commit_on_success
-@webauth_required
+@login_required
 def choose_ballot(request):
     ballot = get_object_or_404(Ballot, voter_id=get_voter_id(request))
     form = None
@@ -59,7 +60,7 @@ def choose_ballot(request):
     return render_to_response('ballot/choose.html', {'form': form, 'ballot': ballot},
                               context_instance=RequestContext(request))
 
-@webauth_required
+@login_required
 def record(request):
     ballot = get_object_or_404(Ballot, voter_id=get_voter_id(request))
     form = BallotElectorateForm(instance=ballot)
@@ -67,7 +68,7 @@ def record(request):
                               mimetype='text/plain', context_instance=RequestContext(request))
 
 @transaction.commit_on_success
-@webauth_required
+@login_required
 def vote_all(request):
     # protect against XSS
        
@@ -84,10 +85,10 @@ def vote_all(request):
     sunetid = request.session.get('webauth_sunetid')
     record = render_to_string('ballot/ballot_record.txt', {'ballot': ballot, 'request': request, 'form': form, 'sunetid': sunetid})
     
-    f = open('/tmp/ballot/%s' % sunetid, 'a')
-    f.write(record.encode('utf8'))
-    f.write("\nPOSTDATA: %s\n\n" % request.POST.copy())
-    f.close()
+#    f = open('/tmp/ballot/%s' % sunetid, 'a')
+#    f.write(record.encode('utf8'))
+#    f.write("\nPOSTDATA: %s\n\n" % request.POST.copy())
+#    f.close()
     
-    do_logout(request)
+    #WebauthLogout(request)
     return render_to_response('ballot/done.html', {'sunetid': sunetid, 'ballot': ballot, 'request': request,}, context_instance=RequestContext(request))

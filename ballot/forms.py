@@ -132,22 +132,40 @@ def ballot_form_factory(ballot):
         def clean_special_fee_votes(self):
             yes_votes = []
             no_votes = []
+            ab_votes = []
+
+            errors = []
             
             for k,v in self.cleaned_data.items():
                 if k.startswith('vote_specfee'):
                     pk = int(k[len('vote_specfee')+1:])
                     sf = SpecialFeeRequest.objects.get(pk=pk)
-                    if not v: continue
+                    if not v:
+                        #print "error on %s" % sf.title
+                        self._errors['vote_specfee_' + str(pk)] = self.error_class(['You must submit a vote on %s or choose to abstain.' % sf.title])
+                        continue
                     v = int(v)
                     if v == c.VOTE_YES:
                         yes_votes.append(sf)
                     elif v == c.VOTE_NO:
                         no_votes.append(sf)
-            
+                    elif v == c.VOTE_AB:
+                        ab_votes.append(sf)
+
+            if len(errors) > 0:
+                raise forms.ValidationError("Errors exist.")
+
             self.cleaned_data['votes_specfee_yes'] = yes_votes
             self.cleaned_data['votes_specfee_no'] = no_votes
+            self.cleaned_data['votes_specfee_ab'] = no_votes
+
             
             return self.cleaned_data
+
+        def clean_vote_referendum(self):
+            if not self.cleaned_data['vote_referendum']:
+                raise forms.ValidationError("You must submit a vote on Measure A - Advisory Question on ROTC or choose to abstain.")
+            return self.cleaned_data['vote_referendum']
         
         def save(self, commit=True):            
             #print "cd: %s" % self.cleaned_data
@@ -155,6 +173,7 @@ def ballot_form_factory(ballot):
             # special fees
             self.instance.votes_specfee_yes = self.cleaned_data['votes_specfee_yes']
             self.instance.votes_specfee_no = self.cleaned_data['votes_specfee_no']
+            self.instance.votes_specfee_ab = self.cleaned_data['votes_specfee_ab']
             
             super(_BallotForm, self).save(commit)
     
@@ -166,12 +185,13 @@ def ballot_form_factory(ballot):
         _BallotForm.base_fields[f_id] = f
         _BallotForm.base_fields[f_id+'_writein'] = forms.CharField(required=False)
     
-    all_specfees_qs = SpecialFeeRequest.objects.filter(kind=c.ISSUE_SPECFEE).order_by('pk').all()
+    all_specfees_qs = SpecialFeeRequest.objects.filter(kind=c.ISSUE_SPECFEE).filter(public=1).order_by('?')
     _BallotForm.base_fields['votes_specfee_yes'] = forms.ModelMultipleChoiceField(queryset=all_specfees_qs, required=False)
     _BallotForm.base_fields['votes_specfee_no'] = forms.ModelMultipleChoiceField(queryset=all_specfees_qs, required=False)
+    _BallotForm.base_fields['votes_specfee_ab'] = forms.ModelMultipleChoiceField(queryset=all_specfees_qs, required=False)
 
     if ballot.is_undergrad():
-        senate_qs = SenateCandidate.objects.filter(kind=c.ISSUE_US).order_by('?').all()
+        senate_qs = SenateCandidate.objects.filter(kind=c.ISSUE_US).filter(public=1).order_by('?')
         _BallotForm.base_fields['votes_senate'] = SenateCandidatesField(queryset=senate_qs, required=False)
         _BallotForm.base_fields['votes_senate_writein'] = forms.CharField(required=False, widget=forms.Textarea(attrs=dict(rows=2, cols=40)))
         
@@ -192,6 +212,8 @@ def ballot_form_factory(ballot):
         del _BallotForm.base_fields['vote_classpres2']
         del _BallotForm.base_fields['vote_classpres3']
         del _BallotForm.base_fields['vote_classpres4']
+        del _BallotForm.base_fields['vote_classpres5']
+
     
     if ballot.is_grad():
         gsc_district_qs = GSCCandidate.objects.filter(kind=c.ISSUE_GSC, electorates=ballot.gsc_district).order_by('?').all()
@@ -249,7 +271,7 @@ def ballot_form_factory(ballot):
             if 'smsa' in k:
                 del _BallotForm.base_fields[k]
     
-    specfee_qs = SpecialFeeRequest.objects.filter(kind=c.ISSUE_SPECFEE, electorates__in=ballot.assu_populations.all()).order_by('title').all()
+    specfee_qs = SpecialFeeRequest.objects.filter(kind=c.ISSUE_SPECFEE, electorates__in=ballot.assu_populations.all()).order_by('?').filter(public=1).all()
     _BallotForm.fields_specfees = []
     for sf in specfee_qs:
         initial = None
@@ -257,13 +279,24 @@ def ballot_form_factory(ballot):
             initial = c.VOTE_YES
         elif sf in ballot.votes_specfee_no.all():
             initial = c.VOTE_NO
-        else:
+        elif sf in ballot.votes_specfee_ab.all():
             initial = c.VOTE_AB
+        else:
+            initial = None
         f_id = 'vote_specfee_%d' % sf.pk
         f = forms.ChoiceField(choices=c.VOTES_YNA, label=sf.title, required=False, initial=initial, widget=forms.RadioSelect)
         f.is_special_fee = True
         f.issue = sf
         _BallotForm.base_fields[f_id] = f
+
+
+    ## referendum: Measure A
+    refchoices = (
+                ('a', "a. I support the reinstatement of ROTC at Stanford University."),
+                ('b', "b. I oppose the reinstatement of ROTC at Stanford University."),
+                ('c', "c. I choose to abstain."),
+        )
+    _BallotForm.base_fields['vote_referendum'] = forms.ChoiceField(choices=refchoices, label="Choices", required=False, initial=ballot.vote_referendum, widget=forms.RadioSelect)
     
     return _BallotForm
 
