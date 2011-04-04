@@ -15,19 +15,24 @@ ISSUE_TYPES = [
 ]
 
 SMSA_OFFICES = (
-    ('SMSA-ExecP', 'SMSA Executive President'),
-    ('SMSA-P', 'SMSA President'),
-    ('SMSA-VP', 'SMSA Vice President'),
-    ('SMSA-S', 'SMSA Secretary'),
-    ('SMSA-T', 'SMSA Treasurer'),
-    ('SMSA-ClassRep', 'SMSA Class Rep'),
-    ('SMSA-SocChair', 'SMSA Class Social Chair'),
-    ('SMSA-CCAP', 'SMSA CCAP Rep'),
-    ('SMSA-PAC', 'SMSA Policy & Advocacy Chair'),
-    ('SMSA-MC', 'SMSA Mentorship Chair'),
-    ('SMSA-PSRC', 'SMSA Prospective Student Recruitment Chair'),
-    ('SMSA-OSS-OSR', 'SMSA OSS/OSR Rep'),
-    ('SMSA-CSAC', 'SMSA Clinical Student Advisory Council Member'),
+    ('SMSA-P', "President"),
+    ('SMSA-VPO', "Vice President of Operations"),
+    ('SMSA-VPA', "Vice President of Advocacy"),
+    ('SMSA-T', "Treasurer"),
+
+    ('SMSA-CCAP-PC', "CCAP Preclinical"),
+    ('SMSA-CCAP-C', "CCAP Clinical"),
+    ('SMSA-CCAP-MD', "CCAP MD / PhD"),
+    ('SMSA-CCAP-YO', "CCAP Year-Off"),
+
+    ('SMSA-SC-PC', "Social Chair Preclinical"),
+    ('SMSA-SC-C', "Social Chair Clinical"),
+    ('SMSA-SC-YO', "Social Chair Year-Off"),
+
+    ('SMSA-Mentorship-PC', "Mentorship & Wellness Chair Preclinical"),
+    ('SMSA-Mentorship-C', "Mentorship & Wellness Chair Clinical"),
+    ('SMSA-Alumni', "Alumni Chair"),
+    ('SMSA-Prospective', "Prospective Student Recruitment Chair")
 )
 
 ISSUE_TYPES.extend(SMSA_OFFICES)

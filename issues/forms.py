@@ -152,7 +152,8 @@ class NewSMSACandidateForm(NewCandidateForm):
     electorates = forms.ModelChoiceField(label='SMSA',
                                         queryset=None,
                                         widget=forms.RadioSelect,
-                                        empty_label=None,)
+                                        empty_label=None,
+                                        )
 
     def __init__(self, *args, **kwargs):
         super(NewSMSACandidateForm, self).__init__(*args, **kwargs)
@@ -166,7 +167,6 @@ class NewSMSACandidateForm(NewCandidateForm):
                 self.fields['electorates'].help_text = 'Reminder: These are positions for next year. For example, if you are a 1st year, run for 2nd-Year Class Rep.'
             else:
                 del self.fields['electorates']
-
 
     def clean_electorates(self):
         electorate = self.cleaned_data.get('electorates')
