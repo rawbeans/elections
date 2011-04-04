@@ -147,9 +147,9 @@ class EditSpecialFeeRequestForm(EditIssueForm):
 class NewSMSACandidateForm(NewCandidateForm):
     class Meta:
         model = SMSACandidate
-        fields = ('title', 'kind', 'name1', 'electorate', 'sunetid1', 'slug')
+        fields = ('title', 'kind', 'name1', 'electorates', 'sunetid1', 'slug')
 
-    electorate = forms.ModelChoiceField(label='SMSA',
+    electorates = forms.ModelChoiceField(label='SMSA',
                                         queryset=None,
                                         widget=forms.RadioSelect,
                                         empty_label=None,)
@@ -161,18 +161,15 @@ class NewSMSACandidateForm(NewCandidateForm):
         if instance:
             electorate_label = instance.candidate_electorate_label()
             if electorate_label == 'SMSA class year':
-                self.fields['electorate'].label = 'SMSA class year'
-                self.fields['electorate'].queryset = instance.candidate_electorates()
-                self.fields['electorate'].help_text = 'Reminder: These are positions for next year. For example, if you are a 1st year, run for 2nd-Year Class Rep.'
-            elif electorate_label == 'SMSA population':
-                self.fields['electorate'].label = 'SMSA population'
-                self.fields['electorate'].queryset = instance.candidate_electorates()
+                self.fields['electorates'].label = 'SMSA class year'
+                self.fields['electorates'].queryset = instance.candidate_electorates()
+                self.fields['electorates'].help_text = 'Reminder: These are positions for next year. For example, if you are a 1st year, run for 2nd-Year Class Rep.'
             else:
-                del self.fields['electorate']
+                del self.fields['electorates']
 
 
-    def clean_electorate(self):
-        electorate = self.cleaned_data.get('electorate')
+    def clean_electorates(self):
+        electorate = self.cleaned_data.get('electorates')
         if electorate:
             return [electorate]
 
