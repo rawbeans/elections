@@ -20,6 +20,8 @@ SMSA_OFFICES = (
     ('SMSA-VPA', "Vice President of Advocacy"),
     ('SMSA-T', "Treasurer"),
 
+    ('SMSA-ClassRep', "Class Representative"),    
+
     ('SMSA-CCAP-PC', "CCAP Preclinical"),
     ('SMSA-CCAP-C', "CCAP Clinical"),
     ('SMSA-CCAP-MD', "CCAP MD / PhD"),
