@@ -4,7 +4,9 @@
 
 <h1>Choose ballot</h1>
 
-<p>Please fill in the following information to determine the correct ballot for you. The validity of your ballot
+<p>All currently registered Stanford students are members of the Associated Students of Stanford University
+    and are eligible to vote in the Spring Quarter General Election.</p>
+    <p>Please fill in the following information to determine the correct ballot for you. The validity of your ballot
 depends on your <em>actual</em> student status and class year as defined in the ASSU Constitution,
 not solely on what you enter here.</p>
 <hr>
@@ -30,11 +32,6 @@ not solely on what you enter here.</p>
         {% endif %}
     {% endif %}
 {% endfor %}
-
-<dt>School of Medicine/SMSA Miscellaneous</dt>
-<dd>{{ form.smsa_is_mdphd }} {{ form.smsa_is_mdphd.label_tag }} {{ form.smsa_is_mdphd.errors }} <br> 
-    {{ form.smsa_is_mdplus }} {{ form.smsa_is_mdplus.label_tag }}{{ form.smsa_is_mdplus.errors }} </dd>
-</dl>
 
 <section class="submit">
     <input type="submit" value="Save settings and display ballot">

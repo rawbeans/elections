@@ -8,5 +8,7 @@ data/
 *.png
 .DS_Store
 ._*
+.idea/
 
+ballots/
 settings_production.py

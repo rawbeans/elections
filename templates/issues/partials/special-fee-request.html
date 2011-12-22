@@ -16,7 +16,11 @@
         </tr>
         <tr>
             <th>Previous year request amount</th>
-            <td>{% if issue.total_past_request_amount > 0 %}{{ issue.total_past_request_amount|currency }}{% else %}New request{% endif %}</td>
+            <td>{% if issue.total_past_request_amount == 0 %}
+                New request
+            {% else %}
+                {{ issue.total_past_request_amount|currency }}
+            {% endif %}</td>
         </tr>
         {% if issue.total_past_request_amount > 0 %}
         <tr>

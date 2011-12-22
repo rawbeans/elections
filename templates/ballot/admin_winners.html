@@ -1,0 +1,107 @@
+{% load percent %}
+<h1>Admin: Winners</h1>
+<p>Currently {{ now }}</p>
+
+<h2>Referendum</h2>
+<p><strong>a. support</strong>: {{ referendum.a }}<br/>
+<strong>b. oppose</strong>: {{ referendum.b }}<br/>
+<strong>c. abstain</strong>: {{ referendum.c }}<br/>
+</p>
+
+<h2>Exec</h2>
+<pre>{{ exec_irv }}</pre>
+
+<h2>Senate</h2>
+<table>
+<p>{% for candidate,count in senate %}
+    <tr><td></td><td>{{ count }}</td><td>Not Elected</td><td>{{ candidate.title }}</td></tr>
+
+{% endfor %}
+</table>
+
+<h2>Soph Prez</h2>
+<pre>{{ sp_irv }}</pre>
+
+<h2>Junior Prez</h2>
+<pre>{{ jp_irv }}</pre>
+
+<h2>Senior Prez</h2>
+<pre>{{ senp_irv }}</pre>
+
+<h2>Special Fees</h2>
+<strong>Undergrad-Only (population total = 6858)</strong>
+<table>
+    <tr>
+        <td>Group</td>
+        <td># votes yes</td>
+        <td># votes no</td>
+        <td>% votes yes</td>
+        <td>population % votes yes </td>
+        <td>Approved?</td>
+    </tr>
+    {% for group,votesyes,votesno,pctyes,pctyespop,approved in ug_sf %}
+    <tr>
+        <th>{{ group.title }}</th>
+        <td>{{ votesyes }}</td>
+        <td>{{ votesno }}</td>
+        <td>{{ pctyes|percentage }}</td>
+        <td>{{ pctyespop|percentage }}</td>
+        <td>{% if approved %}Yes{% else %}NO{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br />
+<strong>Joint (population total = 14811)</strong>
+<table>
+    <tr>
+        <td>Group</td>
+        <td># UG votes yes</td>
+        <td># UG votes no</td>
+        <td>% UG vote yes</td>
+        <td># G votes yes</td>
+        <td># G votes no</td>
+        <td>% G vote yes</td>
+        <td># CT vote yes</td>
+        <td>Population % vote yes</td>
+        <td>Approved?</td>
+    </tr>
+    {% for group,votesyes_ug,votesno_ug,votesyes_g,votesno_g,votesyes_ct,pctyes_ug,pctyes_g,pctyes_pop,approved in joint_sf %}
+    <tr>
+        <th>{{ group.title }}</th>
+        <td>{{ votesyes_ug }}</td>
+        <td>{{ votesno_ug }}</td>
+        <td>{{ pctyes_ug|percentage }}</td>
+        <td>{{ votesyes_g }}</td>
+        <td>{{ votesno_g }}</td>    
+        <td>{{ pctyes_g|percentage }}</td>
+        <td>{{ votesyes_ct }}</td>    
+        <td>{{ pctyes_pop|percentage }}</td>
+        <td>{% if approved %}Yes{% else %}NO{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>GSC</h2>
+
+{% for district,list in gsc %}
+   <p><strong>{{ district }}</strong><br/>
+   {% for candidate,count in list %}
+       {{ count }}: {{ candidate }}<br/>
+   {% endfor %}
+   </p>
+
+
+{% endfor %}
+
+<h2>SMSA</h2>
+<pre>{{ smsa }}</pre>
+
+<h2>Exec Writeins</h2>
+{% for writein,count in exec_writeins %}
+{{ count }}: {{ writein }}<br/>
+{% endfor %}
+
+<h2>Senate Writeins</h2>
+{% for writein,count in senate_writeins %}
+{{ count }}: {{ writein }}<br/>
+{% endfor %}

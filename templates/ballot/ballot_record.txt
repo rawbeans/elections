@@ -11,9 +11,6 @@ ASSU Exec:
 1. {{ ballot.vote_exec1 }} (write-in: {{ ballot.vote_exec1_writein|default:"none" }})
 2. {{ ballot.vote_exec2 }} (write-in: {{ ballot.vote_exec2_writein|default:"none" }})
 3. {{ ballot.vote_exec3 }} (write-in: {{ ballot.vote_exec3_writein|default:"none" }})
-4. {{ ballot.vote_exec4 }} (write-in: {{ ballot.vote_exec4_writein|default:"none" }})
-5. {{ ballot.vote_exec5 }} (write-in: {{ ballot.vote_exec5_writein|default:"none" }})
-6. {{ ballot.vote_exec6 }} (write-in: {{ ballot.vote_exec6_writein|default:"none" }})
 
 ---------------------------------------
 ASSU Undergrad Senate:
@@ -27,6 +24,8 @@ ASSU Undergrad {{ ballot.undergrad_class_year.name }} Class Presidents:
 2. {{ ballot.vote_classpres2 }} (write-in: {{ ballot.vote_classpres2_writein|default:"none" }})
 3. {{ ballot.vote_classpres3 }} (write-in: {{ ballot.vote_classpres3_writein|default:"none" }})
 4. {{ ballot.vote_classpres4 }} (write-in: {{ ballot.vote_classpres4_writein|default:"none" }})
+5. {{ ballot.vote_classpres5 }} (write-in: {{ ballot.vote_classpres5_writein|default:"none" }})
+
 
 ---------------------------------------
 ASSU Grad Student Council {{ ballot.gsc_district.name }} District:
@@ -43,7 +42,7 @@ ASSU Grad Student Council At-Large:
 ---------------------------------------
 ASSU Special Fees:
 YES on Special Fee requests:
-{% for s in ballot.votes_specfee_yes.all %}- {{ s.title }}
+{% for s in ballot.votes_specfee_yes.all %}+ {{ s.title }}
 {% empty %}(none){% endfor %}
 
 NO on Special Fee requests:
@@ -51,9 +50,16 @@ NO on Special Fee requests:
 {% empty %}(none){% endfor %}
 
 ABSTAIN on all Special Fee requests not listed
+
 ---------------------------------------
+Measure A - Advisory Question on ROTC
+{% if ballot.vote_referendum == 'a' %}a. I support the reinstatement of ROTC at Stanford University.{% endif %}{% if ballot.vote_referendum == 'b' %}b. I oppose the reinstatement of ROTC at Stanford University.{% endif %}{% if ballot.vote_referendum == 'c' %}c. I choose to abstain.{% endif %}
+
+---------------------------------------
+{% if ballot.is_smsa %}
 SMSA:
 Your SMSA votes have been recorded.
+{% endif %}
 
 ---------------------------------------
 IP address: {{ request.META.REMOTE_ADDR }}

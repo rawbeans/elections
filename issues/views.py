@@ -32,6 +32,9 @@ index_filters = {
     'SMSA-SC-PC','SMSA-SC-C','SMSA-SC-YO','SMSA-Mentorship-PC','SMSA-Mentorship-C','SMSA-Alumni','SMSA-Prospective']
 }
 
+def vg_redirect(request):
+    return HttpResponseRedirect('http://voterguide.stanford.edu')
+
 def index(request, show=None):
     issues = None
     if show:

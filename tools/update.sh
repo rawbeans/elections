@@ -1,0 +1,1 @@
+rsync -avz --exclude 'settings.py' --exclude 'settings.pyc' --exclude 'settings_prod.py' --exclude 'manage.py' --exclude 'ballots' --exclude 'logs' -e ssh * root@173.255.254.241:/var/www/openelections

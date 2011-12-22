@@ -19,7 +19,7 @@ def pks_to_objs(pks):
 class BallotElectorateForm(forms.ModelForm):
     class Meta:
         model = Ballot
-        fields = ['assu_populations', 'undergrad_class_year', 'gsc_district', 'smsa_class_year', 'smsa_population', 'smsa_is_mdphd', 'smsa_is_mdplus']
+        fields = ['assu_populations', 'undergrad_class_year', 'gsc_district', 'smsa_class_year']
 
     class ElectorateChoiceField(forms.ModelChoiceField):
         widget = forms.RadioSelect
@@ -37,8 +37,6 @@ class BallotElectorateForm(forms.ModelForm):
         if not kwargs['instance']:
             raise Exception("no instance for BallotElectorateForm")
         super(BallotElectorateForm, self).__init__(*args, **kwargs)
-        self.fields['smsa_is_mdphd'].is_smsa_checkbox = True
-        self.fields['smsa_is_mdplus'].is_smsa_checkbox = True
     
     assu_populations = ElectorateMultipleChoiceField(
         queryset=Electorate.queryset_with_slugs(Electorate.ASSU_POPULATIONS), 
@@ -47,34 +45,26 @@ class BallotElectorateForm(forms.ModelForm):
         
     undergrad_class_year = ElectorateChoiceField(
         queryset=Electorate.queryset_with_slugs(Electorate.UNDERGRAD_CLASS_YEARS),
-        label='Undergraduate class year',
-        help_text='If unsure, choose the class year that you currently (this year) socially identify as a member of.',
+        label='NEXT YEAR: Undergraduate Class Year',
+        help_text='If unsure, choose the class year that you will most closely socially identify with NEXT YEAR. Seniors \
+        may vote as a 5+ year undergraduate regardless of their graduation plans.',
         empty_label='(I am not an undergrad)', required=False)
     
     gsc_district = ElectorateChoiceField(
         queryset=Electorate.queryset_with_slugs(Electorate.GSC_DISTRICTS_NO_ATLARGE),
-        label='GSC district', help_text='If you are in multiple GSC districts, choose the one in which you want to select your local GSC rep.',
+        label='Graduate School Council (GSC) district', help_text='Choose the GSC district with which you most closely associate yourself. If you are in multiple GSC districts, choose the one in which you want to select your local GSC rep.',
         empty_label='(I am not a grad student)', required=False)
     
     smsa_class_year = ElectorateChoiceField(
         queryset=Electorate.queryset_with_slugs(Electorate.SMSA_CLASS_YEARS),
-        label='School of Medicine MD class year (SMSA)',
-        empty_label='(I am not in SMSA--not a School of Med MD candidate)', required=False)
-                                             
-    smsa_population = ElectorateChoiceField(
-        queryset=Electorate.queryset_with_slugs(Electorate.SMSA_POPULATIONS),
-        label='School of Medicine MD population (SMSA)',
-        empty_label='(I am not in SMSA--not a School of Med MD candidate)', required=False,
-        help_text='Indicate what you will be NEXT YEAR, not what you are currently.')
-    
-    smsa_is_mdphd = forms.BooleanField(label='MD-PhD', required=False)
-    smsa_is_mdplus = forms.BooleanField(label='MD+', required=False)
+        label='NEXT YEAR: School of Medicine class year (SMSA)',
+        empty_label='(I am not in SMSA--not a School of Med candidate)', required=False)
 
 def ballot_form_factory(ballot):
     class _BallotForm(forms.ModelForm):
         class Meta:
             model = Ballot
-            exclude = ['voter_id', 'assu_populations', 'undergrad_class_year', 'gsc_district', 'smsa_class_year', 'smsa_population', 'smsa_is_mdphd', 'smsa_is_mdplus']
+            exclude = ['voter_id', 'assu_populations', 'undergrad_class_year', 'gsc_district', 'smsa_class_year']
         
         def __init__(self, *args, **kwargs):
             if not kwargs['instance']:
@@ -157,7 +147,7 @@ def ballot_form_factory(ballot):
 
             self.cleaned_data['votes_specfee_yes'] = yes_votes
             self.cleaned_data['votes_specfee_no'] = no_votes
-            self.cleaned_data['votes_specfee_ab'] = no_votes
+            self.cleaned_data['votes_specfee_ab'] = ab_votes
 
             
             return self.cleaned_data
@@ -174,6 +164,7 @@ def ballot_form_factory(ballot):
             self.instance.votes_specfee_yes = self.cleaned_data['votes_specfee_yes']
             self.instance.votes_specfee_no = self.cleaned_data['votes_specfee_no']
             self.instance.votes_specfee_ab = self.cleaned_data['votes_specfee_ab']
+            self.instance.submitted = True
             
             super(_BallotForm, self).save(commit)
     
@@ -234,22 +225,29 @@ def ballot_form_factory(ballot):
         _BallotForm.smsa = True
         
         smsa_data = (
-            ('vote_smsa_execpres', 'SMSA-ExecP'),
             ('vote_smsa_pres', 'SMSA-P'),
-            ('vote_smsa_vicepres', 'SMSA-VP'),
-            ('vote_smsa_sec', 'SMSA-S'),
-            ('vote_smsa_treas', 'SMSA-T'),
-            ('vote_smsa_mentorship', 'SMSA-MC'),
-            ('vote_smsa_psrc', 'SMSA-PSRC'),
-            ('vote_smsa_ossosr', 'SMSA-OSS-OSR'),
-            ('vote_smsa_socialchair', 'SMSA-SocChair'),
-            ('vote_smsa_pachair', 'SMSA-PAC'),
+            ('vote_smsa_vpo', 'SMSA-VPO'),
+            ('vote_smsa_vpa', 'SMSA-VPA'),
+            ('vote_smsa_t', 'SMSA-T'),
+
+            ('vote_smsa_ccap_pc', 'SMSA-CCAP-PC'),
+            # clinical is multi
+            ('vote_smsa_ccap_md', 'SMSA-CCAP-MD'),
+            ('vote_smsa_ccap_yo', 'SMSA-CCAP-YO'),
+
+            # two social chairs are multi
+            ('vote_smsa_sc_yo', 'SMSA-SC-YO'),
+
+            ('vote_smsa_mw_pc', 'SMSA-Mentorship-PC'),
+            ('vote_smsa_mw_c', 'SMSA-Mentorship-C'),
+            ('vote_smsa_alumni', 'SMSA-Alumni'),
+            ('vote_smsa_prospective', 'SMSA-Prospective'),
         )
-        
+
         # set querysets
-        smsa_electorates = [Electorate.objects.get(slug='smsa'), ballot.smsa_class_year, ballot.smsa_population]
+        smsa_electorates = [ballot.smsa_class_year, None]
         for f_id, kind in smsa_data:
-            qs = kinds_classes[kind].objects.filter(kind=kind, electorates__in=smsa_electorates).all()
+            qs = kinds_classes[kind].objects.filter(kind=kind).all()
             sel = None
             if len(qs) == 1: # default to selected if only one candidate
                 setattr(ballot, f_id, qs[0])
@@ -257,15 +255,20 @@ def ballot_form_factory(ballot):
         
         # smsa positions with multiple votes
         smsa_multi_data = (
-            ('votes_smsa_ccap', 'SMSA-CCAP'),
-            ('votes_smsa_classrep', 'SMSA-ClassRep'),
+            ('votes_smsa_ccap_c', 'SMSA-CCAP-C'),
+            ('votes_smsa_sc_pc', 'SMSA-SC-C'),
+            ('votes_smsa_sc_c', 'SMSA-SC-PC'),
         )
         
         # set querysets
         for f_id, kind in smsa_multi_data:
-            qs = kinds_classes[kind].objects.filter(kind=kind, electorates__in=smsa_electorates).all()
+            qs = kinds_classes[kind].objects.filter(kind=kind).all()
             _BallotForm.base_fields[f_id] = SMSACandidatesMultiChoiceField(queryset=qs, required=False, label='Choose up to 2.')
-        
+
+        _BallotForm.base_fields['votes_smsa_classrep'] = SMSACandidatesMultiChoiceField(
+                queryset=kinds_classes['SMSA-ClassRep'].objects.filter(kind='SMSA-ClassRep',electorates__in=smsa_electorates).all(),
+                required=False, label='Choose up to 2.')
+                
     else:
         for k,v in _BallotForm.base_fields.items():
             if 'smsa' in k:

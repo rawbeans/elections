@@ -111,8 +111,7 @@ label {
     </div></div>
 </div>
 
-<script language="javascript" type="text/javascript">
-var issues = {{ issues_json|safe}}
+<script language="javascript" type="text/javascript" src="http://voterguide.stanford.edu/media/2011_final_candidate_statements.js">
 </script>
 <script language="javascript">
 function getIssueElemPk(e) {
@@ -175,35 +174,41 @@ function abstain_specialfees(e) {
 }
 </script>
 
-{% for f in ballotform %}
-{{ f.errors }}
-{% endfor %}
+    {% if f.errors|length > 0 and is_submitted %}
+    <ul class="errorlist"><li>Errors exist in your ballot. <strong>Your ballot has not been submitted.</strong> Please scroll down to
+    ensure you've successfully filled out all sections of the ballot.</li>
+    <li>The most likely cause of this error is not voting on all issues. Please vote on all issues, or choose to abstain
+    from them.</li></ul>
+    {% endif %}
 
-<p>If you are not <strong>{{ sunetid }}</strong>, close your browser to log out and then return to 
+    <h2>ASSU Ballot Information</h2>
+<p>Ballot for <strong>{{ sunetid }}</strong>. If you are not <strong>{{ sunetid }}</strong>, close your browser to log out and then return to
     <a href="http://ballot.stanford.edu">ballot.stanford.edu</a>.</p>
 
 <p>
-    According to our records, you are 
+    According to our records, you will be
     {% if ballot.is_undergrad %}
         {% if ballot.is_grad %}
-            currently registered as <strong>both an undergraduate {{ ballot.undergrad_class_year.voter_name|lower }}</strong> and
+            registered as <strong>both an undergraduate {{ ballot.undergrad_class_year.voter_name|lower }}</strong> and
         {% else %}
-            an <strong>undergraduate {{ ballot.undergrad_class_year.voter_name|lower }}</strong>. 
+            an <strong>undergraduate {{ ballot.undergrad_class_year.voter_name|lower }}</strong>
         {% endif %}
     {% endif %}
-    
+
     {% if ballot.is_grad %}
         a <strong>
-        {% if ballot.is_smsa %}{{ ballot.smsa_class_year.voter_name|cut:"SMSA " }}, {{ ballot.smsa_population.voter_name|cut:"SMSA " }} med{% else %}grad{% endif %} student in the {{ ballot.gsc_district.name }}</strong>.
+        {% if ballot.is_smsa %}{{ ballot.smsa_class_year.voter_name|cut:"SMSA " }}, {{ ballot.smsa_population.voter_name|cut:"SMSA " }} med{% else %}grad{% endif %} student in the {{ ballot.gsc_district.name }}</strong>
+
     {% endif %}
+    next year. You are eligible to vote on issues impacting this population. 
+
     
     You may <a href="/ballot/choose">choose a different ballot</a> if this is incorrect.
 </p>
 
 <p>
-    You may choose to abstain from any voting item.
+<strong style="color:red;">You must vote or choose to abstain on all items.</strong><br/><br/>
     After voting, you may return to <a href="http://ballot.stanford.edu">ballot.stanford.edu</a> to change your votes until 11:59pm on Friday.
-    This online ballot supercedes any paper ballots you cast. 
     Email <a href="mailto:elections@elections.stanford.edu?subject=Ballot%20question:%20{{ sunetid }}">elections@elections.stanford.edu</a> 
     if you need help. See <a href="http://voterguide.stanford.edu">voterguide.stanford.edu</a> for more information about items on this ballot.
 </p>
@@ -217,89 +222,102 @@ function abstain_specialfees(e) {
 
 <h2>SMSA</h2>
 
-{% if ballotform.vote_smsa_execpres %}
-    <h3>Executive President</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_execpres }} {{ ballotform.vote_smsa_execpres.errors }}</div>
-{% endif %}
-
 {% if ballotform.vote_smsa_pres %}
     <h3>President</h3>
     <div class="fillin">{{ ballotform.vote_smsa_pres }} {{ ballotform.vote_smsa_pres.errors }}</div>
 {% endif %}
 
-{% if ballotform.vote_smsa_vicepres %}
-    <h3>Vice President</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_vicepres }} {{ ballotform.vote_smsa_vicepres.errors }}</div>
+{% if ballotform.vote_smsa_vpo %}
+    <h3>Vice President of Operations</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_vpo }} {{ ballotform.vote_smsa_vpo.errors }}</div>
 {% endif %}
 
-{% if ballotform.vote_smsa_sec %}
-    <h3>Secretary</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_sec }} {{ ballotform.vote_smsa_sec.errors }}</div>
+{% if ballotform.vote_smsa_vpa %}
+    <h3>Vice President of Advocacy</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_vpa }} {{ ballotform.vote_smsa_vpa.errors }}</div>
 {% endif %}
 
-{% if ballotform.vote_smsa_treas %}
+{% if ballotform.vote_smsa_t %}
     <h3>Treasurer</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_treas }} {{ ballotform.vote_smsa_treas.errors }}</div>
+    <div class="fillin">{{ ballotform.vote_smsa_t }} {{ ballotform.vote_smsa_t.errors }}</div>
 {% endif %}
 
-{% if ballotform.vote_smsa_mentorship %}
-    <h3>Mentorship Chair</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_mentorship }} {{ ballotform.vote_smsa_mentorship.errors }}</div>
+
+
+
+ {% if ballotform.votes_smsa_classrep %}
+        <h3>{{ ballot.smsa_class_year.name|cut:"SMSA " }} Class Rep</h3>
+     <p>{{ ballotform.votes_smsa_classrep.label }}</p>
+        <div class="fillin">{{ ballotform.votes_smsa_classrep }} {{ ballotform.votes_smsa_classrep.errors }}</div>
+    {% endif %}
+
+
+
+
+{% if ballotform.vote_smsa_ccap_pc %}
+    <h3>CCAP Representative: Pre-Clinical</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_ccap_pc }} {{ ballotform.vote_smsa_ccap_pc.errors }}</div>
 {% endif %}
 
-{% if ballotform.vote_smsa_psrc %}
+
+    {% if ballotform.votes_smsa_ccap_c %}
+        <h3>CCAP Representative: Clinical</h3>
+        <p>{{ ballotform.votes_smsa_ccap_c.label }}</p>
+        <div class="fillin">{{ ballotform.votes_smsa_ccap_c }} {{ ballotform.votes_smsa_ccap_c.errors }}</div>
+    {% endif %}
+
+
+{% if ballotform.vote_smsa_ccap_md %}
+    <h3>CCAP Representative: MD/PhD</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_ccap_md }} {{ ballotform.vote_smsa_ccap_md.errors }}</div>
+{% endif %}
+
+{% if ballotform.vote_smsa_ccap_yo %}
+    <h3>CCAP Representative: Year-Off</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_ccap_yo }} {{ ballotform.vote_smsa_ccap_yo.errors }}</div>
+{% endif %}
+
+
+
+{% if ballotform.votes_smsa_sc_pc %}
+        <h3>Social Chair: Preclinical</h3>
+        <p>{{ ballotform.votes_smsa_sc_pc.label }}</p>
+        <div class="fillin">{{ ballotform.votes_smsa_sc_pc }} {{ ballotform.votes_smsa_sc_pc.errors }}</div>
+    {% endif %}
+
+{% if ballotform.votes_smsa_sc_c %}
+        <h3>Social Chair: Clinical</h3>
+        <p>{{ ballotform.votes_smsa_sc_c.label }}</p>
+        <div class="fillin">{{ ballotform.votes_smsa_sc_c }} {{ ballotform.votes_smsa_sc_c.errors }}</div>
+    {% endif %}
+
+    {% if ballotform.vote_smsa_sc_yo %}
+        <h3>Social Chair: Year-Off</h3>
+        <div class="fillin">{{ ballotform.vote_smsa_sc_yo }} {{ ballotform.vote_smsa_sc_yo.errors }}</div>
+    {% endif %}
+
+
+
+
+{% if ballotform.vote_smsa_mw_pc %}
+    <h3>Mentorship & Wellness Chair: Preclinical</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_mw_pc }} {{ ballotform.vote_smsa_mw_pc.errors }}</div>
+{% endif %}
+
+{% if ballotform.vote_smsa_mw_c %}
+    <h3>Mentorship & Wellness Chair: Clinical</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_mw_c }} {{ ballotform.vote_smsa_mw_c.errors }}</div>
+{% endif %}
+
+{% if ballotform.vote_smsa_alumni %}
+    <h3>Alumni Chair</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_alumni }} {{ ballotform.vote_smsa_alumni.errors }}</div>
+{% endif %}
+
+{% if ballotform.vote_smsa_prospective %}
     <h3>Prospective Student Recruitment Chair</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_psrc }} {{ ballotform.vote_smsa_psrc.errors }}</div>
+    <div class="fillin">{{ ballotform.vote_smsa_prospective }} {{ ballotform.vote_smsa_prospective.errors }}</div>
 {% endif %}
-
-{% if ballotform.vote_smsa_ossosr %}
-    <h3>OSS/OSR Rep</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_ossosr }} {{ ballotform.vote_smsa_ossosr.errors }}</div>
-{% endif %}
-
-{% if ballotform.votes_smsa_classrep %}
-    <h3>{{ ballot.smsa_class_year.name|cut:"SMSA " }} Class Rep</h3>
-    <p>{{ ballotform.votes_smsa_ccap.label }}</p>
-    <div class="fillin">{{ ballotform.votes_smsa_classrep }} {{ ballotform.votes_smsa_classrep.errors }}</div>
-{% endif %}
-
-{% if ballotform.vote_smsa_socialchair %}
-    <h3>{{ ballot.smsa_population.name|cut:"SMSA " }} Social Chair</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_socialchair }} {{ ballotform.vote_smsa_socialchair.errors }}</div>
-{% endif %}
-
-{% if ballotform.votes_smsa_ccap %}
-    <h3>{{ ballot.smsa_population.name|cut:"SMSA " }} CCAP Rep</h3>
-    <p>{{ ballotform.votes_smsa_ccap.label }}</p>
-    <div class="fillin">{{ ballotform.votes_smsa_ccap }} {{ ballotform.votes_smsa_ccap.errors }}</div>
-{% endif %}
-
-{% if ballot.smsa_is_mdphd %}
-<h3>MD-PhD CCAP Rep</h3>
-<div class="fillin"><ul>
-<li><label for="id_vote_smsa_ccap_mdphd"><input checked="checked" type="radio" id="id_vote_smsa_ccap_mdphd" value="171" name="vote_smsa_ccap_mdphd"> Jake Rosenberg</label></li>
-</ul> </div>
-{% endif %}
-
-{% if ballot.smsa_is_mdplus %}
-<h3>MD+ CCAP Rep</h3>
-<div class="fillin"><ul>
-<li><label for="id_vote_smsa_ccap_mdplus"><input checked="checked" type="radio" id="id_vote_smsa_ccap_mdplus" value="218" name="id_vote_smsa_ccap_mdplus"> Rachel Sussman</label></li>
-</ul> </div>
-{% endif %}
-
-{% if ballotform.vote_smsa_pachair %}  
-    <h3>{{ ballot.smsa_population.name|cut:"SMSA " }} Policy &amp; Advocacy Chair</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_pachair }} {{ ballotform.vote_smsa_pachair.errors }}</div>
-{% endif %}
-
-<h3>Clinical Student Advisory Council members</h3>
-<p>This is not an elected position. The following is a list of people who have signed up for CSAC.</p>
-<ul class="candidates">
-    {% for c in csac_members %}
-    <li>&bull; <strong>{{ c.ballot_name }}</strong></li>
-    {% endfor %}
-</ul>
 
 <hr>
 </section>
@@ -406,7 +424,7 @@ function abstain_specialfees(e) {
     
         <ul>
         {% for s in cp_slates %}
-            <li class="has_stmt" data-pk="{{ s.pk }}">&bull; {{ s.name_and_office }}</li>
+            <li class="has_stmt" data-pk="{{ s.pk }}" style="padding-bottom:1em;" >&bull; {{ s.name_and_office }}</li>
         {% endfor %}
         </ul>
     <br>
@@ -462,11 +480,12 @@ function abstain_specialfees(e) {
     
     <p>
         Your vote on a Special Fee request indicates whether you believe all students should pay a Special Fee each quarter to fund the
-        group's events and activities described in their proposed budget.
-        <a href="http://elections.stanford.edu/special-fees/" target="_blank">Learn more about Special Fees.</a>
+        group's events and activities described in their proposed budget. <a href="http://elections.stanford.edu/special-fees/" target="_blank">Learn more about Special Fees.</a>
+<br/> <strong style="color:red;">You must submit a vote
+    or choose to abstain on all Special Fees.</strong>
     </p>
 
-<p><strong><a href="javascript:;" onclick="abstain_specialfees(event)">Abstain on all issues</a></strong></p>
+<p><input type='button' onclick="abstain_specialfees(event)" value="Abstain on all issues currently without a vote" /></p>
         
     <table class="specialfees" cellspacing="0">
         <thead>
@@ -510,6 +529,7 @@ function abstain_specialfees(e) {
             {% endfor %}
         </tbody>
     </table>
+<p><strong style="color:red;">You must submit a vote or choose to abstain on all Special Fees.</strong><br/><input type='button' onclick="abstain_specialfees(event)" value="Abstain on all issues currently without a vote" /></p>
 </section>
 
 <br/>
@@ -546,7 +566,8 @@ function abstain_specialfees(e) {
 
 <p><small><strong>Write-in votes:</strong> If your total number of votes (for declared candidates plus write-in votes) for a section is more than the number of votes you have,
     then your write-in votes <em>listed last</em> will be eliminated until your ballot contains the maximum number of votes you're allowed.</small></p>
-    
+
+<p>Problems? Observed voter fraud? Questions? Contact the ASSU Elections Commission at <a href="mailto:elections@elections.stanford.edu">elections@elections.stanford.edu</a>. </p>
 
 </form>
 

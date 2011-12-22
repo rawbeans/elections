@@ -1,7 +1,7 @@
 import re, csv, os
 from django.core.management.base import LabelCommand
 from openelections.ballot.models import Ballot
-from openelections.ballot.tests import elec
+from issues.models import Electorate
 
 gsc_districts = {
     #'H&S': 'gsc-hs',
@@ -29,46 +29,25 @@ def get_ballot(sunetid):
     b, created = Ballot.get_or_create_by_sunetid(sunetid)
     return b
 
+def elec(slug):
+    if slug is None: return None
+    return Electorate.objects.get(slug=slug)
+
 class Command(LabelCommand):
     def handle_label(self, label, **options):
         output = []
         
-        undergrad_path = os.path.join(label, 'undergrad.csv')
-        undergrad = csv.DictReader(open(undergrad_path))
-        grad_path = os.path.join(label, 'grad.csv')
-        grad = csv.DictReader(open(grad_path))
-        smsa_path = os.path.join(label, 'smsa.csv')
-        smsa = csv.DictReader(open(smsa_path))
-        
+        students_path = os.path.join(label, 'students.csv')
+        students = csv.DictReader(open(students_path,'rU'))
     
-        for row in undergrad:
-            sunetid = row['SUNet ID']
+        for row in students:
+            sunetid = row['SUNetID']
             b = get_ballot(sunetid)
-            groups = map(str.strip, row['Class Level '].split(','))
+            groups = map(str.strip, row['Class Level'].split(','))
             for g in groups:
                 if g in assu_pops:
                     b.assu_populations = map(elec, assu_pops[g])
                 if g in class_years:
                     b.undergrad_class_year = elec(class_years[g])
-            print "%s\t%s" % (sunetid, b)
-            b.save()
-
-        did_set_gsc_districts_for_sunet_ids = set()
-        for row in grad:
-            sunetid = row['SUNet ID']
-            b = get_ballot(sunetid)
-
-            groups = map(str.strip, row['Class Level '].split(',')) + map(str.strip, row['School'].split(','))
-            for g in groups:
-                if g in assu_pops:
-                    b.assu_populations = map(elec, assu_pops[g])
-                if g in gsc_districts:
-                    # if multiple GSC districts, erase all and force them to choose
-                    if sunetid in did_set_gsc_districts_for_sunet_ids:
-                        b.gsc_district = None
-                    else:
-                        b.gsc_district = elec(gsc_districts[g])
-                        did_set_gsc_districts_for_sunet_ids.add(sunetid)
-
             print "%s\t%s" % (sunetid, b)
             b.save()

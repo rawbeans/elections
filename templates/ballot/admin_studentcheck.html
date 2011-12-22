@@ -1,0 +1,23 @@
+<h1>Admin: Student Check</h1>
+<p>Currently {{ now }}</p>
+
+<h2>Not Students</h2>
+<p>
+Total: {{ notstudents|length }}<br/>
+
+{% for ballot in notstudents %}
+    {{ ballot.voter_id }}@stanford.edu<br />
+{% endfor %}
+<br/>
+IN({% for ballot in notstudents %}
+    '{{ ballot.voter_id }}',
+{% endfor %}
+)
+</p>
+
+<h2>Changed information</h2>
+<table>
+{% for ballot,comment in changed %}
+    <tr><td>{{ ballot.voter_id }}@stanford.edu</td><td>{{ comment }}</td></tr>
+{% endfor %}
+</table>

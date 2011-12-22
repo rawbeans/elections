@@ -1,0 +1,31 @@
+<h1>Admin: Ballot Stats</h1>
+<p>Currently {{ now }}</p>
+
+<p><strong>Num completed:</strong> {{ num_submitted }} ({{ num_marked_submitted }})</p>
+
+<p>Voter breakdown:
+<strong>Undergrad:</strong> {{ vcounts.ug }}<br/>
+    Frosh: {{ vcounts.freshmen }}<br/>
+    Sophs: {{ vcounts.sophomores }}<br/>
+    Junior: {{ vcounts.juniors }}<br/>
+    Senior+: {{ vcounts.seniorsup }}<br/>
+<strong>Grad:</strong> {{ vcounts.grad }}<br/>
+    Coterm: {{ vcounts.coterm }}<br/>
+
+    {% for district,count in gsc_districts %}
+    {{ district }}: {{ count }}<br/>
+    {% endfor %}
+
+
+
+</p>
+
+<p><strong>Num unfinished:</strong> {{ unfinished|length }} ({{ only_start|length }} have had no action at all)</p>
+
+<hr />
+<p>In order of how many times the ballot has been submitted:</p>
+<p>
+    {% for count,ballot in numsubmissions_order %}
+    {{ count }}: {{ ballot }}<br />
+    {% endfor %}
+</p>

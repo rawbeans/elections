@@ -12,6 +12,7 @@ class WebauthUser(User):
         self.webauth_username = username
         self.username = username
         if self.password == '':
+            # disable regular Django login for this user
             self.set_unusable_password()
         self.real_name = real_name
         self.save()
