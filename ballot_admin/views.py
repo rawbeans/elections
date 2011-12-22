@@ -43,7 +43,7 @@ def admin_stats(request):
     num_marked_submitted = Ballot.objects.filter(submitted=True).count()
 
     start_order = sorted(sunets_started, key=sunets_started.get)
-    numsubmissions_order = sorted(sunets_finished, key=sunets_finished.get)
+    numsubmissions_order = sorted(sunets_finished, key=sunets_finished.get,reverse=True)
 
     submitted_counts = []
     for submitted in numsubmissions_order:
