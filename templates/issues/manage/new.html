@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if new_issue.needs_petition %}
-    <h1>Declaration of Intent</h1>
+    <h1>Declaration of Intent: {{ new_issue.kind_name }} </h1>
     <p>
         You aren't obligated to run (or do anything) when you declare intent, but you must declare intent if you will be running.
         See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> for more info,
@@ -17,7 +17,6 @@
 <p><a href="/issues/manage">&laquo; Back to list of all positions</a></p>
 
 <hr/>
-    <h2>{{ new_issue.kind_name }}</h2>
 
     {% if error %}
     <dd style="background:#CC0000;color:white;font-weight:bold;padding:.5em;margin:1.5em;">Your form was not completed, and you have not yet successfully declared intent. Please review the form and correct the errors.</dd>
@@ -26,6 +25,7 @@
     <dd style="background:#CC0000;color:white;font-weight:bold;padding:.5em;margin:1.5em;">{{ form.non_field_errors }}</dd>
     {% endif %}
 
+    <h2>Information</h2>
 <form action="{% url issues.views.create %}" method="post">
     <dl>
     {% for field in form %}
@@ -41,10 +41,16 @@
     </dl>
 
 <hr />
-<h3>Qualification Questions</h3>
-{% for f,value in form.qual_fields.items %}
-    <dd><input type='checkbox' name = 'qual_{{ f }}' value = 'True' /> {{ value }}</dd>
+<h2>Qualification Questions</h2>
+<p style ='padding-bottom:1em;'>The following statements are necessary qualifications to declare intent.
+    Please review and respond to each statement individually. Click the checkbox to the left of each statement to
+agree to that statement. If you do not understand or cannot honestly respond to any statement below, please contact
+the Elections Commission.</p>
+<ul>
+{% for f,value in form.get_qual_fields %}
+    <p style='padding-bottom:.75em;'><span style="padding:.25em;margin:.5em;background:#436589;"><input type='checkbox' name = 'qual_{{ f }}' value = 'True' /></span> {{ value }}</p>
 {% endfor %}
+</ul>
     <div>
         <input type="submit" value="Declare Intent for {{ new_issue.kind_name }}">
     </div>
