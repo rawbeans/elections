@@ -11,4 +11,5 @@ data/
 .idea/
 
 ballots/
+ignore/
 settings_production.py
