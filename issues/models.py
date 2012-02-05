@@ -56,21 +56,33 @@ class Issue(models.Model):
 
     name1 = models.CharField(max_length=100)
     sunetid1 = models.CharField(max_length=15)
+    suid1 = models.CharField(max_length=15)
 
     name2 = models.CharField(max_length=100, blank=True)
     sunetid2 = models.CharField(max_length=8, blank=True)
+    suid2 = models.CharField(max_length=15,blank=True)
 
     name3 = models.CharField(max_length=100, blank=True)
     sunetid3 = models.CharField(max_length=8, blank=True)
+    suid3 = models.CharField(max_length=15,blank=True)
+
 
     name4 = models.CharField(max_length=100, blank=True)
     sunetid4 = models.CharField(max_length=8, blank=True)
+    suid4 = models.CharField(max_length=15,blank=True)
+
 
     name5 = models.CharField(max_length=100, blank=True)
     sunetid5 = models.CharField(max_length=8, blank=True)
+    suid5 = models.CharField(max_length=15,blank=True)
+
 
     name6 = models.CharField(max_length=100, blank=True)
     sunetid6 = models.CharField(max_length=8, blank=True)
+    suid6 = models.CharField(max_length=15,blank=True)
+
+    # sponsor contact info
+    sponsor_phone = models.CharField(max_length=15)
 
     # special fee groups
     budget = models.FileField(upload_to='specialfees', blank=True)
@@ -92,7 +104,7 @@ class Issue(models.Model):
         return "%s: %s" % (self.kind, self.title)
 
     def can_declare(self):
-        return False
+        return True
 
     def get_typed(self):
         issue_class = kinds_classes.get(self.kind, Issue)

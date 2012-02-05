@@ -6,10 +6,10 @@ ISSUE_SPECFEE = 'SF'
 ISSUE_REFERENDUM = 'Ref'
 
 ISSUE_TYPES = [
-    (ISSUE_US, 'Undergrad Senate'),
-    (ISSUE_GSC, 'Grad Student Council'),
-    (ISSUE_CLASSPRES, 'Undergrad Class President'),
-    (ISSUE_EXEC, 'Exec'),
+    (ISSUE_US, 'Undergraduate Senate'),
+    (ISSUE_GSC, 'Graduate Student Council'),
+    (ISSUE_CLASSPRES, 'Undergraduate Class President'),
+    (ISSUE_EXEC, 'Executive'),
     (ISSUE_SPECFEE, 'Special Fee request'),
     (ISSUE_REFERENDUM, 'Referendum')
 ]

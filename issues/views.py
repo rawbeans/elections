@@ -92,7 +92,7 @@ def create(request):
         form.save()
         return HttpResponseRedirect(reverse('openelections.issues.views.manage_index'))
     else:
-        return render_to_response('issues/manage/new.html', {'new_issue': new_issue, 'form': form}, context_instance=RequestContext(request))
+        return render_to_response('issues/manage/new.html', {'new_issue': new_issue, 'form': form,'error': True}, context_instance=RequestContext(request))
 
 @login_required
 def manage_edit(request, issue_slug):
@@ -113,53 +113,3 @@ def manage_edit(request, issue_slug):
         form = form_class_for_issue(issue)(instance=issue)
     
     return render_to_response('issues/manage/edit.html', {'issue': issue, 'form': form}, context_instance=RequestContext(request))
-
-@permission_required('issue.create')
-def admin_multicreate(request):
-    form = MultiCreateForm()
-    message = ""
-
-    if request.method == 'POST':
-        form = MultiCreateForm(request.POST)
-
-    if form.is_valid():
-        undergrad = Electorate.objects.filter(slug='undergrad').get()
-        coterm = Electorate.objects.filter(slug='coterm').get()
-        text = form.cleaned_data['text']
-        lines = text.split("\n")
-        for line in lines:
-            (groupname,requestamt,prevrequest,sponsor,sponsoremail,perug,pergrad,contentprefix,slug) = line.split("\t",9)
-            groupname = groupname.strip()
-            sponsorsunet = sponsoremail.strip()
-            slug = slug.strip()
-            if Issue.objects.filter(slug=slug).exists():
-                message += "<span style = 'color:red;'>%s already exists</span><br />" % (groupname)
-                continue
-
-            group = Issue()
-            group.kind = 'SF'
-            group.title = groupname
-            group.slug = slug
-            group.public = True
-
-            group.petition_validated = True
-
-            group.name1 = sponsor
-            group.sunetid1 = sponsorsunet
-
-            group.budget = 'specialfees/%s-FundingRequest.pdf' % contentprefix
-            group.account_statement = 'specialfees/%s-AcctStatement.pdf' % contentprefix
-            group.total_request_amount = requestamt
-            group.amount_per_undergrad_annual = perug
-            group.amount_per_grad_annual = pergrad
-            group.total_past_request_amount = prevrequest
-            group.admin_notes = "MultiCreated"
-            group.save()
-            group.electorates = [undergrad,coterm]
-            group.save()
-
-
-            message += "Added %s<br />" % (groupname)
-
-    message += "Remember to change the details of Joint vs. UG Special Fee groups."
-    return render_to_response('issues/manage/admin_multicreate.html', {'message': message, 'form': form}, context_instance=RequestContext(request))

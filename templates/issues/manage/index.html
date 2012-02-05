@@ -28,7 +28,7 @@
         {% endif %}
         
         {% if not issue.statement_is_public and not issue.needs_petition %}
-            <dd>You've declared. You'll be notified when you can post a candidate statement.</p>
+            <dd>You've declared. You'll be notified when you can post a candidate statement.</dd>
         {% endif %}
     </dl>
     <br>
@@ -40,10 +40,10 @@
 <hr>
 <h3>Declare intent for...</h3>
 <ul>
-    <li><a href="{% url issues.views.manage_new "US" %}">ASSU Undergraduate Senate</a></li>
+    <li><a href="{% url issues.views.manage_new "US" %}">ASSU Undergraduate Senate candidate</a></li>
     <li><a href="{% url issues.views.manage_new "ClassPres" %}">ASSU Class President slate</a></li>
     <li><a href="{% url issues.views.manage_new "Exec" %}">ASSU Executive slate</a></li>
-    <li><a href="{% url issues.views.manage_new "GSC" %}"> ASSU Graduate Student Council</a></li>
+    <li><a href="{% url issues.views.manage_new "GSC" %}"> ASSU Graduate Student Council candidate</a></li>
 
     <li>Special Fee request: read the <a href="http://elections.stanford.edu/petition-guide">petition guide</a> and then <a href="http://elections.stanford.edu/contact">contact us</a></li>
 </ul>

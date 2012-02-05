@@ -3,8 +3,7 @@
 {% block content %}
 
 {% if new_issue.needs_petition %}
-    <h1>Declare intent for {{ new_issue.kind_name }}</h1>
-
+    <h1>Declaration of Intent</h1>
     <p>
         You aren't obligated to run (or do anything) when you declare intent, but you must declare intent if you will be running.
         See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> for more info,
@@ -15,18 +14,17 @@
     <h1>Declare as {{ new_issue.kind_name }}</h1>
 {% endif %}
 
-{% if new_issue.position_description %}
-<h3>Description of position</h3>
-{{ new_issue.position_description|safe }}
-{% endif %}
-
 <p><a href="/issues/manage">&laquo; Back to list of all positions</a></p>
 
 <hr/>
+    <h2>{{ new_issue.kind_name }}</h2>
 
-{% if new_issue.position_description %}
-    <h2>Declaration form for {{ new_issue.kind_name }}</h2>
-{% endif %}
+    {% if error %}
+    <dd style="background:#CC0000;color:white;font-weight:bold;padding:.5em;margin:1.5em;">Your form was not completed, and you have not yet successfully declared intent. Please review the form and correct the errors.</dd>
+    {% endif %}
+    {% if form.non_field_errors %}
+    <dd style="background:#CC0000;color:white;font-weight:bold;padding:.5em;margin:1.5em;">{{ form.non_field_errors }}</dd>
+    {% endif %}
 
 <form action="{% url issues.views.create %}" method="post">
     <dl>
@@ -41,12 +39,14 @@
         {% endif %}
     {% endfor %}
     </dl>
+
+<hr />
+<h3>Qualification Questions</h3>
+{% for f,value in form.qual_fields.items %}
+    <dd><input type='checkbox' name = 'qual_{{ f }}' value = 'True' /> {{ value }}</dd>
+{% endfor %}
     <div>
-        {% if new_issue.needs_petition %}
-            <input type="submit" value="Start petition for {{ new_issue.kind_name }}">
-        {% else %}
-            <input type="submit" value="Declare candidacy">
-        {% endif %}
+        <input type="submit" value="Declare Intent for {{ new_issue.kind_name }}">
     </div>
 </form>
 
