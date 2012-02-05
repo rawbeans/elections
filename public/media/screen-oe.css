@@ -1,0 +1,105 @@
+body, h1, h2, h3, h4, h5, h6, ul, li, p, form, dl, dt, dd, hr, section, article, aside, header, footer, nav, dialog, figure {
+  margin: 0;
+  padding: 0; }
+
+section, article, aside, header, footer, nav, dialog, figure {
+  display: block; }
+
+img {
+  border: none; }
+
+textarea, input[type="text"] {
+  font-size: 1.0em;
+  padding: 6px; }
+
+body {
+  font-family: 'lucida grande', 'verdana', 'helvetica', 'arial', sans-serif;
+  background-color: #18365c; }
+
+#container {
+  max-width: 900px;
+  width: 100%;
+  padding: 0;
+  margin: 0 auto; }
+
+#header {
+  display: block; }
+  #header .nav {
+    white-space: nowrap; }
+
+.nav {
+  padding: 6px 6px;
+  background-color: #456389; }
+  .nav h2 {
+    float: left;
+    font-size: 1.15em;
+    color: white;
+    margin: 0 9px 0 11px; }
+  .nav ul li {
+    display: inline; }
+  .nav ul {
+    margin: 15px 3px; }
+  .nav ul, .nav ul li {
+    list-style-type: none; }
+  .nav a {
+    color: white;
+    padding: 6px;
+    font-size: 1.15em; }
+    .nav a:hover {
+      color: #18365c;
+      background-color: white;
+      text-decoration: none; }
+  .nav .navsection.byaudience {
+    border-bottom: solid 2px #6d8bb1; }
+  .nav .navsection.general ul {
+    clear: both; }
+
+#content {
+  padding: 14px 20px;
+  background-color: white;
+  line-height: 140%; }
+  #content p, #content ul, #content ol {
+    margin: 9px 0; }
+  #content h1, #content h2, #content h3 {
+    line-height: 150%; }
+  #content h1 {
+    font-size: 1.7em; }
+  #content h1, #content h2 {
+    color: #18365c; }
+  #content h2, #content h3 {
+    margin: 14px 0 3px; }
+  #content ul, #content ol {
+    padding-left: 20px; }
+  #content li {
+    margin: 4px 0; }
+  #content hr {
+    border: solid 1px #6d8bb1;
+    margin: 15px 0; }
+  #content .lede {
+    font-size: 1.3em; }
+  #content a {
+    color: #18365c; }
+    #content a:hover {
+      color: white;
+      background-color: #18365c;
+      padding: 2px;
+      margin: -2px; }
+  #content dt {
+    font-weight: bold; }
+  #content dd {
+    margin: 4px 0 9px 20px; }
+  #content th {
+    text-align: left; }
+    #content th.section {
+      text-decoration: underline;
+      font-size: 1.1em; }
+  #content td, #content th {
+    padding: 2px 5px; }
+  #content table.account td {
+    text-align: right; }
+    #content table.account td:first-child {
+      text-align: left !important; }
+
+#footer .disclaimer {
+  color: white;
+  padding: 5px 15px; }
