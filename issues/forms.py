@@ -12,7 +12,7 @@ class NewIssueForm(IssueForm):
     slug = forms.RegexField(label='URL name', help_text='Your public petition will be at petitions.stanford.edu/petitions/your-url-name. Use only lowercase letters, numbers, and hyphens.',
                             regex=r'^[a-z\d-]+$', widget=forms.TextInput(attrs={'size':'25'}))
     sponsor_phone = forms.CharField(label="Contact phone number",help_text="Will not be displayed publicly.")
-    qual_fields = {'test1': 'hi'}
+    qual_fields = {}
     
     def __init__(self, *args, **kwargs):
         super(NewIssueForm, self).__init__(*args, **kwargs)
@@ -35,11 +35,15 @@ class NewIssueForm(IssueForm):
         return slug
 
     def clean(self):
-        for fname in self.qual_fields:
-            if "qual_" + fname not in self.data or self.data["qual_" + fname] != 'True':
+        for i in range(0,len(self.qual_fields)):
+            if "qual_" + str(i) not in self.data or self.data["qual_" + str(i)] != 'True':
                 raise forms.ValidationError("You did not respond to all the qualification questions. Please review the Qualification Questions "
                                             "section and ensure you meet the qualifications to declare intent.")
         return self.cleaned_data
+
+    def get_qual_fields(self):
+        for i in range(0,len(self.qual_fields)):
+            yield i, self.qual_fields[i]
     
 class NewSlateForm(NewIssueForm):
     title = forms.CharField(label='Slate name', widget=forms.TextInput(attrs={'size':'40'}),
@@ -48,13 +52,32 @@ class NewSlateForm(NewIssueForm):
 class NewExecutiveSlateForm(NewSlateForm):
     class Meta:
         model = ExecutiveSlate
-        fields = ('title', 'kind', 'sponsor_phone', 'name1', 'sunetid1', 'name2', 'sunetid2', 'slug')
+        fields = ('title', 'kind', 'name1', 'sunetid1', 'suid1', 'name2', 'sunetid2', 'suid2', 'sponsor_phone', 'slug')
     
     name1 = forms.CharField(label='President\'s name (you)', widget=forms.TextInput(attrs={'size':'40'}))
     sunetid1 = forms.CharField(label='President\'s SUNet ID @stanford.edu (you)', widget=forms.TextInput(attrs={'size':'12'}))
     name2 = forms.CharField(label='Vice President\'s name', widget=forms.TextInput(attrs={'size':'40'}))
     sunetid2 = forms.CharField(label='Vice President\'s SUNet ID @stanford.edu', widget=forms.TextInput(attrs={'size':'12'}))
 
+    suid1 = forms.CharField(label='President\'s SUID Number', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}))
+    suid2 = forms.CharField(label='Vice President\'s SUID Number', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}))
+
+    qual_fields = [
+                    'Both the candidate for President and the candidate for Vice President are currently registered students at Stanford University.',
+                    'Both the candidate for President and the candidate for Vice President intend to be registered students at Stanford University throughout '
+                    'the 2011-2012 academic year (Fall, Winter, and Spring quarters.)',
+                    'We agree to follow the Executive Campaign Finance restrictions, spending a maximum of $1000 on '
+                    'our campaign. We understand that failure to adhere to these guidelines, failure to submit complete budgets '
+                    'and spending reports by the specified deadlines, or failure to inform the Elections Commission of changes in '
+                    'our budget can result in disqualification from the election.',
+                    'We certify that the candidate for President has not previously served in that position for longer than four months.',
+                    'We understand that serving as the ASSU Executive is a significant time commitment, includes a time commitment during the summer, '
+                    'and that we are expected to remain students in good standing at Stanford throughout our term.',
+                    'We understand that the University has existing rules and regulations that continue to apply to us during our candidacy,'
+                    'including policies on flyer placement, use of e-mail, speech in White Plaza, and other areas. We agree to follow those rules and regulations.',
+                    'We understand that violations of these rules and regulations may result in ineligibility to run for / hold ASSU office until the following '
+                    'Spring Quarter.'
+    ]
 class NewClassPresidentSlateForm(NewSlateForm):
     class Meta:
         model = ClassPresidentSlate

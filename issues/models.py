@@ -134,7 +134,7 @@ class Issue(models.Model):
         return True
 
     def petition_open(self):
-        return False #not self.petition_validated
+        return True #not self.petition_validated
 
     def show_petition_results(self):
         return False
@@ -176,7 +176,7 @@ class Issue(models.Model):
         return [s for s in ids if s]
 
     def sunetid_can_manage(self, sunetid):
-        admins = ('trusheim')
+        admins = ('trusheim','ajadler')
         return sunetid in self.sunetids() or sunetid in admins
 
     def partial_template(self):
