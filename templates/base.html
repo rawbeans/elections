@@ -51,18 +51,13 @@
         <h1 id="site_title"><a href="http://petitions.stanford.edu/"><img alt="ASSU Elections Commission" src="{{ MEDIA_URL }}web-logo2.png"></a></h1>
 
         <div class="nav">
-        <!--<div class="navsection byaudience">
-            <ul>
-                <li><a href="/issues/manage">Declare</a></li>
-            </ul>
-        </div>-->
 
         <div class="navsection byaudience">
             <ul>
                 <li><a href="{% url issues.views.index show="all" %}"><strong>View all</strong></a></li>
                 <li><a href="{% url issues.views.index show="undergrad" %}">Undergrad items</a></li>
                 <li><a href="{% url issues.views.index show="grad" %}">Grad items</a></li>
-                <li><a href="{% url issues.views.index show="smsa" %}">SMSA items</a></li>                
+                <!--<li><a href="{% url issues.views.index show="smsa" %}">SMSA items</a></li>-->
                 <li><a href="http://elections.stanford.edu/ballotinfo"><strong>Read about each position</strong></a></li>
             </ul>
         </div>
@@ -73,7 +68,9 @@
                 <li><a href="{% url issues.views.index show="senate" %}">Undergrad Senate</a></li>
                 <li><a href="{% url issues.views.index show="class-presidents" %}">Class Presidents</a></li>
                 <li><a href="{% url issues.views.index show="special-fee-requests" %}">Special Fees</a></li>
-                <li><a href="{% url issues.views.index show="referendums" %}">Referendums</a></li>
+                <!--<li><a href="{% url issues.views.index show="referendums" %}">Referenda</a></li>-->
+                <li><strong><a href="/issues/manage">Declare</a></strong></li>
+
 
             </ul>
             </div>

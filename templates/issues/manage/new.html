@@ -3,14 +3,14 @@
 {% block content %}
 
 {% if new_issue.needs_petition %}
-    <h1>Starting petition for {{ new_issue.kind_name }}</h1>
+    <h1>Declare intent for {{ new_issue.kind_name }}</h1>
 
     <p>
-        You aren't obligated to run (or do anything) just by starting a petition; you can withdraw at any time.
+        You aren't obligated to run (or do anything) when you declare intent, but you must declare intent if you will be running.
         See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> for more info,
         and <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a> if you have any questions.</p>
-    <p>Please note: if you have not yet submitted a Declaration of Intent to the Elections Commission box in the ASSU offices,
-    petition signatures that you have collected are invalid and will not be counted when the Elections Commission verifies your petition.</p>
+    <p>When you complete this form, you will automatically start a petition on this website. If you do not wish to petition
+    publicly, please <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a>.</p>
 {% else %}
     <h1>Declare as {{ new_issue.kind_name }}</h1>
 {% endif %}

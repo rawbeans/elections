@@ -1,11 +1,11 @@
 {% extends "issues/base-public.html" %}
 
 {% block content %}
-    <div style = 'background:#dedede;margin:1em;padding:2em;'>
+    <!--<div style = 'background:#dedede;margin:1em;padding:2em;'>
         <div align="center" style="font-size:18px;">  <strong>Vote in the Spring Quarter General Election.</strong></div>
     The ballot opens at 12:01 AM on Thursday, April 7 and closes at 11:59 PM on Friday, April 8. Vote at
         <a href="http://ballot.stanford.edu">http://ballot.stanford.edu</a>.
-    </div>
+    </div>-->
 
 {% regroup issues|dictsort:"kind_sort" by kind_name as issues_list %}
 
@@ -15,7 +15,7 @@
     {% endwith %}
 {% empty %}
     <!-- empty list -->
-    <p>No items to show.</p>
+    <p>Nothing has been declared in this category yet. <a href="/issues/manage">Maybe you can be the first?</a></p>
 {% endfor %}
 
 <br style="clear:both">

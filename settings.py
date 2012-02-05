@@ -83,7 +83,7 @@ INSTALLED_APPS = (
     'openelections.issues',
     'openelections.petitions',
     'webauth',
-    'openelections.ballot',
+    #'openelections.ballot',
     #'openelections.webauth',
 )
 

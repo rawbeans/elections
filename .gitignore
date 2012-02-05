@@ -2,10 +2,6 @@
 *.pyc
 data/
 .hg/
-*.pdf
-*.jpg
-*.gif
-*.png
 .DS_Store
 ._*
 .idea/
