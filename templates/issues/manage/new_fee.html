@@ -2,11 +2,17 @@
 
 {% block content %}
     <h1>Declaration of Intent: Special Fee </h1>
-    <p>You aren't obligated to run (or do anything) when you declare intent, but you must declare intent if you will be running.
-        See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> for more info,
+    <p>The process for declaring intent for special fees is multifaceted. Before you submit a Declaration of Intent, please
+        be sure you understand the whole process, the petitioning requirements, and the types of information you must disclose
+        to the Elections Commission and to the legislative bodies.</p>
+        <p>See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> for more info,
         and <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a> if you have any questions.</p>
-    <p>When you complete this form, you will automatically start a petition on this website. If you do not wish to petition
-    publicly, please <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a>.</p>
+    <p>When you complete this form, your group will have a petition created. However, this petition will not be public until
+        the Elections Commission has had a chance to review the materials you submit. You,the sponsor, will be able to view your petition and
+        edit your public statements. The Elections Commission will review new petitions within 48 hours (72 hours on weekends.) We will
+        inform you, the sponsor, by email when our review is complete.</p>
+        <p>If you wish to petition on paper, please submit paper petition materials to the Elections Commission so they can be approved. Remember: ALL petitions
+        must be approved prior to being used!</p>
 
 <hr/>
     {% if form.non_field_errors %}
@@ -41,8 +47,16 @@ the Elections Commission.</p>
     <p style='padding-bottom:.75em;'><span style="padding:.25em;margin:.5em;background:#436589;"><input type='checkbox' name = 'qual_{{ f }}' value = 'True' /></span> {{ value }}</p>
 {% endfor %}
 </ul>
+<hr />
+<h2>Petitioning Information</h2>
+    <p>When you complete this form, your group will have a petition created. However, this petition will not be public until
+        the Elections Commission has had a chance to review the materials you submit. You,the sponsor, will be able to view your petition and
+        edit your public statements. The Elections Commission will review new petitions within 48 hours (72 hours on weekends.) We will
+        inform you, the sponsor, by email when our review is complete.</p>
+    <p>If you wish to petition on paper, please submit paper petition materials to the Elections Commission so they can be approved. Remember: ALL petitions
+        must be approved prior to being used!</p>
     <div>
-        <input type="submit" value="Declare Intent for {{ new_issue.kind_name }}">
+        <input type="submit" value="Declare Intent for Special Fees">
     </div>
 </form>
 

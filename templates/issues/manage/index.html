@@ -5,6 +5,10 @@
 {% for issue in issues %}
     <h1>{{ issue.name_and_office }}</h1>
     <dl>
+        {% if not issue.public %}
+        <dt></dt>
+        <dd style='color:red;'>Currently under review; not public</dd>
+        {% endif %}
         {% if issue.statement_is_public %}
             <dt>{{ issue.noun|capfirst }} statement:</dt>
             <dd>
@@ -25,10 +29,13 @@
                     http://petitions.stanford.edu/petitions/{{ issue.slug }}
                 </a>
             </dd>
+            {% else %}
+            <dt>Petition:</dt>
+            <dd>No petition required!</dd>
         {% endif %}
         
         {% if not issue.statement_is_public and not issue.needs_petition %}
-            <dd>You've declared. You'll be notified when you can post a candidate statement.</dd>
+            <dd>You've declared. Post a statement today!</dd>
         {% endif %}
     </dl>
     <br>
@@ -45,7 +52,7 @@
     <li><a href="{% url issues.views.manage_new "Exec" %}">ASSU Executive slate</a></li>
     <li><a href="{% url issues.views.manage_new "GSC" %}"> ASSU Graduate Student Council candidate</a></li>
 
-    <li>Special Fee request: read the <a href="http://elections.stanford.edu/petition-guide">petition guide</a> and then <a href="http://elections.stanford.edu/contact">contact us</a></li>
+    <li><a href ="{% url issues.views.manage_new_specialfee %}">Special Fee request</a></li>
 </ul>
 
 <!--

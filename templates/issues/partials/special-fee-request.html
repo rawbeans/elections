@@ -42,11 +42,15 @@
         {% endif %}
     </tbody>
 </table>
-{% if issue.needs_petition and issue.public and issue.petition_open %}
+{% if issue.needs_petition %}
+    {% if issue.public and issue.petition_open %}
         <dt>
             <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
         </dt>
     <br/>
+    {% endif %}
+    {% else %}
+    <dt>No petition required.</dt>
 {% endif %}
 
 
@@ -55,13 +59,15 @@
 <dt>Special Fee request sponsor</dt>
 <dd>{{ issue.name1 }}, <a href="mailto:{{ issue.sunetid1 }}@stanford.edu">{{ issue.sunetid1 }}@stanford.edu</a></dd>
 
-{% if issue.statement %}
     <h2>Group statement</h2>
+{% if issue.statement %}
     {% if issue.image and detail and not hidepdfs %}
         <div style="float:right"><img style="max-width:300px;max-height:400px;margin:0 15px 15px 0" src="{{ issue.image.url }}"></div>
     {% endif %}
 
     {{ issue.statement|markdown:"safe" }}
+    {% else %}
+    <p>No statement submitted.</p>
 {% endif %}
 
 <h2>Budget Information</h2>

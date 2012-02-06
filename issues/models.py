@@ -3,6 +3,8 @@ from django.db.models import Q
 from openelections import constants as oe_constants
 from openelections.issues.text import POSITION_DESCRIPTIONS
 
+ADMINS = ('trusheim','ajadler')
+
 def no_smsa(s):
     return str(s).replace('SMSA ', '')
 
@@ -39,11 +41,8 @@ class Issue(models.Model):
     title = models.CharField(max_length=200)
     kind = models.CharField(max_length=64, choices=oe_constants.ISSUE_TYPES)
     statement = models.TextField(default='', blank=True)
-    statement_short = models.TextField('Short statement (100 words)', default='', blank=True)
-    statement_petition = models.TextField(default='', blank=True)
     image = models.ImageField(upload_to='issue_images', blank=True)
     slug = models.SlugField(blank=False)
-    external_url = models.CharField(max_length=200, blank=True)
 
     # whether the issue should be shown in the public list of petitions, issues, etc.
     public = models.BooleanField(default=True)
@@ -52,8 +51,7 @@ class Issue(models.Model):
     petition_validated = models.BooleanField(default=False)
     petition_signatures_count = models.IntegerField(default=0)
 
-    received_declaration = models.BooleanField(default=False)
-    signed_voterguide_agreement = models.BooleanField(default=True)
+    signed_qualifications = models.BooleanField(default=True)
 
     # restriction to certain populations
     electorates = models.ManyToManyField(Electorate, related_name='issues') #MultipleChoiceField(max_length=250, choices=oe_constants.ELECTORATES)
@@ -92,18 +90,19 @@ class Issue(models.Model):
     budget = models.FileField(upload_to='specialfees', blank=True)
     past_budget = models.FileField(upload_to='specialfees', blank=True)
     account_statement = models.FileField(upload_to='specialfees', blank=True)
+
     total_request_amount = models.DecimalField(default=0, max_digits=8, decimal_places=2)
-    #amount_per_undergrad_annual = models.DecimalField(default=0, max_digits=6, decimal_places=2)
-    #amount_per_grad_annual = models.DecimalField(default=0, max_digits=6, decimal_places=2)
+    total_past_request_amount = models.DecimalField(default=0, max_digits=8, decimal_places=2)
+
     advisory_vote_senate = models.CharField(max_length=128, blank=True)
     advisory_vote_gsc = models.CharField(max_length=128, blank=True)
+    statement_senate = models.TextField(default='', blank=True)
     statement_gsc = models.TextField(default='', blank=True)
-    total_past_request_amount = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     budget_summary = models.TextField(blank=True)
-    petition_budget_summary = models.TextField(blank=True)
-    declared_petition = models.CharField(blank=True,default='N/A',max_length=40)
 
+    declared_petition = models.CharField(blank=True,default='N/A',max_length=40)
     admin_notes = models.TextField(default='', blank=True)
+    petition_required = models.BooleanField(default=True)
 
     def __unicode__(self):
         return "%s: %s" % (self.kind, self.title)
@@ -163,10 +162,7 @@ class Issue(models.Model):
         return "Generic issue"
 
     def get_absolute_url(self):
-        if self.external_url:
-            return self.external_url
-        else:
-            return '/' + self.slug
+        return '/' + self.slug
 
     def sunetids(self):
         """Returns the SUNet IDs associated with this issue, such as
@@ -181,8 +177,7 @@ class Issue(models.Model):
         return [s for s in ids if s]
 
     def sunetid_can_manage(self, sunetid):
-        admins = ('trusheim','ajadler')
-        return sunetid in self.sunetids() or sunetid in admins
+        return sunetid in self.sunetids() or sunetid in ADMINS
 
     def partial_template(self):
         '''Returns the name of the partial template that should be used
@@ -276,6 +271,9 @@ class SpecialFeeRequest(FeeRequest):
             return 100 * (self.total_request_amount - self.total_past_request_amount) / self.total_past_request_amount
         else:
             return 0
+
+    def needs_petition(self):
+        return self.petition_required
 
     def kind_sort(self):
         return 3

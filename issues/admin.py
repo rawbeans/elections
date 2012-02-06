@@ -29,18 +29,17 @@ class IssueAdmin(admin.ModelAdmin):
                                    'name3', 'sunetid3',
                                    'name4', 'sunetid4',
                                    'name5', 'sunetid5',)}),
-        ('Statement', {'fields': ('statement', 'statement_short', 'image', 'external_url')}),
-        ('Misc.', {'fields': ('received_declaration', 'signed_voterguide_agreement')}),
+        ('Statement', {'fields': ('statement', 'image', )}),
+        ('Misc.', {'fields': ('signed_qualifications',)}),
         ('Petition', {'fields': ('petition_validated', 'petition_signatures_count')}),
-        ('Special Fee group', {'fields': ('total_request_amount', 'total_past_request_amount', 
-                                          'budget_summary', 'petition_budget_summary',
+        ('Special Fee group', {'fields': ('total_request_amount', 'total_past_request_amount', 'declared_petition',
                                           'budget', 'past_budget', 'account_statement',
                                           'advisory_vote_gsc', 'advisory_vote_senate',
-                                          'statement_gsc')}),
+                                          'statement_gsc','statement_senate','petition_required')}),
     ]
     prepopulated_fields = {'slug': ('title',)}
     save_on_top = True
-    list_display = ('title', 'kind', issue_members, 'admin_notes')
+    list_display = ('title', 'kind', issue_members, 'public', 'admin_notes')
     #list_editable = ('electorates',)
     list_filter = ('kind',)
     list_per_page = 200

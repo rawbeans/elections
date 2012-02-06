@@ -301,12 +301,33 @@ class NewSpecialFeeForm(NewIssueForm):
 
     declared_petition = forms.ChoiceField(label='Petition Type',
         choices=(
-                ('LBNP','Previous Special Fee, small increase, & legislative body approval: no petition'),
-                ('LBP', 'Legislative body approval: 10% petition'),
-                ('P', 'No legislative body approval: 15% petition')
+                ('no-petition','Previous Special Fee, small increase, & legislative body approval: no petition'),
+                ('10-percent', 'Legislative body approval: 10% petition'),
+                ('15-percent', 'No legislative body approval: 15% petition')
         ),
         widget=forms.RadioSelect,
     )
+
+    qual_fields = [
+        'Our group is currently a registered Voluntary Student Organization (VSO) at Stanford University, and intends to remain a VSO next year.',
+
+        'Our group is not an agency of the Association or an umbrella group. If we are, we will contact the Elections Commission prior to submitting this form.',
+
+        'Our group understands all the ballot deadlines, including the Februrary 21 deadline for full disclosure of all financial information to the Elections Commission '
+        'and applicable legislative bodies',
+
+        'Our group understands the full disclosure requirements as outlined on the Special Fees website and in the Special Fees information packet, and agrees to provide '
+        'full disclosure of the required financial information by the deadline. We understand that not doing so is grounds for disqualification from Special Fees.',
+
+        'Our group understands that petition signatures for one budget are not valid for any other budget, and that if our budget changes, we must start over petitioning.',
+
+        'Our group understands that students may waive their Special Fees after the election.',
+
+        'Our group understands that we may not deprive any students of any or all of our group\'s services unless they receive a fee waiver from our group.',
+
+        'Our group understands that the University has existing rules and regulations that continue to apply during the Special Fees process, '
+        'including policies on flyer placement, use of e-mail, speech in White Plaza, and other areas. We collectively agree to follow those rules and regulations.',
+    ]
 
     def clean_electorates(self):
         electorate = self.cleaned_data.get('electorates')
