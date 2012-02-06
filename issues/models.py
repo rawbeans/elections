@@ -293,7 +293,7 @@ class ExecutiveSlate(Slate):
         proxy = True
 
     def petition_electorate_names(self):
-        return ('undergrad', 'coterm', 'grad')
+        return ('undergrad', 'coterm', 'graduate')
 
     def kind_name(self):
         return "Executive slate"
