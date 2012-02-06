@@ -332,11 +332,11 @@ class NewSpecialFeeForm(NewIssueForm):
     def clean_electorates(self):
         electorate = self.cleaned_data.get('electorates')
         if electorate == 'U':
-            return [Electorate.objects.get(slug='undergrad')]
+            return [Electorate.objects.get(slug='undergrad'), Electorate.objects.get(slug='coterm')]
         elif electorate == 'G':
-            return [Electorate.objects.get(slug='graduate')]
+            return [Electorate.objects.get(slug='graduate'), Electorate.objects.get(slug='coterm')]
         elif electorate == 'J':
-            return [Electorate.objects.get(slug='undergrad'),Electorate.objects.get(slug='graduate')]
+            return [Electorate.objects.get(slug='undergrad'),Electorate.objects.get(slug='graduate'), Electorate.objects.get(slug='coterm')]
         else:
             raise forms.ValidationError("Illegal population selected")
 
