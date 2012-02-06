@@ -7,7 +7,7 @@ from django.forms.widgets import Textarea
 
 class SignatureForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(size=45)), required=True,
-                           help_text='Use your real name or else your signature won\'t count.')
+                           help_text='Use your real name or your signature may not count.')
     sunetid = forms.CharField(widget=forms.TextInput(attrs=dict(size=12)), required=True)
     ip_address = forms.CharField()
     signed_at = forms.DateTimeField()
