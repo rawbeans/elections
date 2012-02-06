@@ -64,17 +64,22 @@ class NewExecutiveSlateForm(NewSlateForm):
 
     qual_fields = [
                     'Both the candidate for President and the candidate for Vice President are currently registered students at Stanford University.',
+
                     'Both the candidate for President and the candidate for Vice President intend to be registered students at Stanford University throughout '
-                    'the 2011-2012 academic year (Fall, Winter, and Spring quarters.)',
+                    'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
+
                     'We agree to follow the Executive Campaign Finance restrictions, spending a maximum of $1000 on '
                     'our campaign. We understand that failure to adhere to these guidelines, failure to submit complete budgets '
                     'and spending reports by the specified deadlines, or failure to inform the Elections Commission of changes in '
                     'our budget can result in disqualification from the election.',
+
                     'We certify that the candidate for President has not previously served in that position for longer than four months.',
                     'We understand that serving as the ASSU Executive is a significant time commitment, includes a time commitment during the summer, '
                     'and that we are expected to remain students in good standing at Stanford throughout our term.',
+
                     'We understand that the University has existing rules and regulations that continue to apply to us during our candidacy,'
                     'including policies on flyer placement, use of e-mail, speech in White Plaza, and other areas. We agree to follow those rules and regulations.',
+
                     'We understand that violations of these rules and regulations may result in ineligibility to run for / hold ASSU office until the following '
                     'Spring Quarter.'
     ]
@@ -116,12 +121,28 @@ class NewClassPresidentSlateForm(NewSlateForm):
     suid4 = forms.CharField(label='4th member\'s SUID', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}))
     suid5 = forms.CharField(label='5th member\'s SUID', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}), required=False)
 
-    qual_fields = {'test':'lollerskating'}
+    qual_fields = [
+        'All slate members are currently registered undergraduate students at Stanford University.',
+
+        'All slate members intend to be registered undergraduate students at Stanford University throughout '
+        'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
+
+        'If we are a Sophomore or Senior class president slate, our slate contains exactly four members. If we are a Junior slate, '
+        'we understand that our slate may contain four or five members, as long as four members are on campus at one time.',
+
+        'We certify that our slate is running for the Class President position of the undergraduate class with which we most '
+        'closely identify socially.',
+
+        'We understand that serving as Class Presidents is a significant time commitment, '
+        'and that we are expected to remain students in good standing at Stanford throughout our term.',
+
+        'We understand that the University has existing rules and regulations that continue to apply to us during our candidacy, '
+        'including policies on flyer placement, use of e-mail, speech in White Plaza, and other areas. We agree to follow those rules and regulations.',
+    ]
 
 
     def clean_electorates(self):
         electorate = self.cleaned_data.get('electorates')
-        print electorate
 
         if electorate is not None:
             return [electorate]
@@ -144,27 +165,62 @@ class NewCandidateForm(NewIssueForm):
     
 
 class NewSenateCandidateForm(NewCandidateForm):
-    pass
+    qual_fields = [
+        'I am a currently registered undergraduate student at Stanford University.',
+
+        'I intend to remain a registered undergradaute student at Stanford University throughout '
+        'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
+
+        'I understand that I must be on-campus throughout all three academic quarters that I am a member of the Undergraduate Senate',
+
+        'I understand that serving as a member of the Undergraduate Senate is a time commitment, and that I will be expected to attend its '
+        'regular meetings, as well as meetings of any subcommittees of which I am a member. I additionally understand that not attending '
+        'meetings can lead to my removal as a Senator.',
+
+        'I understand that my term as a member of the Undergraduate Senate begins this year, no later than 14 days before the end of Spring Quarter',
+
+        'I understand that the University has existing rules and regulations that continue to apply to me during my candidacy, '
+        'including policies on flyer placement, use of e-mail, speech in White Plaza, and other areas. I agree to follow those rules and regulations.',
+        ]
     
 class NewGSCCandidateForm(NewCandidateForm):
     class Meta:
         model = GSCCandidate
-        fields = ('title', 'kind', 'name1', 'sunetid1', 'electorate', 'sponsor_phone', 'slug')
+        fields = ('title', 'kind', 'name1', 'sunetid1', 'electorates', 'sponsor_phone', 'slug')
     
-    electorate = forms.ModelChoiceField(label='GSC district',
+    electorates = forms.ModelChoiceField(label='GSC district',
                                         help_text='Choose At-Large if you want to run ONLY as an At-Large candidate. All school-specific candidates are also considered as At-Large candidates, unless they choose otherwise.',
-                                        queryset=Electorate.GSC_DISTRICTS,
+                                        queryset=Electorate.objects.filter(slug__in=Electorate.GSC_DISTRICTS),
                                         widget=forms.RadioSelect,
                                         empty_label=None,)
-    
-    def clean_electorate(self):
-        electorate = self.cleaned_data.get('electorate')
-        if electorate:
+
+    qual_fields = [
+        'I am a currently registered graduate student at Stanford University.',
+
+        'I intend to remain a registered gradaute student at Stanford University throughout '
+        'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
+
+        'If I am declaring candidacy in a non-at-large district, I certify that this is the district with which I most closely identify, '
+        'e.g. because I was admitted to a department in this district, or because I am currently funded through a department in this district.',
+
+        'I understand that I may take a leave of absence from the GSC for up to one quarter at a time.',
+
+        'I understand that I may be suspended or expelled from the GSC should I miss more than 6 GSC meetings in a three-month period '
+        'without obtaining a leave of absence, or if I violate University regulations.',
+
+        'I will not violate University rules/regulations in an attempt to influence the outcome of the election, and I understand '
+        'that doing so is grounds for disqualification.',
+        ]
+
+    def clean_electorates(self):
+        electorate = self.cleaned_data.get('electorates')
+
+        if electorate is not None:
             return [electorate]
             
     def __init__(self, *args, **kwargs):
         super(NewGSCCandidateForm, self).__init__(*args, **kwargs)
-        self.fields['slug'].help_text = 'Your candidate statement will be at voterguide.stanford.edu/your-url-name. Use only lowercase letters, numbers, and hyphens.'                              
+        self.fields['slug'].help_text = 'Your candidate statement will be at voterguide.stanford.edu/your-url-name. Use only lowercase letters, numbers, and hyphens.You do not need to petition.'
 
 class EditIssueForm(IssueForm):
     class Meta:
@@ -217,6 +273,60 @@ class NewSMSACandidateForm(NewCandidateForm):
             return [electorate]
 
 
+class NewSpecialFeeForm(NewIssueForm):
+    class Meta:
+        model = SpecialFeeRequest
+        fields = ('title', 'kind', 'electorates', 'declared_petition', 'total_request_amount','total_past_request_amount', 'budget', 'past_budget', 'account_statement', 'name1', 'sunetid1', 'suid1', 'sponsor_phone', 'slug',)
+
+    name1 = forms.CharField(label='Sponsor\'s name', widget=forms.TextInput(attrs={'size':'40'}))
+    sunetid1 = forms.CharField(label='Sponsor\'s SUNetID', widget=forms.TextInput(attrs={'size':'12'}))
+    suid1 = forms.CharField(label='Sponsor\'s SUID Number', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}))
+
+    title = forms.CharField(label='Group name', widget=forms.TextInput(attrs={'size':'40'}))
+    budget = forms.FileField(label='MyGroups2 Funding Request for next year',help_text='PDF files only. Must be a completed MyGroups2 funding reqeuest.')
+    past_budget = forms.FileField(label='MyGroups2 funding request from this year', required=False,help_text='PDF files only. If you did not request Special Fees for this year, leave this blank.')
+    account_statement = forms.FileField(label="Current MyGroups2 account statement",help_text='PDF files only')
+    total_request_amount = forms.DecimalField(max_digits=8, decimal_places=2,help_text='Must match the exact amount being requested in Special Fees on your MyGroups2 funding request ' \
+                                                                                       'for next year. If your request includes reserve transfers to cover some fees, do not include '
+                                                                                       'those reserve transfers. Include only money sought directly in Special Fees.',
+                                                label="Exact amount requested in Special Fees next year")
+    total_past_request_amount = forms.DecimalField(max_digits=8, decimal_places=2,label="Amount requested in Special Fees last year",help_text="Must match the exact amount specified " \
+                                                                                  "on your MyGroups2 funding request from last year.")
+
+
+    electorates = forms.ChoiceField(label='Fee Type',
+        choices=(('U','Undergraduate'),('G','Graduate'),('J','Joint')),
+        widget=forms.RadioSelect,
+    )
+
+    declared_petition = forms.ChoiceField(label='Petition Type',
+        choices=(
+                ('LBNP','Previous Special Fee, small increase, & legislative body approval: no petition'),
+                ('LBP', 'Legislative body approval: 10% petition'),
+                ('P', 'No legislative body approval: 15% petition')
+        ),
+        widget=forms.RadioSelect,
+    )
+
+    def clean_electorates(self):
+        electorate = self.cleaned_data.get('electorates')
+        if electorate == 'U':
+            return [Electorate.objects.get(slug='undergrad')]
+        elif electorate == 'G':
+            return [Electorate.objects.get(slug='graduate')]
+        elif electorate == 'J':
+            return [Electorate.objects.get(slug='undergrad'),Electorate.objects.get(slug='graduate')]
+        else:
+            raise forms.ValidationError("Illegal population selected")
+
+    def clean_kind(self):
+        return 'SF'
+
+    def clean(self):
+        self.cleaned_data['public'] = False
+        return super(NewSpecialFeeForm,self).clean()
+
+
 issue_edit_forms = {
     #'CandidateUS': EditCandidateUSForm,
     'Issue': EditIssueForm,
@@ -229,7 +339,7 @@ issue_new_forms = {
     'ClassPresidentSlate': NewClassPresidentSlateForm,
     'ExecutiveSlate': NewExecutiveSlateForm,
     'GSCCandidate': NewGSCCandidateForm,
-    'SpecialFeeRequest': NewIssueForm,
+    'SpecialFeeRequest': NewSpecialFeeForm,
 
     ## SMSA
     'SMSACandidate': NewSMSACandidateForm,

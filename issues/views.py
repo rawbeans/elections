@@ -2,7 +2,7 @@ import random
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from openelections import constants as oe_constants
 from openelections.issues.models import Issue
@@ -10,8 +10,8 @@ from openelections.issues.forms import IssueForm, form_class_for_issue
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import AnonymousUser
 from webauth.models import WebauthUser
-from issues.forms import MultiCreateForm
-from issues.models import Electorate
+from issues.forms import MultiCreateForm, NewSpecialFeeForm
+from issues.models import Electorate, SpecialFeeRequest
 
 index_filters = {
     'exec': (oe_constants.ISSUE_EXEC,),
@@ -64,7 +64,9 @@ def detail(request, issue_slug):
     if isinstance(request.user,WebauthUser):
         sunetid = request.user.webauth_username 
     can_manage = issue.sunetid_can_manage(sunetid)
-    print issue.is_grad_issue()
+
+    if not issue.public and not can_manage:
+        return render_to_response('issues/not_public.html',{'issue': issue}, context_instance=RequestContext(request))
     return render_to_response('issues/detail.html', {'issue': issue, 'can_manage': can_manage, 'detail': True}, context_instance=RequestContext(request))
 
 @login_required
@@ -79,6 +81,20 @@ def manage_new(request, issue_kind):
     new_issue = Issue(kind=issue_kind, sunetid1=sunetid).get_typed()
     form = form_class_for_issue(new_issue)(instance=new_issue)
     return render_to_response('issues/manage/new.html', {'new_issue': new_issue, 'form': form}, context_instance=RequestContext(request))
+
+@login_required
+def manage_new_specialfee(request):
+    sunetid = request.user.webauth_username
+
+    new_issue = SpecialFeeRequest(sunetid1=sunetid,public=False)
+    new_issue.kind = 'SF'
+    form = NewSpecialFeeForm(instance=new_issue)
+    if request.method == 'POST':
+        form = NewSpecialFeeForm(request.POST,request.FILES,instance=new_issue)
+        if form.is_valid() and new_issue.can_declare():
+            form.save()
+            return HttpResponseRedirect(reverse('openelections.issues.views.manage_index'))
+    return render_to_response('issues/manage/new_fee.html', {'new_issue': new_issue, 'form': form}, context_instance=RequestContext(request))
 
 @login_required
 def create(request):

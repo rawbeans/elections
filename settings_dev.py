@@ -12,7 +12,7 @@ DATABASES = {
     }
 }
 
-#MEDIA_ROOT = '/home/sqs/proj/ec/openelections/public'
+MEDIA_ROOT = '/Users/stephen/Desktop/openelections/public/media'
 BALLOT_ROOT = '/Users/stephen/Desktop/openelections/ballots'
 LOG_ROOT = '/Users/stephen/Desktop/openelections/logs'
 

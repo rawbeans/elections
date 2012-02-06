@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('openelections.issues.views',
     (r'^manage/?$', 'manage_index'),
+    (r'^manage/new/SF/?$', 'manage_new_specialfee'),
     (r'^manage/new/(?P<issue_kind>[\w\d-]+)/?$', 'manage_new'),
     (r'^manage/create/?$', 'create'),
 

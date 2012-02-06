@@ -24,6 +24,10 @@ class Electorate(models.Model):
     SMSA_CLASS_YEARS = ('smsa-1','smsa-2', 'smsa-3', 'smsa-4', 'smsa-5plus')
     SMSA_POPULATIONS = SMSA_CLASS_YEARS
 
+    NUM_UGRAD_INCL_COTERM = 6979
+    NUM_GRAD_INCL_COTERM = 8600
+    NUM_COTERM = 273
+
     @classmethod
     def queryset_with_slugs(klass, slugs):
         return klass.objects.filter(slug__in=slugs)
@@ -89,14 +93,15 @@ class Issue(models.Model):
     past_budget = models.FileField(upload_to='specialfees', blank=True)
     account_statement = models.FileField(upload_to='specialfees', blank=True)
     total_request_amount = models.DecimalField(default=0, max_digits=8, decimal_places=2)
-    amount_per_undergrad_annual = models.DecimalField(default=0, max_digits=6, decimal_places=2)
-    amount_per_grad_annual = models.DecimalField(default=0, max_digits=6, decimal_places=2)
+    #amount_per_undergrad_annual = models.DecimalField(default=0, max_digits=6, decimal_places=2)
+    #amount_per_grad_annual = models.DecimalField(default=0, max_digits=6, decimal_places=2)
     advisory_vote_senate = models.CharField(max_length=128, blank=True)
     advisory_vote_gsc = models.CharField(max_length=128, blank=True)
     statement_gsc = models.TextField(default='', blank=True)
     total_past_request_amount = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     budget_summary = models.TextField(blank=True)
     petition_budget_summary = models.TextField(blank=True)
+    declared_petition = models.CharField(blank=True,default='N/A',max_length=40)
 
     admin_notes = models.TextField(default='', blank=True)
 
@@ -212,6 +217,21 @@ class Issue(models.Model):
     def kind_sort(self):
         return 999
 
+    # amounts are calcuated on the fly
+    @property
+    def amount_per_undergrad_annual(self):
+        if self.electorates == [Electorate.objects.get(slug='undergrad')]:
+            return round(float(self.total_request_amount) / float(Electorate.NUM_UGRAD_INCL_COTERM),2)
+        else:
+            return round(float(self.total_request_amount) / float(Electorate.NUM_UGRAD_INCL_COTERM + Electorate.NUM_GRAD_INCL_COTERM - Electorate.NUM_COTERM),2)
+
+    @property
+    def amount_per_grad_annual(self):
+        if self.electorates == [Electorate.objects.get(slug='graduate')]:
+            return round(float(self.total_request_amount) / float(Electorate.NUM_GRAD_INCL_COTERM - Electorate.NUM_COTERM),2)
+        else:
+            return round(float(self.total_request_amount) / float(Electorate.NUM_UGRAD_INCL_COTERM + Electorate.NUM_GRAD_INCL_COTERM - Electorate.NUM_COTERM),2)
+
 class Candidate(Issue):
     class Meta:
         proxy = True
@@ -243,7 +263,7 @@ class SpecialFeeRequest(FeeRequest):
         return "Special Fees"
 
     def name_and_office(self):
-        return "a Special Fee request from %s" % self.title
+        return "Special Fee request from %s" % self.title
 
     def partial_template(self):
         return "issues/partials/special-fee-request.html"

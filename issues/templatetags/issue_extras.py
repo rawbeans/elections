@@ -53,7 +53,7 @@ def moneyfmt(value, places=2, curr='', sep=',', dp='.',
 
 @register.filter
 def currency(value):
-    return moneyfmt(value, curr='$', sep=',')
+    return moneyfmt(Decimal(str(value)), curr='$', sep=',')
     
 currency.is_safe = True
 

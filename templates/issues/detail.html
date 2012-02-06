@@ -3,6 +3,10 @@
 {% block content %}
 
 <h1>{{ issue.title }} ({{ issue.kind_name }})</h1>
+    {% if not issue.public %}
+    <div style = 'background:#FDC68A; padding:.25em;'>This page is not public because it is being reviewed by the ASSU Elections Commission; it can only
+    be viewed by the sponsor and the ASSU Elections Commission, and is not being listed publicly.</div>
+    {% endif %}
 
 {% include issue.partial_template %}
 

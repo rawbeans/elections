@@ -36,8 +36,7 @@ class IssueAdmin(admin.ModelAdmin):
                                           'budget_summary', 'petition_budget_summary',
                                           'budget', 'past_budget', 'account_statement',
                                           'advisory_vote_gsc', 'advisory_vote_senate',
-                                          'statement_gsc', 'amount_per_undergrad_annual',
-                                          'amount_per_grad_annual')}),
+                                          'statement_gsc')}),
     ]
     prepopulated_fields = {'slug': ('title',)}
     save_on_top = True

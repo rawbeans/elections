@@ -1,32 +1,22 @@
 {% extends "issues/base-public.html" %}
 
 {% block content %}
-
-{% if new_issue.needs_petition %}
-    <h1>Declaration of Intent: {{ new_issue.kind_name }} </h1>
-    <p>
-        You aren't obligated to run (or do anything) when you declare intent, but you must declare intent if you will be running.
+    <h1>Declaration of Intent: Special Fee </h1>
+    <p>You aren't obligated to run (or do anything) when you declare intent, but you must declare intent if you will be running.
         See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> for more info,
         and <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a> if you have any questions.</p>
     <p>When you complete this form, you will automatically start a petition on this website. If you do not wish to petition
     publicly, please <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a>.</p>
-{% else %}
-    <h1>Declaration of Intent: {{ new_issue.kind_name }}</h1>
-{% endif %}
-
-<p><a href="/issues/manage">&laquo; Back to list of all positions</a></p>
 
 <hr/>
-
-    {% if error %}
-    <dd style="background:#CC0000;color:white;font-weight:bold;padding:.5em;margin:1.5em;">Your form was not completed, and you have not yet successfully declared intent. Please review the form and correct the errors.</dd>
-    {% endif %}
     {% if form.non_field_errors %}
     <dd style="background:#CC0000;color:white;font-weight:bold;padding:.5em;margin:1.5em;">{{ form.non_field_errors }}</dd>
     {% endif %}
 
-    <h2>Information</h2>
-<form action="{% url issues.views.create %}" method="post">
+    <h2>Special Fee Information</h2>
+
+    <h2>Sponsor Information</h2>
+<form action="{% url issues.views.manage_new_specialfee %}" method="post" enctype="multipart/form-data">
     <dl>
     {% for field in form %}
         {% if field.is_hidden %}

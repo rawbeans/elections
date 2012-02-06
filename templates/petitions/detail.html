@@ -7,6 +7,11 @@ dd li { list-style-type: none; }
 {% block content %}
 <h1>{{ issue.title }} ({{ issue.kind_name }})</h1>
 
+    {% if not issue.public %}
+        <div style = 'background:#FDC68A; padding:.25em;'>This page is not public because it is being reviewed by the ASSU Elections Commission; it can only
+            be viewed by the sponsor and the ASSU Elections Commission, and is not being listed publicly.</div>
+    {% endif %}
+
 {% ifequal issue.kind "US" %}
     <p><a href="mailto:{{ issue.sunetid1 }}@stanford.edu">{{ issue.sunetid1 }}@stanford.edu</a></p>
 {% endifequal %}
@@ -48,7 +53,7 @@ window.location.hash+='#sign-form';
 {% if form %}
 <h2>Sign petition<a id="sign-form"></a></h2>
 <form action="{% url petitions.views.sign issue.slug %}" method="post">
-    <p>You're signing a petition for <strong>{{ issue.name_and_office }}</strong>. Your signature indicates your support for this {{ issue.kind_name }} and helps them qualify for ballot placement in the ASSU Election on April 7&ndash;8. <a href="http://elections.stanford.edu/candidates/">Learn more about the {{ issue.elected_name }} role and how to get involved.</a></p>
+    <p>You're signing a petition for <strong>{{ issue.name_and_office }}</strong>. Your signature indicates your support for this {{ issue.kind_name }} and helps them qualify for ballot placement in the ASSU Election on April 12&ndash;13. <a href="http://elections.stanford.edu/candidates/">Learn more about the {{ issue.elected_name }} role and how to get involved.</a></p>
     
     <p>Your name, SUNet ID, and enrollment status will be visible to this {{ issue.kind_name }} if you sign this petition{% ifequal issue.kind "SF" %}, along with those of the other {{ issue.signatures.count }} signers{% endifequal %}. If you aren't <strong>{{ sunetid }}</strong>, close your browser to log out. See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> or <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a> if you have any questions. </p>
     <br/>

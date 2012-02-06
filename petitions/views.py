@@ -25,6 +25,9 @@ def detail(request, issue_slug):
     
     sunetid = request.user.webauth_username
     can_manage = issue.sunetid_can_manage(sunetid)
+
+    if not issue.public and not can_manage:
+        return render_to_response('issues/not_public.html',{'issue': issue}, context_instance=RequestContext(request))
     
     signatures = Signature.objects.filter(issue=issue).order_by('-id') #signatures are public
     newsig = Signature()
