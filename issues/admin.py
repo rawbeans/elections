@@ -30,7 +30,7 @@ class IssueAdmin(admin.ModelAdmin):
                                    'name4', 'sunetid4',
                                    'name5', 'sunetid5',)}),
         ('Statement', {'fields': ('statement', 'image', )}),
-        ('Misc.', {'fields': ('signed_qualifications',)}),
+        ('Misc.', {'fields': ('signed_qualifications','sponsor_phone')}),
         ('Petition', {'fields': ('petition_validated', 'petition_signatures_count')}),
         ('Special Fee group', {'fields': ('total_request_amount', 'total_past_request_amount', 'declared_petition',
                                           'budget', 'past_budget', 'account_statement',

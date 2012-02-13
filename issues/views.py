@@ -21,7 +21,6 @@ index_filters = {
     
     'special-fee-requests': (oe_constants.ISSUE_SPECFEE,),
     'referendums': (oe_constants.ISSUE_REFERENDUM,),
-
     
     'petitioning': [oe_constants.ISSUE_EXEC,oe_constants.ISSUE_US,oe_constants.ISSUE_CLASSPRES,oe_constants.ISSUE_SPECFEE,],
     'all': [oe_constants.ISSUE_EXEC,oe_constants.ISSUE_US,oe_constants.ISSUE_CLASSPRES,oe_constants.ISSUE_SPECFEE,oe_constants.ISSUE_GSC,oe_constants.ISSUE_REFERENDUM],
