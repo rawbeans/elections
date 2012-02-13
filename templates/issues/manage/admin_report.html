@@ -1,0 +1,23 @@
+{% extends "issues/base-public.html" %}
+
+{% block content %}
+<table>
+    <tr><th>Title</th><th>Type</th><th>Sponsor Name</th><th>SUNetID</th><th>SUID</th><th>Contact Number</th></tr>
+    {% for issue in issues %}
+    <tr><td>{{ issue.title }}</td><td>{{ issue.kind_name }}</td><td>{{ issue.name1 }}</td><td>{{ issue.sunetid1 }}</td><td>{{ issue.suid1 }}</td><td>{{ issue.sponsor_phone }}</td></tr>
+        {% if issue.name2 %}
+        <tr><td colspan="2"></td><td>{{ issue.name2 }}</td><td>{{ issue.sunetid2 }}</td><td>{{ issue.suid2 }}</td><td></td></tr>
+        {% endif %}
+        {% if issue.name3 %}
+            <tr><td colspan="2"></td><td>{{ issue.name3 }}</td><td>{{ issue.sunetid3 }}</td><td>{{ issue.suid3 }}</td><td></td></tr>
+        {% endif %}
+        {% if issue.name4 %}
+            <tr><td colspan="2"></td><td>{{ issue.name4 }}</td><td>{{ issue.sunetid4 }}</td><td>{{ issue.suid4 }}</td><td></td></tr>
+        {% endif %}
+        {% if issue.name5 %}
+            <tr><td colspan="2"></td><td>{{ issue.name5 }}</td><td>{{ issue.sunetid5 }}</td><td>{{ issue.suid5 }}</td><td></td></tr>
+        {% endif %}
+
+    {% endfor %}
+</table>
+{% endblock %}

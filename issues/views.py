@@ -128,3 +128,10 @@ def manage_edit(request, issue_slug):
         form = form_class_for_issue(issue)(instance=issue)
     
     return render_to_response('issues/manage/edit.html', {'issue': issue, 'form': form}, context_instance=RequestContext(request))
+
+@login_required
+@permission_required('issue_add')
+def admin_report(request):
+    issues = Issue.objects.filter(public=True)
+    [issue.get_typed() for issue in issues].sort(key=lambda e: e.kind_sort())
+    return render_to_response('issues/manage/admin_report.html', {'issues': issues}, context_instance=RequestContext(request))
