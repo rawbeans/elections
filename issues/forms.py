@@ -87,7 +87,7 @@ class NewClassPresidentSlateForm(NewSlateForm):
     class Meta:
         model = ClassPresidentSlate
         fields = ('title', 'kind', 'electorates', 'name1', 'sunetid1', 'suid1', 'name2', 'sunetid2', 'suid2', 'name3', 'sunetid3', 'suid3',
-                               'name4', 'sunetid4','suid4', 'name5', 'sunetid5', 'suid5',  'sponsor_phone', 'slug')
+                               'name4', 'sunetid4','suid4', 'name5', 'sunetid5', 'suid5', 'name6', 'sunetid6', 'suid6',  'sponsor_phone', 'slug')
     
     electorates = forms.ModelChoiceField(label='Class year',
                                         queryset=Electorate.objects.filter(slug__in=Electorate.UNDERGRAD_CLASS_YEARS),
@@ -109,17 +109,20 @@ class NewClassPresidentSlateForm(NewSlateForm):
                             required=False)
     sunetid5 = forms.CharField(label='5th member\'s SUNet ID @stanford.edu', widget=forms.TextInput(attrs={'size':'12'}),
                                required=False)
-#    name6 = forms.CharField(label='6th member\'s name', widget=forms.TextInput(attrs={'size':'40'}),
-#                            help_text='Only Junior Class President slates can have 5/6 members (as long as 4 are on campus at one time).',
-#                            required=False)
-#    sunetid6 = forms.CharField(label='6th member\'s SUNet ID @stanford.edu', widget=forms.TextInput(attrs={'size':'12'}),
-#                               required=False)
+    name6 = forms.CharField(label='6th member\'s name', widget=forms.TextInput(attrs={'size':'40'}),
+                            help_text='Only Junior Class President slates can have 5/6 members (as long as 4 are on campus at one time).',
+                            required=False)
+    sunetid6 = forms.CharField(label='6th member\'s SUNet ID @stanford.edu', widget=forms.TextInput(attrs={'size':'12'}),
+                                help_text='Only Junior Class President slates can have 5/6 members (as long as 4 are on campus at one time).',
+                               required=False)
 
     suid1 = forms.CharField(label='1st member\'s SUID', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}))
     suid2 = forms.CharField(label='2nd member\'s SUID', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}))
     suid3 = forms.CharField(label='3rd member\'s SUID', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}))
     suid4 = forms.CharField(label='4th member\'s SUID', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}))
     suid5 = forms.CharField(label='5th member\'s SUID', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}), required=False)
+    suid6 = forms.CharField(label='6th member\'s SUID', help_text='Will not be displayed publicly. e.g.: 05512345', widget=forms.TextInput(attrs={'size':12}), required=False)
+
 
     qual_fields = [
         'All slate members are currently registered undergraduate students at Stanford University.',
@@ -128,7 +131,7 @@ class NewClassPresidentSlateForm(NewSlateForm):
         'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
 
         'If we are a Sophomore or Senior class president slate, our slate contains exactly four members. If we are a Junior slate, '
-        'we understand that our slate may contain four or five members, as long as four members are on campus at one time.',
+        'we understand that our slate may contain four, five, or six members, AND four members must be on campus at all times.',
 
         'We certify that our slate is running for the Class President position of the undergraduate class with which we most '
         'closely identify socially.',

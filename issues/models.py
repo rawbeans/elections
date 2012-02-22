@@ -173,7 +173,7 @@ class Issue(models.Model):
         """
 
         ids = (self.sunetid1, self.sunetid2, self.sunetid3,
-               self.sunetid4, self.sunetid5)
+               self.sunetid4, self.sunetid5, self.sunetid6)
         return [s for s in ids if s]
 
     def sunetid_can_manage(self, sunetid):
@@ -201,7 +201,7 @@ class Issue(models.Model):
         is a member.'''
         return klass.objects.filter(Q(sunetid1=sunetid) | Q(sunetid2=sunetid) |
                                     Q(sunetid3=sunetid) | Q(sunetid4=sunetid) |
-                                    Q(sunetid5=sunetid))
+                                    Q(sunetid5=sunetid) | Q(sunetid6=sunetid))
 
     def is_undergrad_issue(self):
         return self.electorates.filter(slug='undergrad').count() > 0
