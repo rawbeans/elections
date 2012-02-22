@@ -50,7 +50,7 @@
     <br/>
     {% endif %}
     {% else %}
-    <dt>No petition required.</dt>
+    <dt>No petition required!</dt>
 {% endif %}
 
 
@@ -79,7 +79,7 @@
 {% endif %}
 
 {% if issue.past_budget %}
-    <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.past_budget.url }}">Previous year's request</a></p>
+    <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.past_budget.url }}">Previous Special Fee</a></p>
     {% if not hidepdfs %}{{ issue.past_budget.url|pdf_viewer|safe }}{% endif %}
     <br/>
 {% endif %}
@@ -88,15 +88,6 @@
     <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.account_statement.url }}">Current bank statement</a></p>
     {% if not hidepdfs %}{{ issue.account_statement.url|pdf_viewer|safe }}{% endif %}
     <br/>
-{% endif %}
-
-{% if issue.statement_short %}
-    <h2>Group summary statement</h2>
-    <p>{{ issue.statement_short }}</p>
-{% endif %}
-
-{% if issue.budget_summary %}
-    {{ issue.budget_summary|safe }}
 {% endif %}
 
 <br style="clear:both">
