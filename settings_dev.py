@@ -8,13 +8,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dev_openelections',
         'USER': 'root',
-        'PASSWORD': 'hello1'
+        'PASSWORD': 'hi'
     }
 }
 
-MEDIA_ROOT = '/Users/stephen/Desktop/openelections/public/media'
-BALLOT_ROOT = '/Users/stephen/Desktop/openelections/ballots'
-LOG_ROOT = '/Users/stephen/Desktop/openelections/logs'
+MEDIA_ROOT = '/Users/trusheim/Desktop/openelections/public/media'
+BALLOT_ROOT = '/Users/trusheim/Desktop/openelections/ballots'
+LOG_ROOT = '/Users/trusheim/Desktop/openelections/logs'
 
 
 WEBAUTH_SHARED_SECRET = 'test'

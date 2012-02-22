@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 
 from django.contrib import admin
 admin.autodiscover()
+admin.site.login_template = 'webauth/admin_redirect.html'
 
 urlpatterns = patterns('',
     #(r'^$', 'openelections.ballot.views.landing'),
