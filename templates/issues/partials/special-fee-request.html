@@ -79,7 +79,7 @@
 {% endif %}
 
 {% if issue.past_budget %}
-    <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.past_budget.url }}">Previous Special Fee</a></p>
+    <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.past_budget.url }}">Current operating budget</a></p>
     {% if not hidepdfs %}{{ issue.past_budget.url|pdf_viewer|safe }}{% endif %}
     <br/>
 {% endif %}
