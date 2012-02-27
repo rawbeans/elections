@@ -215,14 +215,14 @@ class Issue(models.Model):
     # amounts are calcuated on the fly
     @property
     def amount_per_undergrad_annual(self):
-        if self.electorates == [Electorate.objects.get(slug='undergrad')]:
+        if self.is_undergrad_issue() and not self.is_grad_issue():
             return round(float(self.total_request_amount) / float(Electorate.NUM_UGRAD_INCL_COTERM),2)
         else:
             return round(float(self.total_request_amount) / float(Electorate.NUM_UGRAD_INCL_COTERM + Electorate.NUM_GRAD_INCL_COTERM - Electorate.NUM_COTERM),2)
 
     @property
     def amount_per_grad_annual(self):
-        if self.electorates == [Electorate.objects.get(slug='graduate')]:
+        if self.is_grad_issue() and not self.is_undergrad_issue():
             return round(float(self.total_request_amount) / float(Electorate.NUM_GRAD_INCL_COTERM - Electorate.NUM_COTERM),2)
         else:
             return round(float(self.total_request_amount) / float(Electorate.NUM_UGRAD_INCL_COTERM + Electorate.NUM_GRAD_INCL_COTERM - Electorate.NUM_COTERM),2)
