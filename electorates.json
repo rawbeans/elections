@@ -164,7 +164,7 @@
         "model": "issues.Electorate",
         "fields":
         {
-            "name": "GSC",
+            "name": "At-Large",
 	    "slug": "gsc-atlarge",
 	    "voter_name_opt" : ""
         }
