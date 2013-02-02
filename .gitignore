@@ -5,6 +5,7 @@ data/
 .DS_Store
 ._*
 .idea/
+*.py~
 
 ballots/
 ignore/
