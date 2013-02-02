@@ -1,0 +1,222 @@
+[
+    {
+        "pk": "1",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Undergraduate",
+	    "slug": "undergrad",
+	    "voter_name_opt" : ""
+        }
+    }, 
+    {
+        "pk": "2",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Graduate",
+	    "slug": "graduate",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "3",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Coterm",
+	    "slug": "coterm",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "4",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Sophomore",
+	    "slug": "undergrad-2",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "5",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Junior",
+	    "slug": "undergrad-3",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "6",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Senior",
+	    "slug": "undergrad-4",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "7",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "5th+ Year, Undergraduate",
+	    "slug": "undergrad-5plus",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "8",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "GSB",
+	    "slug": "gsc-gsb",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "9",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Earth Sciences",
+	    "slug": "gsc-earthsci",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "10",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Education",
+	    "slug": "gsc-edu",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "11",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Engineering",
+	    "slug": "gsc-eng",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "12",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Humanities",
+	    "slug": "gsc-hs-hum",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "13",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Natural Sciences",
+	    "slug": "gsc-hs-natsci",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "14",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Social Sciences",
+	    "slug": "gsc-hs-socsci",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "15",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Law",
+	    "slug": "gsc-law",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "16",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "Medical School",
+	    "slug": "gsc-med",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "17",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "GSC",
+	    "slug": "gsc-atlarge",
+	    "voter_name_opt" : ""
+        }
+    },
+    {   
+        "pk": "18",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "1st Year Med Student",
+	    "slug": "smsa-1",
+	    "voter_name_opt" : ""
+        }
+    },
+    {
+        "pk": "19",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "2nd Year Med Student",
+	    "slug": "smsa-2",
+	    "voter_name_opt" : ""
+        }
+    },
+    {
+        "pk": "20",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "3rd Year Med Student",
+	    "slug": "smsa-3",
+	    "voter_name_opt" : ""
+        }
+    },
+    {
+        "pk": "21",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "4th Year Med Student",
+	    "slug": "smsa-4",
+	    "voter_name_opt" : ""
+        }
+    },
+    {
+        "pk": "22",
+        "model": "issues.Electorate",
+        "fields":
+        {
+            "name": "5th+ Year Med Student",
+	    "slug": "smsa-5plus",
+	    "voter_name_opt" : ""
+        }
+    }
+]

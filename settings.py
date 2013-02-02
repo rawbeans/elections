@@ -4,7 +4,7 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Stephen Trusheim', 'tru@elections.stanford.edu'),
+    ('Daniel Holstein', 'holstein@elections.stanford.edu'),
 )
 
 MANAGERS = ADMINS
@@ -30,25 +30,14 @@ USE_I18N = False
 # Example: "/home/media/media.lawrence.com/"
 #MEDIA_ROOT = ''
 
-BASE_URL = 'http://localhost:8000/'
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = BASE_URL + 'media/'
-
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = BASE_URL + 'media/admin/'
-
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'qszo)3canz!+28v)6ha)6*8oe$2hpjibn0il$@2sk$tqp&5)lv'
+#SECRET_KEY = 'qszo)3canz!+28v)6ha)6*8oe$2hpjibn0il$@2sk$tqp&5)lv'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.load_template_source',
+    'django.template.loaders.app_directories.Loader'
+#    'django.template.loaders.app_directories.load_template_source',
 #     'django.template.loaders.eggs.load_template_source',
 )
 
@@ -83,11 +72,13 @@ INSTALLED_APPS = (
     'openelections.issues',
     'openelections.petitions',
     'webauth',
-    #'openelections.ballot',
+    'openelections.ballot',
     #'openelections.webauth',
 )
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-WEBAUTH_SHARED_SECRET = 'a2d24bf589b1dea3d83f317019e2ff83bf430b8d1c2a3f741dbf7d72f196d8cf6a6d113de356dc77'
-WEBAUTH_URL = 'https://www.stanford.edu/~trusheim/cgi-bin/wa-authenticate-test.php'
+#WEBAUTH_SHARED_SECRET = 'a2d24bf589b1dea3d83f317019e2ff83bf430b8d1c2a3f741dbf7d72f196d8cf6a6d113de356dc77'
+#WEBAUTH_URL = 'https://www.stanford.edu/~trusheim/cgi-bin/wa-authenticate-test.php'
+
+STUDENT_CSV = '' # FILL ME!
