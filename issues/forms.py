@@ -90,7 +90,7 @@ class NewClassPresidentSlateForm(NewSlateForm):
                                'name4', 'sunetid4','suid4', 'name5', 'sunetid5', 'suid5', 'name6', 'sunetid6', 'suid6',  'sponsor_phone', 'slug')
     
     electorates = forms.ModelChoiceField(label='Class year',
-                                        queryset=Electorate.objects.filter(slug__in=Electorate.UNDERGRAD_CLASS_YEARS),
+                                        queryset=Electorate.objects.filter(slug__in=Electorate.UNDERGRAD_CLASS_YEARS).exclude(slug='undergrad-5plus'),
                                         widget=forms.RadioSelect,
                                         empty_label=None,
                                         help_text="Select the class whose presidency you're seeking. For example, if you're running for Sophomore Class President, choose Sophomore.")

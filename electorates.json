@@ -144,7 +144,7 @@
         "model": "issues.Electorate",
         "fields":
         {
-            "name": "Law",
+            "name": "Law School",
 	    "slug": "gsc-law",
 	    "voter_name_opt" : ""
         }
