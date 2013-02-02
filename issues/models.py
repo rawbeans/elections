@@ -3,7 +3,7 @@ from django.db.models import Q
 from openelections import constants as oe_constants
 from openelections.issues.text import POSITION_DESCRIPTIONS
 
-ADMINS = ('trusheim','ajadler')
+ADMINS = ('holstein')
 
 def no_smsa(s):
     return str(s).replace('SMSA ', '')
