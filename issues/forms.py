@@ -66,7 +66,7 @@ class NewExecutiveSlateForm(NewSlateForm):
                     'Both the candidate for President and the candidate for Vice President are currently registered students at Stanford University.',
 
                     'Both the candidate for President and the candidate for Vice President intend to be registered students at Stanford University throughout '
-                    'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
+                    'the 2013-2014 academic year (Fall, Winter, and Spring quarters.)',
 
                     'We agree to follow the Executive Campaign Finance restrictions, spending a maximum of $1000 on '
                     'our campaign. We understand that failure to adhere to these guidelines, failure to submit complete budgets '
@@ -128,7 +128,7 @@ class NewClassPresidentSlateForm(NewSlateForm):
         'All slate members are currently registered undergraduate students at Stanford University.',
 
         'All slate members intend to be registered undergraduate students at Stanford University throughout '
-        'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
+        'the 2013-2014 academic year (Fall, Winter, and Spring quarters.)',
 
         'If we are a Sophomore or Senior class president slate, our slate contains exactly four members. If we are a Junior slate, '
         'we understand that our slate may contain four, five, or six members, AND four members must be on campus at all times.',
@@ -172,7 +172,7 @@ class NewSenateCandidateForm(NewCandidateForm):
         'I am a currently registered undergraduate student at Stanford University.',
 
         'I intend to remain a registered undergradaute student at Stanford University throughout '
-        'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
+        'the 2013-2014 academic year (Fall, Winter, and Spring quarters.)',
 
         'I understand that I must be on-campus throughout all three academic quarters that I am a member of the Undergraduate Senate',
 
@@ -201,7 +201,7 @@ class NewGSCCandidateForm(NewCandidateForm):
         'I am a currently registered graduate student at Stanford University.',
 
         'I intend to remain a registered gradaute student at Stanford University throughout '
-        'the 2012-2013 academic year (Fall, Winter, and Spring quarters.)',
+        'the 2013-2014 academic year (Fall, Winter, and Spring quarters.)',
 
         'If I am declaring candidacy in a non-at-large district, I certify that this is the district with which I most closely identify, '
         'e.g. because I was admitted to a department in this district, or because I am currently funded through a department in this district.',
