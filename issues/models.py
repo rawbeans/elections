@@ -249,7 +249,7 @@ class SpecialFeeRequest(FeeRequest):
         proxy = True
 
     def can_declare(self):
-	return False
+        return False
 
     def petition_electorates(self):
         return self.electorates
@@ -270,7 +270,7 @@ class SpecialFeeRequest(FeeRequest):
         return "issues/partials/special-fee-requests.html"
 
     def petition_open(self):
-	return False
+        return False
 
     def total_request_percent_change(self):
         if self.total_past_request_amount > 0:
