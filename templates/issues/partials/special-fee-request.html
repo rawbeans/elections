@@ -43,13 +43,17 @@
     </tbody>
 </table>
 {% if issue.needs_petition %}
-    {% if issue.public and issue.petition_open %}
-        <dt>
-            <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
-        </dt>
+    {% if issue.public %}
+	<dt>
+        {% if issue.petition_open %}
+           <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>	
+        {% else %}
+           <a href="{% url petitions.views.detail issue.slug %}">&raquo; View petition</a>	
+        {% endif %}
+	</dt>
     <br/>
     {% endif %}
-    {% else %}
+{% else %}
     <dt>No petition required!</dt>
 {% endif %}
 
@@ -91,4 +95,3 @@
 {% endif %}
 
 <br style="clear:both">
-
