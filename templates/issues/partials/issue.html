@@ -45,12 +45,13 @@
             {% if issue.external_url %}(off-site){% endif %}
         </dd>
     {% endif %}
-    {% if issue.needs_petition and issue.public and issue.petition_open %}
-        <dt>
-            <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
-        </dt>
+    {% if issue.needs_petition and issue.public %}
+        {% if issue.petition_open %}
+           <dt><a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a></dt>
+	{% else %}
+           <dt><a href="{% url petitions.views.detail issue.slug %}">&raquo; View petition</a></dt>	
+        {% endif %}
     {% endif %}
 </dl>
 
 <br style="clear:both">
-

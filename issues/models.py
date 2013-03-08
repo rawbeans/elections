@@ -138,7 +138,7 @@ class Issue(models.Model):
         return True
 
     def petition_open(self):
-        return True #not self.petition_validated
+        return False #not self.petition_validated
 
     def show_petition_results(self):
         return False
@@ -268,9 +268,6 @@ class SpecialFeeRequest(FeeRequest):
 
     def partial_index_template(self):
         return "issues/partials/special-fee-requests.html"
-
-    def petition_open(self):
-        return False
 
     def total_request_percent_change(self):
         if self.total_past_request_amount > 0:
