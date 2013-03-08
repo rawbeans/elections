@@ -108,7 +108,7 @@ class Issue(models.Model):
         return "%s: %s" % (self.kind, self.title)
 
     def can_declare(self):
-        return True
+        return False
 
     def get_typed(self):
         issue_class = kinds_classes.get(self.kind, Issue)
@@ -248,9 +248,6 @@ class SpecialFeeRequest(FeeRequest):
     class Meta:
         proxy = True
 
-    def can_declare(self):
-        return False
-
     def petition_electorates(self):
         return self.electorates
 
@@ -388,9 +385,6 @@ class GSCCandidate(Candidate):
     class Meta:
         proxy = True
 
-    def can_declare(self):
-        return True
-
     def district(self):
         districts = self.electorates.filter(slug__in=Electorate.GSC_DISTRICTS)
         if not districts:
@@ -421,9 +415,6 @@ class Referendum(Candidate):
     class Meta:
         proxy = True
 
-    def can_declare(self):
-        return False
-
     def name_and_office(self):
         return "%s, a referendum" \
                % (self.title)
@@ -448,9 +439,6 @@ class Referendum(Candidate):
 class SMSACandidate(Candidate):
     class Meta:
         proxy = True
-
-    def can_declare(self):
-        return True
 
     def candidate_electorate_label(self):
         return None
