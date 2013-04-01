@@ -48,7 +48,7 @@
     {% if issue.needs_petition and issue.public %}
         {% if issue.petition_open %}
            <dt><a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a></dt>
-	{% elif issue.needs_petition and not issue.petition_open %}
+	{% elif issue.needs_petition %}
            <dt><a href="{% url petitions.views.detail issue.slug %}">&raquo; View petition</a></dt>	
         {% endif %}
     {% endif %}
