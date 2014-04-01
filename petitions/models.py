@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.db import models
-from openelections.issues.models import Electorate, Issue, SenateCandidate
+from issues.models import Electorate, Issue, SenateCandidate
 from webauth.models import WebauthUser
 from django.contrib.auth.models import User
 

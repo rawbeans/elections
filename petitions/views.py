@@ -4,9 +4,9 @@ from django.http import HttpResponseRedirect, QueryDict, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from openelections.petitions.models import Signature
-from openelections.petitions.forms import SignatureForm
-from openelections.issues.models import Issue
+from petitions.models import Signature
+from petitions.forms import SignatureForm
+from issues.models import Issue
 from django.contrib.auth.decorators import login_required, permission_required
 from petitions.models import PaperSignature, ValidationResult
 from petitions.forms import ValidationForm
@@ -49,7 +49,7 @@ def sign(request, issue_slug):
     issue = get_object_or_404(Issue, slug=issue_slug).get_typed()
     
     if request.method != 'POST':
-        return HttpResponseRedirect(reverse('openelections.petitions.views.detail', None, [issue_slug]))
+        return HttpResponseRedirect(reverse('petitions.views.detail', None, [issue_slug]))
     
     sunetid = request.user.webauth_username
     attrs = request.POST.copy()
@@ -57,10 +57,12 @@ def sign(request, issue_slug):
     attrs['issue'] = issue.id
     attrs['ip_address'] = request.META['REMOTE_ADDR']
     attrs['signed_at'] = datetime.now()
+    
     form = SignatureForm(issue, attrs)
+    
     if form.is_valid() and issue.petition_open():
         form.save()
-        return HttpResponseRedirect(reverse('openelections.petitions.views.detail', None, [issue_slug])+'#sign-form')
+        return HttpResponseRedirect(reverse('petitions.views.detail', None, [issue_slug])+'#sign-form')
     else:
         return render_to_response('petitions/detail.html',
                                   {
@@ -189,7 +191,7 @@ def validate_send(request,start):
         else:
             response += "<br />FAILED TO SEND to " + signature.sunetid + "<br />"
     last = signatures[len(signatures)-1].pk
-    url = reverse('openelections.petitions.views.validate_send',None,[last])
+    url = reverse('petitions.views.validate_send',None,[last])
     response = "<a href = '%s'>Send next</a><br />" % url + response
     return HttpResponse(response)
 

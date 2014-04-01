@@ -1,13 +1,25 @@
 from django.conf import settings
+import os, sys
+
+sys.path.insert(1, os.path.dirname(os.path.realpath(__file__)))
+
+SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
+# Find templates in the same folder as settings.py.
+TEMPLATE_DIRS = (
+    os.path.join(SETTINGS_PATH, 'templates'),
+)
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Daniel Holstein', 'holstein@elections.stanford.edu'),
+    ('Peter Doyle', 'peter@elections.stanford.edu'),
+    ('Robin Woodby', 'rwoodby@stanford.edu'),
 )
 
 MANAGERS = ADMINS
+
+WSGI_APPLICATION = "openelections.wsgi.application"
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -31,7 +43,7 @@ USE_I18N = False
 #MEDIA_ROOT = ''
 
 # Make this unique, and don't share it with anybody.
-#SECRET_KEY = 'qszo)3canz!+28v)6ha)6*8oe$2hpjibn0il$@2sk$tqp&5)lv'
+#SECRET_KEY = 'qszo%3la9zL+2Jv96hA)6*87e$thpjibn0il$@2Fk$tqp&5)lv'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -46,19 +58,21 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'webauth.middleware.WebauthMiddleware',
 )
 
 ROOT_URLCONF = 'openelections.urls'
 
-TEMPLATE_DIRS = (
-    'templates/',
-)
+#TEMPLATE_DIRS = (
+#    '/home/admin-elections/elections/openelection/openelections/templates/',
+#)
 
 FIXTURE_DIRS = ('fixtures/',)
 
@@ -69,12 +83,16 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.markup',
-    'openelections.issues',
-    'openelections.petitions',
+    'django.contrib.staticfiles',
+    'issues',
+    'petitions',
+    #'webauth',
+    'ballot',
     'webauth',
-    'openelections.ballot',
-    #'openelections.webauth',
+    'gunicorn',
 )
+
+#APPEND_SLASH = False
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 

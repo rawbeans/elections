@@ -1,6 +1,6 @@
 from django import forms
 from openelections.constants import ISSUE_TYPES
-from openelections.issues.models import Electorate, Issue, SpecialFeeRequest, Slate, ExecutiveSlate, ClassPresidentSlate, Candidate, SenateCandidate, GSCCandidate
+from issues.models import Electorate, Issue, SpecialFeeRequest, Slate, ExecutiveSlate, ClassPresidentSlate, Candidate, SenateCandidate, GSCCandidate
 from issues.models import SMSACandidate
 
 class IssueForm(forms.ModelForm):
@@ -174,7 +174,7 @@ class NewSenateCandidateForm(NewCandidateForm):
         'I intend to remain a registered undergradaute student at Stanford University throughout '
         'the 2013-2014 academic year (Fall, Winter, and Spring quarters.)',
 
-        'I understand that I must be on-campus throughout all three academic quarters that I am a member of the Undergraduate Senate',
+        'I understand that I may only go abroad spring quarter of my first term, or any single quarter of my second or subsequent term, while I serve on the Undergraduate Senate.',
 
         'I understand that serving as a member of the Undergraduate Senate is a time commitment, and that I will be expected to attend its '
         'regular meetings, as well as meetings of any subcommittees of which I am a member. I additionally understand that not attending '
@@ -279,7 +279,7 @@ class NewSMSACandidateForm(NewCandidateForm):
 class NewSpecialFeeForm(NewIssueForm):
     class Meta:
         model = SpecialFeeRequest
-        fields = ('title', 'kind', 'electorates', 'declared_petition', 'total_request_amount','total_past_request_amount', 'budget', 'past_budget', 'account_statement', 'name1', 'sunetid1', 'suid1', 'sponsor_phone', 'slug',)
+        fields = ('title', 'kind', 'electorates', 'declared_petition', 'total_request_amount','total_past_request_amount', 'budget', 'past_budget', 'budget_spreadsheet', 'account_statement', 'name1', 'sunetid1', 'suid1', 'sponsor_phone', 'slug',)
 
     name1 = forms.CharField(label='Sponsor\'s name', widget=forms.TextInput(attrs={'size':'40'}))
     sunetid1 = forms.CharField(label='Sponsor\'s SUNetID', widget=forms.TextInput(attrs={'size':'12'}))
@@ -288,6 +288,7 @@ class NewSpecialFeeForm(NewIssueForm):
     title = forms.CharField(label='Group name', widget=forms.TextInput(attrs={'size':'40'}))
     budget = forms.FileField(label='MyGroups2 Funding Request for next year',help_text='PDF files only. Must be a completed MyGroups2 funding reqeuest.')
     past_budget = forms.FileField(label='MyGroups2 funding request from this year', required=False,help_text='PDF files only. If you did not request Special Fees for this year, leave this blank.')
+    budget_spreadsheet = forms.FileField(label='PDF of Excel Budgeting Spreadsheet', help_text='PDF files only. The Elections Commission provides you with this file after you submit your Excel budget.')
     account_statement = forms.FileField(label="Current MyGroups2 account statement",help_text='PDF files only')
     total_request_amount = forms.DecimalField(max_digits=8, decimal_places=2,help_text='Must match the exact amount being requested in Special Fees on your MyGroups2 funding request ' \
                                                                                        'for next year. If your request includes reserve transfers to cover some fees, do not include '
@@ -316,8 +317,7 @@ class NewSpecialFeeForm(NewIssueForm):
 
         'Our group is not an agency of the Association or an umbrella group. If we are, we will contact the Elections Commission prior to submitting this form.',
 
-        'Our group understands all the ballot deadlines, including the Februrary 21 deadline for full disclosure of all financial information to the Elections Commission '
-        'and applicable legislative bodies',
+        'Our group understands all the ballot deadlines, including the hard deadline for all petition materials and signatures on Sunday, March 9, at 11:59PM.',
 
         'Our group understands the full disclosure requirements as outlined on the Special Fees website and in the Special Fees information packet, and agrees to provide '
         'full disclosure of the required financial information by the deadline. We understand that not doing so is grounds for disqualification from Special Fees.',

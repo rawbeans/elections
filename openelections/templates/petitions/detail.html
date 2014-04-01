@@ -90,11 +90,14 @@ window.location.hash+='#sign-form';
 
 {% if not form and not issue.petition_validated %}
     <p>
+    <strong>Petitioning has ended and petitions are undergoing validation. If you signed this petition, you may be contacted to verify your petition signature.</strong>
+    </p>
+    <!--<p>
        <a id="sign-form"></a>You've signed the petition for {{ issue.name_and_office }}{% ifequal issue.kind "SF" %}, along with {{ issue.signatures.count }} other signers{% endifequal %}.
        Please <a href="http://elections.stanford.edu/contact">contact the
        Elections Commission</a> if you want to
        withdraw your support for this {{ issue.kind_name }}.
-    </p>
+    </p>-->
 {% endif %}
 
     <h2>Signatures</h2>

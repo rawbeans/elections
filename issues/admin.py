@@ -1,4 +1,4 @@
-from openelections.issues.models import Electorate, Issue
+from issues.models import Electorate, Issue
 from django.contrib import admin
 
 class ElectorateAdmin(admin.ModelAdmin):
@@ -33,7 +33,7 @@ class IssueAdmin(admin.ModelAdmin):
         ('Misc.', {'fields': ('signed_qualifications','sponsor_phone')}),
         ('Petition', {'fields': ('petition_validated', 'petition_signatures_count')}),
         ('Special Fee group', {'fields': ('total_request_amount', 'total_past_request_amount', 'declared_petition',
-                                          'budget', 'past_budget', 'account_statement',
+                                          'budget', 'past_budget', 'budget_spreadsheet','account_statement',
                                           'advisory_vote_gsc', 'advisory_vote_senate',
                                           'statement_gsc','statement_senate','petition_required')}),
     ]

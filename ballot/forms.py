@@ -3,8 +3,8 @@ from django import forms
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.utils.safestring import mark_safe
 from openelections import constants as c
-from openelections.ballot.models import Ballot
-from openelections.issues.models import Issue, SenateCandidate, GSCCandidate, ExecutiveSlate, Electorate, SpecialFeeRequest, ClassPresidentSlate, kinds_classes
+from ballot.models import Ballot
+from issues.models import Issue, SenateCandidate, GSCCandidate, ExecutiveSlate, Electorate, SpecialFeeRequest, ClassPresidentSlate, kinds_classes
 
 def html_id(issue):
     return 'issue_%d' % issue.pk

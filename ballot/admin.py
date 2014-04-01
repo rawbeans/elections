@@ -1,4 +1,4 @@
-from openelections.ballot.models import Ballot
+from ballot.models import Ballot
 from django.contrib import admin
 
 class BallotAdmin(admin.ModelAdmin):

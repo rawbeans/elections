@@ -1,6 +1,6 @@
-from openelections.tests import OETestCase
-from openelections.issues.models import Electorate, Issue
-from openelections.petitions.models import Signature
+from tests import OETestCase
+from issues.models import Electorate, Issue
+from petitions.models import Signature
 
 class IssueAdditionsTest(OETestCase):
     def test_signed_by_sunetid_false(self):

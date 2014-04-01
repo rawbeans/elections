@@ -1,6 +1,6 @@
 import re, csv, os
 from django.core.management.base import LabelCommand
-from openelections.ballot.models import Ballot
+from ballot.models import Ballot
 from issues.models import Electorate
 
 gsc_districts = {

@@ -88,6 +88,12 @@
     <br/>
 {% endif %}
 
+{% if issue.budget_spreadsheet %}
+    <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.budget_spreadsheet.url }}">Budget Spreadsheet</a></p>
+    {% if not hidepdfs %}{{ issue.budget_spreadsheet.url|pdf_viewer|safe }}{% endif %}
+    <br/>
+{% endif %}
+
 {% if issue.account_statement %}
     <p style="font-weight:bold;" ><a target="_blank" href="{{ issue.account_statement.url }}">Current bank statement</a></p>
     {% if not hidepdfs %}{{ issue.account_statement.url|pdf_viewer|safe }}{% endif %}

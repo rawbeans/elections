@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Q
 from openelections import constants as oe_constants
-from openelections.issues.text import POSITION_DESCRIPTIONS
+from issues.text import POSITION_DESCRIPTIONS
 
 ADMINS = ('holstein',)
 
@@ -26,8 +26,8 @@ class Electorate(models.Model):
     SMSA_CLASS_YEARS = ('smsa-1','smsa-2', 'smsa-3', 'smsa-4', 'smsa-5plus')
     SMSA_POPULATIONS = SMSA_CLASS_YEARS
 
-    NUM_UGRAD_INCL_COTERM = 6979
-    NUM_GRAD_INCL_COTERM = 8600
+    NUM_UGRAD_INCL_COTERM = 7014
+    NUM_GRAD_INCL_COTERM = 8906
     NUM_COTERM = 273
 
     @classmethod
@@ -89,6 +89,7 @@ class Issue(models.Model):
     # special fee groups
     budget = models.FileField(upload_to='specialfees', blank=True)
     past_budget = models.FileField(upload_to='specialfees', blank=True)
+    budget_spreadsheet = models.FileField(upload_to='specialfees', blank=True)
     account_statement = models.FileField(upload_to='specialfees', blank=True)
 
     total_request_amount = models.DecimalField(default=0, max_digits=8, decimal_places=2)
@@ -108,7 +109,7 @@ class Issue(models.Model):
         return "%s: %s" % (self.kind, self.title)
 
     def can_declare(self):
-        return False
+        return True
 
     def get_typed(self):
         issue_class = kinds_classes.get(self.kind, Issue)
@@ -138,7 +139,7 @@ class Issue(models.Model):
         return True
 
     def petition_open(self):
-        return False #not self.petition_validated
+        return True #not self.petition_validated # had been switched to false
 
     def show_petition_results(self):
         return False
@@ -162,7 +163,7 @@ class Issue(models.Model):
         return "Generic issue"
 
     def get_absolute_url(self):
-        return '/' + self.slug
+        return 'issue/' + self.slug
 
     def sunetids(self):
         """Returns the SUNet IDs associated with this issue, such as

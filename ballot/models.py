@@ -1,5 +1,5 @@
 from django.db import models
-from openelections.issues.models import *
+from issues.models import *
 from django.conf import settings
 import hashlib
 from issues.models import ClassPresidentSlate, SMSACandidate, SMSAClassRepCandidate

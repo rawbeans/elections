@@ -4,9 +4,9 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.shortcuts import render_to_response, get_object_or_404
 from openelections import constants as oe_constants
-from openelections.issues.models import Issue, ExecutiveSlate, ClassPresidentSlate
-from openelections.ballot.forms import ballot_form_factory, BallotElectorateForm
-from openelections.ballot.models import Ballot, make_voter_id
+from issues.models import Issue, ExecutiveSlate, ClassPresidentSlate
+from ballot.forms import ballot_form_factory, BallotElectorateForm
+from ballot.models import Ballot, make_voter_id
 from django.contrib.auth.decorators import login_required
 from ballot.models import VoteRecord
 from datetime import datetime

@@ -41,7 +41,7 @@ def login(request):
         next = urllib2.base64.b64decode(next_64).strip()
         
         try:
-            could_login = WebauthLogin(request,version,username,actual_hash,name)
+            could_login = WebauthLogin(request, version, username, actual_hash, name_64, name)
         except WebauthVersionNotSupported:
             could_login = False
             

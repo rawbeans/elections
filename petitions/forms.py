@@ -1,7 +1,7 @@
 from django import forms
 from openelections import constants as oe_constants
-from openelections.issues.models import Issue, Electorate
-from openelections.petitions.models import Signature
+from issues.models import Issue, Electorate
+from petitions.models import Signature
 from petitions.models import PaperSignature
 from django.forms.widgets import Textarea
 

@@ -5,8 +5,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from openelections import constants as oe_constants
-from openelections.issues.models import Issue
-from openelections.issues.forms import IssueForm, form_class_for_issue
+from issues.models import Issue
+from issues.forms import IssueForm, form_class_for_issue
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import AnonymousUser
 from webauth.models import WebauthUser
@@ -92,7 +92,7 @@ def manage_new_specialfee(request):
         form = NewSpecialFeeForm(request.POST,request.FILES,instance=new_issue)
         if form.is_valid() and new_issue.can_declare():
             form.save()
-            return HttpResponseRedirect(reverse('openelections.issues.views.manage_index'))
+            return HttpResponseRedirect(reverse('issues.views.manage_index'))
     return render_to_response('issues/manage/new_fee.html', {'new_issue': new_issue, 'form': form}, context_instance=RequestContext(request))
 
 @login_required
@@ -105,7 +105,7 @@ def create(request):
     form = form_class_for_issue(new_issue)(attrs, instance=new_issue)
     if form.is_valid() and new_issue.can_declare():
         form.save()
-        return HttpResponseRedirect(reverse('openelections.issues.views.manage_index'))
+        return HttpResponseRedirect(reverse('issues.views.manage_index'))
     else:
         return render_to_response('issues/manage/new.html', {'new_issue': new_issue, 'form': form,'error': True}, context_instance=RequestContext(request))
 
@@ -123,7 +123,7 @@ def manage_edit(request, issue_slug):
         form = form_class_for_issue(issue)(request.POST, request.FILES, instance=issue)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('openelections.issues.views.manage_edit', None, [issue.slug]))
+            return HttpResponseRedirect(reverse('issues.views.manage_edit', None, [issue.slug]))
     else:
         form = form_class_for_issue(issue)(instance=issue)
     
